@@ -378,6 +378,15 @@ const clubs = [
 let activeFilter = 'All';
 let slideState = {};
 
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function filter(cat) {
   activeFilter = cat;
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -439,7 +448,7 @@ function render() {
 
   grid.innerHTML = visible.map(club => {
     const slides = club.photos.length
-      ? club.photos.map(src => `<div class="gallery-slide"><img src="${src}" alt="${club.name}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`).join('')
+      ? club.photos.map(src => `<div class="gallery-slide"><img src="${esc(src)}" alt="${esc(club.name)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`).join('')
       : `<div class="gallery-slide"><div class="gallery-placeholder">
           <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
             <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
@@ -450,21 +459,21 @@ function render() {
         </div></div>`;
 
     const arrows = club.photos.length > 1
-      ? `<button class="gallery-prev" onclick="slide('${club.id}',-1)">&#8249;</button>
-         <button class="gallery-next" onclick="slide('${club.id}',1)">&#8250;</button>` : '';
+      ? `<button class="gallery-prev" onclick="slide('${esc(club.id)}',-1)">&#8249;</button>
+         <button class="gallery-next" onclick="slide('${esc(club.id)}',1)">&#8250;</button>` : '';
 
     const dots = club.photos.length > 1
-      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide('${club.id}',${i})"></div>`).join('')}</div>` : '';
+      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide('${esc(club.id)}',${i})"></div>`).join('')}</div>` : '';
 
     return `<div class="club-card">
-      <div class="card-gallery" data-gallery="${club.id}">
+      <div class="card-gallery" data-gallery="${esc(club.id)}">
         <div class="gallery-slides">${slides}</div>
         ${arrows}${dots}
-        <div class="type-badge">${club.type}</div>
+        <div class="type-badge">${esc(club.type)}</div>
       </div>
       <div class="card-body">
-        <div class="card-name">${club.name}</div>
-        <div class="card-desc">${club.desc}</div>
+        <div class="card-name">${esc(club.name)}</div>
+        <div class="card-desc">${esc(club.desc)}</div>
         <div class="price-row">
           <div class="price-ask">$${club.ideal.toLocaleString()}</div>
           <div class="price-floor">floor $${club.low.toLocaleString()}</div>
@@ -473,7 +482,7 @@ function render() {
       </div>
       <div class="card-footer">
         <a class="card-cta primary" href="https://www.facebook.com/marketplace" target="_blank">Message on FB</a>
-        <a class="card-cta" href="#" onclick="shareClub('${club.name}');return false;">Share ↗</a>
+        <a class="card-cta" href="#" onclick="shareClub('${esc(club.name)}');return false;">Share ↗</a>
       </div>
     </div>`;
   }).join('');
