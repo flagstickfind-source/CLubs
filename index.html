@@ -3,143 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flagstick Finds</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #3e8e41;
-            color: white;
-            text-align: center;
-            padding: 1em 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        .category {
-            border: 1px solid #ccc;
-            background: white;
-            margin: 1em 0;
-            padding: 1em;
-        }
-        .product {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 1em 0;
-        }
-        .product img {
-            max-width: 150px;
-        }
-        .inquiry-buttons {
-            display: flex;
-            gap: 1em;
-        }
-        button {
-            padding: 10px;
-            background-color: #3e8e41;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #2e6e31;
-        }
-    </style>
+    <title>Flagstick Finder</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<header>
-    <h1>Flagstick Finds</h1>
-</header>
-
-<div class="container">
-
-    <div class="category">
-        <h2>Featured Products</h2>
-        <div class="product">
-            <div>
-                <h3>Flashback Select 1.5</h3>
-                <p>Price: $299.99</p>
-                <img src="path/to/flashback-select-1.5.jpg" alt="Flashback Select 1.5">
+    <header>
+        <h1>Flagstick Finder</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Clubs</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="clubs">
+            <h2>Golf Clubs</h2>
+            <div class="carousel">
+                <div class="carousel-item">
+                    <img src="club1.jpg" alt="Club 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="club2.jpg" alt="Club 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="club3.jpg" alt="Club 3">
+                </div>
+                <!-- Add more carousel items as needed -->
             </div>
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
+            <h3>Categories</h3>
+            <div class="filters">
+                <button class="filter" data-category="woods">Woods</button>
+                <button class="filter" data-category="irons">Irons</button>
+                <button class="filter" data-category="putters">Putters</button>
+                <!-- Add more filters as needed -->
             </div>
-        </div>
-        <div class="product">
-            <div>
-                <h3>Miura TC201</h3>
-                <p>Price: $399.99</p>
-                <img src="path/to/miura-tc201.jpg" alt="Miura TC201">
+            <h3>Pricing</h3>
+            <div class="pricing">
+                <div class="item">
+                    <h4>Club 1</h4>
+                    <p>$299</p>
+                </div>
+                <div class="item">
+                    <h4>Club 2</h4>
+                    <p>$199</p>
+                </div>
+                <div class="item">
+                    <h4>Club 3</h4>
+                    <p>$399</p>
+                </div>
+                <!-- Add more pricing items as needed -->
             </div>
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="category">
-        <h2>Putters</h2>
-        <div class="product">
-            <h3>Example Putter</h3>
-            <p>Price: $120.00</p>
-            <img src="path/to/example-putter.jpg" alt="Example Putter">
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="category">
-        <h2>Irons</h2>
-        <div class="product">
-            <h3>Example Iron Set</h3>
-            <p>Price: $750.00</p>
-            <img src="path/to/example-iron.jpg" alt="Example Iron Set">
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="category">
-        <h2>Hybrids</h2>
-        <div class="product">
-            <h3>Example Hybrid Club</h3>
-            <p>Price: $200.00</p>
-            <img src="path/to/example-hybrid.jpg" alt="Example Hybrid Club">
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="category">
-        <h2>Woods</h2>
-        <div class="product">
-            <h3>Example Driver</h3>
-            <p>Price: $450.00</p>
-            <img src="path/to/example-driver.jpg" alt="Example Driver">
-            <div class="inquiry-buttons">
-                <a href="mailto:flagstickfind@gmail.com"><button>Inquire</button></a>
-                <a href="facebook-marketplace-link"><button>Buy on Facebook</button></a>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+        </section>
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name"><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email"><br>
+                <input type="submit" value="Submit">
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Flagstick Finder</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
