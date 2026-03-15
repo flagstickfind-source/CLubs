@@ -1,55 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flagstick Finder Pro Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--green:#1a2e1a;--cream:#f5f0e8;--gold:#c9a84c}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--cream);color:#1a1a1a}header{background:var(--green);color:var(--cream);padding:1.5rem 2rem;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}.header-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.logo-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--cream)}.logo-name span{color:var(--gold);font-style:italic}.header-right{text-align:right;font-size:11px}.hero{background:linear-gradient(rgba(26,46,26,0.7),rgba(26,46,26,0.7)),url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1200&auto=format') center/cover;color:var(--cream);padding:8rem 2rem;text-align:center}.hero h1{font-family:'Playfair Display',serif;font-size:3rem;margin-bottom:1rem}.hero h1 em{color:var(--gold);font-style:italic}.hero p{font-size:15px;margin-bottom:2rem}.hero-cta{background:var(--gold);color:var(--green);padding:0.8rem 2rem;border:none;cursor:pointer;font-weight:bold;border-radius:4px;font-size:11px}.hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:2rem;max-width:400px;margin-left:auto;margin-right:auto}.hero-stat{text-align:center}.hero-stat .num{font-size:24px;color:var(--gold);font-weight:bold;display:block;margin-bottom:4px}.hero-stat .label{font-size:9px;color:#7a9a7a;text-transform:uppercase}.filter-bar{background:var(--green);padding:1rem 2rem;display:flex;gap:1rem;overflow-x:auto;position:sticky;top:76px;z-index:90}.filter-btn{background:transparent;color:var(--cream);border:none;cursor:pointer;padding:0.5rem 1rem;border-bottom:2px solid transparent;font-weight:600;white-space:nowrap}.filter-btn.active{border-bottom-color:var(--gold);color:var(--gold)}.grid-section{max-width:1400px;margin:3rem auto;padding:0 2rem}.section-label{font-size:11px;color:#999;text-transform:uppercase;margin-bottom:1.5rem;border-bottom:1px solid #ddd;padding-bottom:0.75rem}.club-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}.club-card{background:white;display:flex;flex-direction:column;transition:transform 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.1)}.club-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}.card-img{width:100%;height:300px;background:#e0d5c8;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.card-img img{max-width:90%;max-height:90%}.gallery-nav{position:absolute;width:30px;height:30px;background:rgba(26,46,26,0.8);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;font-size:16px;border-radius:3px}.card-img:hover .gallery-nav{opacity:1}.gallery-prev{left:5px}.gallery-next{right:5px}.type-badge{position:absolute;top:10px;left:10px;background:rgba(26,46,26,0.9);color:var(--gold);padding:4px 8px;font-size:9px;font-weight:bold}.card-body{padding:1rem;flex:1}.card-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:0.5rem}.card-desc{font-size:12px;color:#666;margin-bottom:1rem}.price-row{display:flex;gap:0.5rem;align-items:baseline;margin-bottom:1rem}.price-ask{font-family:'Playfair Display',serif;font-size:24px;color:var(--green);font-weight:700}.price-floor{font-size:12px;color:#999}.card-footer{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#ddd}.card-cta{padding:0.8rem;text-align:center;text-decoration:none;font-size:11px;font-weight:600;cursor:pointer;border:none;background:white;color:var(--green);transition:all 0.2s}.card-cta:hover{background:var(--green);color:var(--gold)}.card-cta.primary{background:var(--green);color:white}footer{background:var(--green);color:var(--cream);text-align:center;padding:2rem;margin-top:3rem}footer a{color:var(--gold);text-decoration:none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flagstick Finder — Pro Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a2e1a;
+    --green-mid: #2d4a2d;
+    --cream: #f5f0e8;
+    --cream-dark: #ede6d6;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --gray-light: #e5e7eb;
+    --text: #1a1a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+  /* HEADER */
+  header { background: var(--green); padding: 0 2rem; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--gold); }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .logo-lockup { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .logo-icon { width: 44px; height: 44px; flex-shrink: 0; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1; }
+  .logo-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--cream); }
+  .logo-name span { color: var(--gold); font-style: italic; }
+  .logo-sub { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #7a9a7a; margin-top: 3px; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .header-tagline { font-size: 11px; color: #aab8aa; }
+  .header-location { font-size: 10px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* HERO */
+  .hero { position: relative; min-height: 580px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1600&q=80&auto=format&fit=crop');
+    background-size: cover; background-position: center 40%;
+    filter: brightness(0.32) saturate(0.75);
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes slowZoom { from { transform: scale(1.04); } to { transform: scale(1.13); } }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,46,26,0.2) 0%, rgba(26,46,26,0.1) 40%, rgba(26,46,26,0.75) 100%); }
+  .hero-content { position: relative; z-index: 2; padding: 5rem 2rem 4rem; max-width: 680px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 40px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(38px, 6vw, 64px); color: var(--cream); line-height: 1.1; margin-bottom: 1.25rem; text-shadow: 0 2px 24px rgba(0,0,0,0.5); }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero p { font-size: 15px; color: rgba(245,240,232,0.8); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.75; }
+  .hero-cta { display: inline-block; padding: 0.9rem 2.5rem; background: var(--gold); color: var(--green); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: background 0.2s, transform 0.15s; margin-bottom: 3rem; }
+  .hero-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .hero-stats { display: flex; justify-content: center; max-width: 380px; margin: 0 auto; border: 1px solid rgba(201,168,76,0.3); backdrop-filter: blur(8px); background: rgba(26,46,26,0.45); }
+  .hero-stat { flex: 1; padding: 1.1rem 1rem; text-align: center; border-right: 1px solid rgba(201,168,76,0.2); }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .num { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); display: block; margin-bottom: 4px; }
+  .hero-stat .label { font-size: 9px; color: #7a9a7a; text-transform: uppercase; letter-spacing: 0.12em; }
+
+  /* TRUST BAR */
+  .trust-bar { background: var(--cream-dark); border-bottom: 1px solid #ddd5c5; padding: 0 2rem; }
+  .trust-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 2.5rem; height: 52px; overflow-x: auto; scrollbar-width: none; }
+  .trust-inner::-webkit-scrollbar { display: none; }
+  .trust-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--gray); white-space: nowrap; letter-spacing: 0.04em; }
+  .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* BUNDLE BANNER */
+  .bundle-banner { background: var(--green-mid); border-top: 1px solid rgba(201,168,76,0.25); border-bottom: 1px solid rgba(201,168,76,0.25); padding: 1.25rem 2rem; text-align: center; }
+  .bundle-banner p { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--cream); margin-bottom: 4px; }
+  .bundle-banner p em { color: var(--gold); font-style: italic; }
+  .bundle-banner span { font-size: 11px; color: #7a9a7a; }
+
+  /* FILTER */
+  .filter-bar { background: var(--green); padding: 0 2rem; border-bottom: 1px solid rgba(255,255,255,0.07); position: sticky; top: 76px; z-index: 90; }
+  .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .filter-inner::-webkit-scrollbar { display: none; }
+  .filter-btn { font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 1.1rem 1.5rem; border: none; background: transparent; color: #7a9a7a; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; font-weight: 500; }
+  .filter-btn:hover { color: var(--cream); }
+  .filter-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* GRID */
+  .grid-section { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+  .section-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--cream-dark); }
+  .club-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px; background: var(--cream-dark); border: 2px solid var(--cream-dark); }
+
+  /* CARD */
+  .club-card { background: var(--white); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+  .club-card:hover { z-index: 1; transform: translateY(-3px); box-shadow: 0 16px 48px rgba(26,46,26,0.14); }
+
+  /* GALLERY */
+  .card-gallery { position: relative; width: 100%; height: 260px; background: var(--cream-dark); overflow: hidden; }
+  .gallery-slides { display: flex; height: 100%; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); }
+  .gallery-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gallery-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; background: linear-gradient(160deg, #ede6d6 0%, #ddd5c5 100%); }
+  .gallery-placeholder .ph-icon { opacity: 0.18; }
+  .gallery-placeholder span { font-size: 10px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
+  .gallery-prev, .gallery-next { position: absolute; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: rgba(26,46,26,0.8); border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--cream); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; z-index: 2; font-size: 16px; }
+  .card-gallery:hover .gallery-prev, .card-gallery:hover .gallery-next { opacity: 1; }
+  .gallery-prev { left: 10px; } .gallery-next { right: 10px; }
+  .gallery-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 2; }
+  .gallery-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.45); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+  .gallery-dot.active { background: var(--gold); transform: scale(1.4); }
+  .type-badge { position: absolute; top: 12px; left: 12px; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; background: rgba(26,46,26,0.9); color: var(--gold); border: 1px solid rgba(201,168,76,0.4); z-index: 2; font-weight: 500; }
+
+  /* CARD BODY */
+  .card-body { padding: 1.25rem 1.25rem 0.75rem; flex: 1; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--gray-light); }
+  .card-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .card-desc { font-size: 12px; color: var(--gray); line-height: 1.65; flex: 1; }
+  .price-row { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--cream-dark); }
+  .price-ask { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--green); font-weight: 600; }
+  .price-floor { font-size: 12px; color: var(--gray); }
+  .obo-pill { font-size: 9px; padding: 2px 8px; border: 1px solid var(--gold); color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-left: auto; }
+
+  /* CARD FOOTER */
+  .card-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-light); }
+  .card-cta { display: block; padding: 0.8rem; text-align: center; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; text-decoration: none; background: var(--white); color: var(--green); transition: background 0.15s, color 0.15s; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .card-cta:hover { background: var(--green); color: var(--gold); }
+  .card-cta.primary { background: var(--green); color: var(--cream); }
+  .card-cta.primary:hover { background: var(--green-mid); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: var(--cream); border: 1px solid var(--gold); padding: 0.75rem 2rem; font-size: 12px; letter-spacing: 0.08em; transition: transform 0.3s; z-index: 999; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* FOOTER */
+  footer { background: var(--green); padding: 3rem 2rem; border-top: 2px solid var(--gold); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; text-align: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); }
+  .footer-logo span { color: var(--gold); font-style: italic; }
+  .footer-divider { width: 40px; height: 1px; background: var(--gold); opacity: 0.4; }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+  .footer-links a { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a9a7a; text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: 11px; color: #4a6a4a; }
+
+  .empty { text-align: center; padding: 4rem 2rem; color: var(--gray); background: var(--white); font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .club-grid { grid-template-columns: 1fr; }
+    .logo-sub { display: none; }
+    .trust-inner { gap: 1.5rem; }
+    .footer-links { flex-direction: column; gap: 0.75rem; }
+  }
+</style>
 </head>
 <body>
+
 <header>
   <div class="header-inner">
-    <div>
-      <div class="logo-name">Flagstick <span>Finder</span></div>
-      <div style="font-size:9px;color:#7a9a7a;">PRO SHOP</div>
-    </div>
+    <a class="logo-lockup" href="#">
+      <svg class="logo-icon" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="21" stroke="#c9a84c" stroke-width="1.2" fill="rgba(45,74,45,0.6)"/>
+        <line x1="22" y1="8" x2="22" y2="36" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M22 8 L34 13 L22 18 Z" fill="#c9a84c" opacity="0.9"/>
+        <path d="M14 36 Q22 34 30 36" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <ellipse cx="22" cy="36" rx="4" ry="1.5" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+      </svg>
+      <div class="logo-text">
+        <div class="logo-name">Flagstick <span>Finder</span></div>
+        <div class="logo-sub">Pro Shop</div>
+      </div>
+    </a>
     <div class="header-right">
-      <div>Premium Used Golf Clubs</div>
-      <div style="color:var(--gold);">Dallas · Fort Worth · Ships Nationwide</div>
+      <div class="header-tagline">Premium Used Golf Clubs</div>
+      <div class="header-location">Dallas · Fort Worth · Ships Nationwide</div>
     </div>
   </div>
 </header>
+
 <section class="hero">
-  <h1>Find Your Next<br><em>Favourite Club</em></h1>
-  <p>Hand-selected irons, putters, hybrids and drivers. Every club priced to move.</p>
-  <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
-  <div class="hero-stats">
-    <div class="hero-stat"><span class="num">18</span><span class="label">Clubs Listed</span></div>
-    <div class="hero-stat"><span class="num">DFW</span><span class="label">Based In</span></div>
-    <div class="hero-stat"><span class="num">✓</span><span class="label">Ships Nationwide</span></div>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Pro Shop</div>
+    <h1>Find Your Next<br><em>Favourite Club</em></h1>
+    <p>Hand-selected irons, putters, hybrids and drivers. Every club priced to move — from DFW to your doorstep.</p>
+    <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num" id="total-count">20</span><span class="label">Clubs Listed</span></div>
+      <div class="hero-stat"><span class="num">DFW</span><span class="label">Based In</span></div>
+      <div class="hero-stat"><span class="num">✓</span><span class="label">Ships Nationwide</span></div>
+    </div>
   </div>
 </section>
+
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="trust-dot"></span>Hand-selected clubs</div>
+    <div class="trust-item"><span class="trust-dot"></span>Honest condition descriptions</div>
+    <div class="trust-item"><span class="trust-dot"></span>Secure via Facebook Marketplace</div>
+    <div class="trust-item"><span class="trust-dot"></span>Fast DFW pickup or ships next day</div>
+  </div>
+</div>
+
+<div class="bundle-banner">
+  <p>Building a full bag? Ask about <em>bundle pricing</em> — mix and match for a deal.</p>
+  <span>Message on Facebook Marketplace to discuss</span>
+</div>
+
 <nav class="filter-bar">
-  <button class="filter-btn active" onclick="filterClubs('All')">All Clubs</button>
-  <button class="filter-btn" onclick="filterClubs('Putter')">Putters</button>
-  <button class="filter-btn" onclick="filterClubs('Iron')">Irons</button>
-  <button class="filter-btn" onclick="filterClubs('Hybrid')">Hybrids & Woods</button>
-  <button class="filter-btn" onclick="filterClubs('Driver')">Drivers</button>
+  <div class="filter-inner">
+    <button class="filter-btn active" onclick="filter('All')">All Clubs</button>
+    <button class="filter-btn" onclick="filter('Putter')">Putters</button>
+    <button class="filter-btn" onclick="filter('Iron')">Irons</button>
+    <button class="filter-btn" onclick="filter('Hybrid')">Hybrids &amp; Woods</button>
+    <button class="filter-btn" onclick="filter('Driver')">Drivers</button>
+  </div>
 </nav>
+
 <main class="grid-section">
-  <div class="section-label" id="section-label">All Clubs — 18 Listed</div>
+  <div class="section-label" id="section-label">All Clubs</div>
   <div class="club-grid" id="club-grid"></div>
 </main>
+
 <footer>
-  <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:1rem;">Flagstick <span style="color:var(--gold);">Finder</span></div>
-  <div style="margin-bottom:1rem;"><a href="https://www.facebook.com/marketplace" target="_blank">Message on Facebook</a> | <a href="mailto:adamsjerram11@gmail.com">📧 Email Us</a> | <a href="#" onclick="shareShop();return false;">Share This Shop ↗</a></div>
-  <p style="font-size:11px;color:#7a9a7a;">Dallas–Fort Worth · Nationwide Shipping Available</p>
+  <div class="footer-inner">
+    <div class="footer-logo">Flagstick <span>Finder</span></div>
+    <div class="footer-divider"></div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/marketplace" target="_blank">Facebook Marketplace</a>
+      <a href="mailto:adamsjerram11@gmail.com">Email Us</a>
+      <a href="#" onclick="shareShop();return false;">Share This Shop ↗</a>
+    </div>
+    <div class="footer-copy">Dallas–Fort Worth · Nationwide Shipping Available</div>
+  </div>
 </footer>
+
+<div class="toast" id="toast">Link copied!</div>
+
 <script>
-const clubs=[{id:1,name:'Scotty Cameron Phantom',type:'Putter',ideal:250,low:200,desc:'Classic blade-style putter.',photos:['California%20face.jpg','California%20Grip.jpg']},{id:2,name:'Scotty Cameron Newport',type:'Putter',ideal:350,low:250,desc:'Iconic Newport design.',photos:['Newport%20face.jpg']},{id:3,name:'Scotty Cameron GoLo 3',type:'Putter',ideal:300,low:250,desc:'Mallet-style with red badge.',photos:['GoLo%20Face.jpg','GoLo%20back.jpg']},{id:4,name:'Futura Putter',type:'Putter',ideal:280,low:220,desc:'Clean blade design.',photos:['futura%20face.jpg','Futura%20fullpic.jpg']},{id:5,name:'Odyssey Select Putter',type:'Putter',ideal:180,low:140,desc:'Tour-proven design.',photos:['Select%20Face.JPG']},{id:6,name:'Odyssey Phantom Putter',type:'Putter',ideal:210,low:160,desc:'Alignment-aiding design.',photos:['Phantom%20X%207.jpg']},{id:7,name:'Miura CB57 Irons',type:'Iron',ideal:1200,low:950,desc:'Japanese forged excellence.',photos:['Muira%20CB%2057%20FACE.jpg']},{id:8,name:'Miura TC201 Irons',type:'Iron',ideal:1100,low:850,desc:'Blade-like forgiveness.',photos:['newMuiraTC201%27s%20face.JPG']},{id:9,name:'Ping i59 Irons',type:'Iron',ideal:380,low:320,desc:'Forgiving design.',photos:['Pingi59.jpg','Pingi59%202.jpg']},{id:10,name:'Mizuno MP-20 Irons',type:'Iron',ideal:420,low:350,desc:'Premium feel.',photos:['Mizuno%20face.jpg']},{id:11,name:'Callaway Rogue 3&4 Hybrid',type:'Hybrid',ideal:270,low:220,desc:'Versatile and forgiving.',photos:['Rogue%203&4%20hybrid%20face.jpg']},{id:12,name:'TaylorMade Qi10 5-Wood',type:'Hybrid',ideal:330,low:270,desc:'Speed technology.',photos:['Qi10%205%20wood.jpg']},{id:13,name:'Titleist 918 D2 Driver',type:'Driver',ideal:250,low:180,desc:'Adjustable SureFit hosel.',photos:['Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg']},{id:14,name:'Ping 425 Driver',type:'Driver',ideal:220,low:170,desc:'Aerodynamic design.',photos:['Ping425%20face.jpg']},{id:15,name:'Callaway M7 Driver',type:'Driver',ideal:240,low:190,desc:'Fast face technology.',photos:['M7%20face.jpg']},{id:16,name:'Odyssey Spider Putter',type:'Putter',ideal:200,low:150,desc:'Mallet stability.',photos:['Spider%20face.jpg']},{id:17,name:'TaylorMade Sim Max 5-Wood',type:'Hybrid',ideal:280,low:220,desc:'Lightweight speed.',photos:['Sim%20Max%205%20wood%20%20full.jpg']},{id:18,name:'Driving Iron MB7 3&4',type:'Iron',ideal:350,low:280,desc:'Tour-level precision.',photos:['Driving%20Iron%20-%20MB7%203%20&%204%20iron.jpg']}];let currentFilter='All',slideIndex={};function filterClubs(type){currentFilter=type;document.querySelectorAll('.filter-btn').forEach(btn=>{btn.classList.toggle('active',(type==='All'&&btn.textContent==='All Clubs')||btn.textContent.includes(type))});renderClubs()}function changeSlide(clubId,n){const club=clubs.find(c=>c.id===clubId);if(!club)return;slideIndex[clubId]=(slideIndex[clubId]||0)+n;if(slideIndex[clubId]>=club.photos.length)slideIndex[clubId]=0;if(slideIndex[clubId]<0)slideIndex[clubId]=club.photos.length-1;const allImgs=document.querySelectorAll(`[data-club="${clubId}"] .card-img img`);allImgs.forEach((img,idx)=>{img.style.display=idx===slideIndex[clubId]?'block':'none'})}function shareShop(){navigator.clipboard.writeText(window.location.href).then(()=>{alert('Link copied!)})}function renderClubs(){const grid=document.getElementById('club-grid'),label=document.getElementById('section-label'),filtered=currentFilter==='All'?clubs:clubs.filter(c=>c.type===currentFilter);label.textContent=currentFilter==='All'?`All Clubs — ${clubs.length} Listed`:`${currentFilter}s — ${filtered.length} Available`;grid.innerHTML=filtered.map(club=>{const photoHtml=club.photos.map((photo,idx)=>`<img src="https://raw.githubusercontent.com/flagstickfind-source/CLubs/main/${photo}" alt="${club.name}" style="display:${idx===0?'block':'none'};max-width:100%;max-height:100%;" onerror="this.style.display='none';">`).join(''),hasMultiple=club.photos.length>1,navHtml=hasMultiple?`<button class="gallery-nav gallery-prev" onclick="changeSlide(${club.id},-1)">‹</button><button class="gallery-nav gallery-next" onclick="changeSlide(${club.id},1)">›</button>`:'';return`<div class="club-card" data-club="${club.id}"><div class="card-img">${photoHtml}${navHtml}<div class="type-badge">${club.type}</div></div><div class="card-body"><div class="card-name">${club.name}</div><div class="card-desc">${club.desc}</div><div class="price-row"><span class="price-ask">$${club.ideal}</span><span class="price-floor">floor $${club.low}</span></div></div><div class="card-footer"><a class="card-cta primary" href="https://www.facebook.com/marketplace" target="_blank">Message on FB</a><a class="card-cta" href="mailto:adamsjerram11@gmail.com">Email</a></div></div>`}).join('')}renderClubs();
+const clubs = [
+  {
+    id: 'scotty-california',
+    name: 'Scotty Cameron California',
+    type: 'Putter', ideal: 400, low: 300, obo: false,
+    photos: ['California%20face.jpg','California%20Grip.jpg','calfornia.jpg'],
+    desc: 'California series — clean lines, classic feel and collectible craftsmanship.'
+  },
+  {
+    id: 'scotty-newport',
+    name: 'Scotty Cameron Newport',
+    type: 'Putter', ideal: 350, low: 250, obo: false,
+    photos: ['Newport%20face.jpg','newport%20back.jpg'],
+    desc: 'Iconic Newport design, tour-proven feel used by champions worldwide.'
+  },
+  {
+    id: 'scotty-golo3',
+    name: 'Scotty Cameron GoLo 3',
+    type: 'Putter', ideal: 300, low: 250, obo: false,
+    photos: ['GoLo%20Face.jpg','GoLo%20back.jpg','GoLo%20grip.jpg','GoLo%201.5.jpg'],
+    desc: 'Mallet-style with red badge and precision-milled face for consistent roll.'
+  },
+  {
+    id: 'scotty-futura7m',
+    name: 'Scotty Cameron Futura 7m',
+    type: 'Putter', ideal: 280, low: 220, obo: true,
+    photos: ['futura%20face.jpg','Futura%20fullpic.jpg','Futura%20side%20(main%20pic).jpg','Futura%2C%20top.jpg'],
+    desc: 'High-MOI mallet with multi-material construction and deep face milling.'
+  },
+  {
+    id: 'odyssey-select',
+    name: 'Odyssey Select Putter',
+    type: 'Putter', ideal: 180, low: 140, obo: false,
+    photos: ['Select%20Face.JPG','Select%20top.JPG','Select%20grip.JPG','select%20flashback.jpg'],
+    desc: 'Tour-proven design with a soft insert for a smooth, consistent feel at impact.'
+  },
+  {
+    id: 'odyssey-phantom-x',
+    name: 'Odyssey Phantom X 7 Putter',
+    type: 'Putter', ideal: 210, low: 160, obo: false,
+    photos: ['Phantom%20X%207.jpg','phantom%20x%20face.jpg','Phatnom%20grip.jpg'],
+    desc: 'Alignment-aiding frame design with a high-MOI head for added stability.'
+  },
+  {
+    id: 'odyssey-ai-putter',
+    name: 'Odyssey AI One Putter',
+    type: 'Putter', ideal: 200, low: 150, obo: true,
+    photos: ['Oddessey%20ai.jpg','Oddesey%20Ai%20.jpg','Oddeseey%20Ai%20top.jpg'],
+    desc: 'AI-designed milled face for incredibly consistent roll on every surface.'
+  },
+  {
+    id: 'spider-gtx-putter',
+    name: 'TaylorMade Spider GTX Tour',
+    type: 'Putter', ideal: 275, low: 175, obo: true,
+    photos: ['Spider%20face.jpg','Spider%20top.jpg','SPider%20grip.jpg','spider%20faceee.jpg'],
+    desc: 'Tour-level mallet with True Path alignment and pure roll insert technology.'
+  },
+  {
+    id: 'miura-tc201-irons',
+    name: 'Miura TC-201 Irons',
+    type: 'Iron', ideal: 1150, low: 850, obo: false,
+    photos: ['newMuiraTC201%27s%20face.JPG','newMuiraTC201%27s%20full.jpg','newMuiraTC201%27s%20top.JPG','newMuiraTC201%27s%20good%20angle.jpg'],
+    desc: 'Forged Miura blades — tour-quality feel, unmatched workability and shot-shaping.'
+  },
+  {
+    id: 'miura-cb57-irons',
+    name: 'Miura CB57 Irons',
+    type: 'Iron', ideal: 1100, low: 750, obo: false,
+    photos: ['Muira%20CB%2057%20FACE.jpg','Muira%20CB57%20Irons.jpg','Muira%20cb%2057%20face%202.jpg','Muira%20cb57%20grips.jpg','Muira%20cb%2057%20shaft.jpg'],
+    desc: 'Cavity-back forged construction blending the feel of a blade with added forgiveness.'
+  },
+  {
+    id: 'miura-tournament-irons',
+    name: 'Miura Tournament Irons',
+    type: 'Iron', ideal: 250, low: 125, obo: true,
+    photos: ['Miuita%20tourney%20COVER%20PHOTO.jpg','miura%20tourney.jpg','Muira%2056%20degree%20(TOURNEY).jpg','dd%20Muira%20tourney.jpg'],
+    desc: 'Full tournament set — includes 5, 8, 9, PW, and a 56-degree wedge.'
+  },
+  {
+    id: 'mizuno-mp20-irons',
+    name: 'Mizuno MP-20 Irons',
+    type: 'Iron', ideal: 750, low: 550, obo: false,
+    photos: ['Mizuno%20face.jpg','Mizuno%20Cover%204-pw.jpg','Mizuno%20Grips.jpg','Mixuno%20MP-20%20Sun.jpg'],
+    desc: 'Legendary Mizuno feel in a modern grain-flow forged package — 4-PW set.'
+  },
+  {
+    id: 'ping-i59-irons',
+    name: 'Ping i59 Irons',
+    type: 'Iron', ideal: 550, low: 350, obo: false,
+    photos: ['Pingi59.jpg','Pingi59%202.jpg','Pingi59%20grips.jpg','Ping%20i59%20Sun.jpg'],
+    desc: 'Forged face with hollow body — elite distance and control in a compact blade.'
+  },
+  {
+    id: 'taylormade-p7mb-irons',
+    name: 'TaylorMade MB7 3/4 Driving Iron',
+    type: 'Iron', ideal: 350, low: 280, obo: true,
+    photos: ['Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg'],
+    desc: 'Forged muscle-back long irons — penetrating flight and tour-level precision.'
+  },
+  {
+    id: 'taylormade-qi10-5wood',
+    name: 'TaylorMade Qi10 5-Wood',
+    type: 'Hybrid', ideal: 330, low: 270, obo: true,
+    photos: ['Qi10%205%20wood.jpg','qi10%205wood%20face.jpg'],
+    desc: 'Latest Qi10 speed technology in a versatile, forgiving 5-wood.'
+  },
+  {
+    id: 'taylormade-simmax-5wood',
+    name: 'TaylorMade SIM Max 5-Wood',
+    type: 'Hybrid', ideal: 280, low: 220, obo: true,
+    photos: ['Sim%20Max%205%20wood%20%20full.jpg','Sim%20Max%205%20wood%20face.jpg','Sim%20Max%205%20wood%20topandface.jpg','Sim%20Max%205%20wood%20shaft.jpg'],
+    desc: 'Speed Injected Twist Face delivers consistent distance on every mis-hit.'
+  },
+  {
+    id: 'callaway-rogue-hybrid',
+    name: 'Callaway Rogue 3&4 Hybrid',
+    type: 'Hybrid', ideal: 270, low: 220, obo: false,
+    photos: ['Rogue%203%264%20hybrid%20face.jpg','Rogue%203%264%20hybrid%20full.jpg','Rogue%203%264%20hybrid%20top.jpg','Rogue%203%264%20hybrid%20jumbo%20grip.jpg'],
+    desc: 'Jailbreak-powered hybrids — long, forgiving, and easy to launch high.'
+  },
+  {
+    id: 'titleist-918-driver',
+    name: 'Titleist 918 D2 Driver',
+    type: 'Driver', ideal: 250, low: 180, obo: true,
+    photos: ['Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20topandface.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20top.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20shaft.jpg'],
+    desc: 'Adjustable SureFit hosel, 10.5° loft, penetrating ball flight with forgiveness.'
+  },
+  {
+    id: 'ping-g425-driver',
+    name: 'Ping G425 Driver',
+    type: 'Driver', ideal: 220, low: 170, obo: false,
+    photos: ['Ping425%20face.jpg','Ping425%20back.jpg','Ping425%20gripshaft.jpg'],
+    desc: 'Aerodynamic design with moveable tungsten weight for max forgiveness.'
+  },
+  {
+    id: 'callaway-m7-driver',
+    name: 'Callaway M7 Driver',
+    type: 'Driver', ideal: 240, low: 190, obo: false,
+    photos: ['M7%20face.jpg','M7%20Grips.jpg','M7.jpg'],
+    desc: 'Jailbreak and Twist Face technologies combine for more speed and distance.'
+  }
+];
+
+let activeFilter = 'All';
+let slideState = {};
+
+function filter(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', cat === 'All' ? b.textContent.trim() === 'All Clubs' : b.textContent.trim().startsWith(cat));
+  });
+  render();
+}
+
+function slide(id, dir) {
+  const club = clubs.find(c => c.id === id);
+  if (!club || club.photos.length <= 1) return;
+  slideState[id] = ((slideState[id] || 0) + dir + club.photos.length) % club.photos.length;
+  updateGallery(id);
+}
+
+function goToSlide(id, idx) { slideState[id] = idx; updateGallery(id); }
+
+function updateGallery(id) {
+  const idx = slideState[id] || 0;
+  const track = document.querySelector(`[data-gallery="${id}"] .gallery-slides`);
+  const dots = document.querySelectorAll(`[data-gallery="${id}"] .gallery-dot`);
+  if (track) track.style.transform = `translateX(-${idx * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+function shareClub(name) {
+  if (navigator.share) {
+    navigator.share({ title: 'Flagstick Finder', text: `Check out this ${name} for sale!`, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied — share with your golf crew!'));
+  }
+}
+
+function shareShop() {
+  if (navigator.share) {
+    navigator.share({ title: 'Flagstick Finder Pro Shop', text: 'Premium used golf clubs — DFW', url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied — share the shop!'));
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function render() {
+  const grid = document.getElementById('club-grid');
+  const label = document.getElementById('section-label');
+  const visible = activeFilter === 'All' ? clubs : clubs.filter(c => c.type === activeFilter);
+  document.getElementById('total-count').textContent = clubs.length;
+  label.textContent = activeFilter === 'All'
+    ? `All Clubs — ${clubs.length} Available`
+    : `${activeFilter}s — ${visible.length} Available`;
+
+  if (!visible.length) { grid.innerHTML = '<div class="empty">Nothing here yet.</div>'; return; }
+
+  grid.innerHTML = visible.map(club => {
+    const slides = club.photos.length
+      ? club.photos.map(src => `<div class="gallery-slide"><img src="${src}" alt="${club.name}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`).join('')
+      : `<div class="gallery-slide"><div class="gallery-placeholder">
+          <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
+            <circle cx="16" cy="22" r="5" stroke="#888" stroke-width="1.5"/>
+            <path d="M4 30l9-9 7 7 7-9 9 11" stroke="#888" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Photo coming soon</span>
+        </div></div>`;
+
+    const arrows = club.photos.length > 1
+      ? `<button class="gallery-prev" onclick="slide('${club.id}',-1)">&#8249;</button>
+         <button class="gallery-next" onclick="slide('${club.id}',1)">&#8250;</button>` : '';
+
+    const dots = club.photos.length > 1
+      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide('${club.id}',${i})"></div>`).join('')}</div>` : '';
+
+    return `<div class="club-card">
+      <div class="card-gallery" data-gallery="${club.id}">
+        <div class="gallery-slides">${slides}</div>
+        ${arrows}${dots}
+        <div class="type-badge">${club.type}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${club.name}</div>
+        <div class="card-desc">${club.desc}</div>
+        <div class="price-row">
+          <div class="price-ask">$${club.ideal.toLocaleString()}</div>
+          <div class="price-floor">floor $${club.low.toLocaleString()}</div>
+          ${club.obo ? '<span class="obo-pill">OBO</span>' : ''}
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-cta primary" href="https://www.facebook.com/marketplace" target="_blank">Message on FB</a>
+        <a class="card-cta" href="#" onclick="shareClub('${club.name}');return false;">Share ↗</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
 </script>
 </body>
 </html>
