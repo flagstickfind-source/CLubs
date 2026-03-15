@@ -3,57 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flagstick Finder — Pro Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>Flagstick Finder Pro Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root { --green: #1a2e1a; --cream: #f5f0e8; --gold: #c9a84c; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--cream); }
-    header { background: var(--green); color: var(--cream); padding: 1.5rem 2rem; border-bottom: 2px solid var(--gold); }
-    .logo-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
-    .logo-name span { color: var(--gold); font-style: italic; }
-    .hero { background: linear-gradient(rgba(26,46,26,0.7), rgba(26,46,26,0.7)), url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1200') center/cover; color: var(--cream); padding: 8rem 2rem; text-align: center; }
-    .hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem; }
-    .hero h1 em { color: var(--gold); }
-    .hero-cta { background: var(--gold); color: var(--green); padding: 0.8rem 2rem; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; }
-    .filter-bar { background: var(--green); padding: 1rem; display: flex; gap: 1rem; overflow-x: auto; }
-    .filter-btn { background: transparent; color: var(--cream); border: none; cursor: pointer; padding: 0.5rem 1rem; border-bottom: 2px solid transparent; font-weight: 600; }
-    .filter-btn.active { border-bottom-color: var(--gold); color: var(--gold); }
-    .grid-section { max-width: 1400px; margin: 3rem auto; padding: 0 2rem; }
-    .club-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px; }
-    .club-card { background: white; display: flex; flex-direction: column; transition: transform 0.3s; }
-    .club-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    .card-img { width: 100%; height: 300px; background: #e0d5c8; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .card-img img { max-width: 90%; max-height: 90%; }
-    .gallery-nav { position: absolute; width: 30px; height: 30px; background: rgba(26,46,26,0.8); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; }
-    .card-img:hover .gallery-nav { opacity: 1; }
-    .gallery-prev { left: 5px; }
-    .gallery-next { right: 5px; }
-    .type-badge { position: absolute; top: 10px; left: 10px; background: rgba(26,46,26,0.9); color: var(--gold); padding: 4px 8px; font-size: 9px; font-weight: bold; }
-    .card-body { padding: 1rem; flex: 1; }
-    .card-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 0.5rem; }
-    .card-desc { font-size: 12px; color: #666; margin-bottom: 1rem; }
-    .price-row { display: flex; gap: 0.5rem; align-items: baseline; margin-bottom: 1rem; }
-    .price-ask { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--green); font-weight: 700; }
-    .price-floor { font-size: 12px; color: #999; }
-    .card-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #ddd; }
-    .card-cta { padding: 0.8rem; text-align: center; text-decoration: none; font-size: 11px; font-weight: 600; cursor: pointer; border: none; background: white; color: var(--green); transition: all 0.2s; }
-    .card-cta:hover { background: var(--green); color: var(--gold); }
-    .card-cta.primary { background: var(--green); color: white; }
-    footer { background: var(--green); color: var(--cream); text-align: center; padding: 2rem; margin-top: 3rem; }
-    footer a { color: var(--gold); text-decoration: none; }
-    .section-label { font-size: 11px; color: #999; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 1px solid #ddd; padding-bottom: 0.75rem; }
+    :root{--green:#1a2e1a;--cream:#f5f0e8;--gold:#c9a84c}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--cream);color:#1a1a1a}header{background:var(--green);color:var(--cream);padding:1.5rem 2rem;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}.header-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.logo-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--cream)}.logo-name span{color:var(--gold);font-style:italic}.header-right{text-align:right;font-size:11px}.hero{background:linear-gradient(rgba(26,46,26,0.7),rgba(26,46,26,0.7)),url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1200&auto=format') center/cover;color:var(--cream);padding:8rem 2rem;text-align:center}.hero h1{font-family:'Playfair Display',serif;font-size:3rem;margin-bottom:1rem}.hero h1 em{color:var(--gold);font-style:italic}.hero p{font-size:15px;margin-bottom:2rem}.hero-cta{background:var(--gold);color:var(--green);padding:0.8rem 2rem;border:none;cursor:pointer;font-weight:bold;border-radius:4px;font-size:11px}.hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:2rem;max-width:400px;margin-left:auto;margin-right:auto}.hero-stat{text-align:center}.hero-stat .num{font-size:24px;color:var(--gold);font-weight:bold;display:block;margin-bottom:4px}.hero-stat .label{font-size:9px;color:#7a9a7a;text-transform:uppercase}.filter-bar{background:var(--green);padding:1rem 2rem;display:flex;gap:1rem;overflow-x:auto;position:sticky;top:76px;z-index:90}.filter-btn{background:transparent;color:var(--cream);border:none;cursor:pointer;padding:0.5rem 1rem;border-bottom:2px solid transparent;font-weight:600;white-space:nowrap}.filter-btn.active{border-bottom-color:var(--gold);color:var(--gold)}.grid-section{max-width:1400px;margin:3rem auto;padding:0 2rem}.section-label{font-size:11px;color:#999;text-transform:uppercase;margin-bottom:1.5rem;border-bottom:1px solid #ddd;padding-bottom:0.75rem}.club-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}.club-card{background:white;display:flex;flex-direction:column;transition:transform 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.1)}.club-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}.card-img{width:100%;height:300px;background:#e0d5c8;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.card-img img{max-width:90%;max-height:90%}.gallery-nav{position:absolute;width:30px;height:30px;background:rgba(26,46,26,0.8);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;font-size:16px;border-radius:3px}.card-img:hover .gallery-nav{opacity:1}.gallery-prev{left:5px}.gallery-next{right:5px}.type-badge{position:absolute;top:10px;left:10px;background:rgba(26,46,26,0.9);color:var(--gold);padding:4px 8px;font-size:9px;font-weight:bold}.card-body{padding:1rem;flex:1}.card-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:0.5rem}.card-desc{font-size:12px;color:#666;margin-bottom:1rem}.price-row{display:flex;gap:0.5rem;align-items:baseline;margin-bottom:1rem}.price-ask{font-family:'Playfair Display',serif;font-size:24px;color:var(--green);font-weight:700}.price-floor{font-size:12px;color:#999}.card-footer{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#ddd}.card-cta{padding:0.8rem;text-align:center;text-decoration:none;font-size:11px;font-weight:600;cursor:pointer;border:none;background:white;color:var(--green);transition:all 0.2s}.card-cta:hover{background:var(--green);color:var(--gold)}.card-cta.primary{background:var(--green);color:white}footer{background:var(--green);color:var(--cream);text-align:center;padding:2rem;margin-top:3rem}footer a{color:var(--gold);text-decoration:none}
   </style>
 </head>
 <body>
-
 <header>
-  <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+  <div class="header-inner">
     <div>
       <div class="logo-name">Flagstick <span>Finder</span></div>
-      <div style="font-size: 9px; color: #7a9a7a;">PRO SHOP</div>
+      <div style="font-size:9px;color:#7a9a7a;">PRO SHOP</div>
     </div>
-    <div style="text-align: right;">
-      <div style="font-size: 11px;">Premium Used Golf Clubs</div>
-      <div style="font-size: 10px; color: var(--gold);">Dallas ·*
-
+    <div class="header-right">
+      <div>Premium Used Golf Clubs</div>
+      <div style="color:var(--gold);">Dallas · Fort Worth · Ships Nationwide</div>
+    </div>
+  </div>
+</header>
+<section class="hero">
+  <h1>Find Your Next<br><em>Favourite Club</em></h1>
+  <p>Hand-selected irons, putters, hybrids and drivers. Every club priced to move.</p>
+  <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">18</span><span class="label">Clubs Listed</span></div>
+    <div class="hero-stat"><span class="num">DFW</span><span class="label">Based In</span></div>
+    <div class="hero-stat"><span class="num">✓</span><span class="label">Ships Nationwide</span></div>
+  </div>
+</section>
+<nav class="filter-bar">
+  <button class="filter-btn active" onclick="filterClubs('All')">All Clubs</button>
+  <button class="filter-btn" onclick="filterClubs('Putter')">Putters</button>
+  <button class="filter-btn" onclick="filterClubs('Iron')">Irons</button>
+  <button class="filter-btn" onclick="filterClubs('Hybrid')">Hybrids & Woods</button>
+  <button class="filter-btn" onclick="filterClubs('Driver')">Drivers</button>
+</nav>
+<main class="grid-section">
+  <div class="section-label" id="section-label">All Clubs — 18 Listed</div>
+  <div class="club-grid" id="club-grid"></div>
+</main>
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:1rem;">Flagstick <span style="color:var(--gold);">Finder</span></div>
+  <div style="margin-bottom:1rem;"><a href="https://www.facebook.com/marketplace" target="_blank">Message on Facebook</a> | <a href="mailto:adamsjerram11@gmail.com">📧 Email Us</a> | <a href="#" onclick="shareShop();return false;">Share This Shop ↗</a></div>
+  <p style="font-size:11px;color:#7a9a7a;">Dallas–Fort Worth · Nationwide Shipping Available</p>
+</footer>
+<script>
+const clubs=[{id:1,name:'Scotty Cameron Phantom',type:'Putter',ideal:250,low:200,desc:'Classic blade-style putter.',photos:['California%20face.jpg','California%20Grip.jpg']},{id:2,name:'Scotty Cameron Newport',type:'Putter',ideal:350,low:250,desc:'Iconic Newport design.',photos:['Newport%20face.jpg']},{id:3,name:'Scotty Cameron GoLo 3',type:'Putter',ideal:300,low:250,desc:'Mallet-style with red badge.',photos:['GoLo%20Face.jpg','GoLo%20back.jpg']},{id:4,name:'Futura Putter',type:'Putter',ideal:280,low:220,desc:'Clean blade design.',photos:['futura%20face.jpg','Futura%20fullpic.jpg']},{id:5,name:'Odyssey Select Putter',type:'Putter',ideal:180,low:140,desc:'Tour-proven design.',photos:['Select%20Face.JPG']},{id:6,name:'Odyssey Phantom Putter',type:'Putter',ideal:210,low:160,desc:'Alignment-aiding design.',photos:['Phantom%20X%207.jpg']},{id:7,name:'Miura CB57 Irons',type:'Iron',ideal:1200,low:950,desc:'Japanese forged excellence.',photos:['Muira%20CB%2057%20FACE.jpg']},{id:8,name:'Miura TC201 Irons',type:'Iron',ideal:1100,low:850,desc:'Blade-like forgiveness.',photos:['newMuiraTC201%27s%20face.JPG']},{id:9,name:'Ping i59 Irons',type:'Iron',ideal:380,low:320,desc:'Forgiving design.',photos:['Pingi59.jpg','Pingi59%202.jpg']},{id:10,name:'Mizuno MP-20 Irons',type:'Iron',ideal:420,low:350,desc:'Premium feel.',photos:['Mizuno%20face.jpg']},{id:11,name:'Callaway Rogue 3&4 Hybrid',type:'Hybrid',ideal:270,low:220,desc:'Versatile and forgiving.',photos:['Rogue%203&4%20hybrid%20face.jpg']},{id:12,name:'TaylorMade Qi10 5-Wood',type:'Hybrid',ideal:330,low:270,desc:'Speed technology.',photos:['Qi10%205%20wood.jpg']},{id:13,name:'Titleist 918 D2 Driver',type:'Driver',ideal:250,low:180,desc:'Adjustable SureFit hosel.',photos:['Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg']},{id:14,name:'Ping 425 Driver',type:'Driver',ideal:220,low:170,desc:'Aerodynamic design.',photos:['Ping425%20face.jpg']},{id:15,name:'Callaway M7 Driver',type:'Driver',ideal:240,low:190,desc:'Fast face technology.',photos:['M7%20face.jpg']},{id:16,name:'Odyssey Spider Putter',type:'Putter',ideal:200,low:150,desc:'Mallet stability.',photos:['Spider%20face.jpg']},{id:17,name:'TaylorMade Sim Max 5-Wood',type:'Hybrid',ideal:280,low:220,desc:'Lightweight speed.',photos:['Sim%20Max%205%20wood%20%20full.jpg']},{id:18,name:'Driving Iron MB7 3&4',type:'Iron',ideal:350,low:280,desc:'Tour-level precision.',photos:['Driving%20Iron%20-%20MB7%203%20&%204%20iron.jpg']}];let currentFilter='All',slideIndex={};function filterClubs(type){currentFilter=type;document.querySelectorAll('.filter-btn').forEach(btn=>{btn.classList.toggle('active',(type==='All'&&btn.textContent==='All Clubs')||btn.textContent.includes(type))});renderClubs()}function changeSlide(clubId,n){const club=clubs.find(c=>c.id===clubId);if(!club)return;slideIndex[clubId]=(slideIndex[clubId]||0)+n;if(slideIndex[clubId]>=club.photos.length)slideIndex[clubId]=0;if(slideIndex[clubId]<0)slideIndex[clubId]=club.photos.length-1;const allImgs=document.querySelectorAll(`[data-club="${clubId}"] .card-img img`);allImgs.forEach((img,idx)=>{img.style.display=idx===slideIndex[clubId]?'block':'none'})}function shareShop(){navigator.clipboard.writeText(window.location.href).then(()=>{alert('Link copied!)})}function renderClubs(){const grid=document.getElementById('club-grid'),label=document.getElementById('section-label'),filtered=currentFilter==='All'?clubs:clubs.filter(c=>c.type===currentFilter);label.textContent=currentFilter==='All'?`All Clubs — ${clubs.length} Listed`:`${currentFilter}s — ${filtered.length} Available`;grid.innerHTML=filtered.map(club=>{const photoHtml=club.photos.map((photo,idx)=>`<img src="https://raw.githubusercontent.com/flagstickfind-source/CLubs/main/${photo}" alt="${club.name}" style="display:${idx===0?'block':'none'};max-width:100%;max-height:100%;" onerror="this.style.display='none';">`).join(''),hasMultiple=club.photos.length>1,navHtml=hasMultiple?`<button class="gallery-nav gallery-prev" onclick="changeSlide(${club.id},-1)">‹</button><button class="gallery-nav gallery-next" onclick="changeSlide(${club.id},1)">›</button>`:'';return`<div class="club-card" data-club="${club.id}"><div class="card-img">${photoHtml}${navHtml}<div class="type-badge">${club.type}</div></div><div class="card-body"><div class="card-name">${club.name}</div><div class="card-desc">${club.desc}</div><div class="price-row"><span class="price-ask">$${club.ideal}</span><span class="price-floor">floor $${club.low}</span></div></div><div class="card-footer"><a class="card-cta primary" href="https://www.facebook.com/marketplace" target="_blank">Message on FB</a><a class="card-cta" href="mailto:adamsjerram11@gmail.com">Email</a></div></div>`}).join('')}renderClubs();
+</script>
+</body>
+</html>
