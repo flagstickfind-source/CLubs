@@ -139,6 +139,49 @@
 
   .empty { text-align: center; padding: 4rem 2rem; color: var(--gray); background: var(--white); font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; }
 
+  /* PHOTO COUNTER */
+  .gallery-counter { position: absolute; top: 10px; right: 10px; background: rgba(26,46,26,0.82); color: var(--cream); font-size: 10px; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 10px; z-index: 2; pointer-events: none; border: 1px solid rgba(201,168,76,0.25); }
+
+  /* TRADE HQ */
+  .trade-hq { background: var(--green); padding: 4rem 2rem; border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+  .trade-hq-inner { max-width: 900px; margin: 0 auto; }
+  .trade-hq-header { text-align: center; margin-bottom: 3rem; }
+  .trade-hq-header .eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .trade-hq-header .eyebrow::before, .trade-hq-header .eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .trade-hq-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 38px); color: var(--cream); margin-bottom: 0.75rem; }
+  .trade-hq-header h2 em { color: var(--gold); font-style: italic; }
+  .trade-hq-header p { font-size: 13px; color: #aab8aa; line-height: 1.7; max-width: 520px; margin: 0 auto; }
+  .trade-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .trade-panel { background: rgba(45,74,45,0.45); border: 1px solid rgba(201,168,76,0.22); padding: 2rem; }
+  .trade-panel-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold); margin-bottom: 0.4rem; }
+  .trade-panel-desc { font-size: 12px; color: #7a9a7a; margin-bottom: 1.5rem; line-height: 1.6; }
+  .form-field { margin-bottom: 1rem; }
+  .form-field label { display: block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #aab8aa; margin-bottom: 5px; }
+  .form-field input, .form-field select, .form-field textarea {
+    width: 100%; background: rgba(26,46,26,0.7); border: 1px solid rgba(201,168,76,0.22); color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 0.65rem 0.85rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: #4a6a4a; }
+  .form-field select option { background: var(--green); color: var(--cream); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--gold); }
+  .form-field.error input, .form-field.error select, .form-field.error textarea { border-color: #e05c5c; }
+  .form-field .err-msg { display: none; font-size: 10px; color: #e05c5c; margin-top: 4px; letter-spacing: 0.04em; }
+  .form-field.error .err-msg { display: block; }
+  .form-field textarea { resize: vertical; min-height: 76px; }
+  .check-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .check-label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--cream); text-transform: none; letter-spacing: 0; cursor: pointer; background: rgba(26,46,26,0.6); border: 1px solid rgba(201,168,76,0.2); padding: 5px 11px; transition: border-color 0.15s, color 0.15s; }
+  .check-label input[type="checkbox"] { accent-color: var(--gold); width: 13px; height: 13px; cursor: pointer; }
+  .check-label:has(input:checked) { border-color: var(--gold); color: var(--gold); }
+  .form-submit { display: block; width: 100%; padding: 0.9rem; background: var(--gold); color: var(--green); border: none; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-success { display: none; text-align: center; padding: 2rem 1rem; }
+  .form-success .check-icon { font-size: 40px; margin-bottom: 0.75rem; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--gold); margin-bottom: 0.5rem; }
+  .form-success p { font-size: 12px; color: #aab8aa; line-height: 1.65; }
+
+  @media (max-width: 700px) { .trade-forms { grid-template-columns: 1fr; } }
+
   @media (max-width: 640px) {
     .club-grid { grid-template-columns: 1fr; }
     .logo-sub { display: none; }
@@ -208,6 +251,7 @@
     <button class="filter-btn" onclick="filter('Iron')">Irons</button>
     <button class="filter-btn" onclick="filter('Hybrid')">Hybrids &amp; Woods</button>
     <button class="filter-btn" onclick="filter('Driver')">Drivers</button>
+    <button class="filter-btn" onclick="document.getElementById('trade-hq').scrollIntoView({behavior:'smooth'})">Trade HQ ⇄</button>
   </div>
 </nav>
 
@@ -215,6 +259,128 @@
   <div class="section-label" id="section-label">All Clubs</div>
   <div class="club-grid" id="club-grid"></div>
 </main>
+
+<section class="trade-hq" id="trade-hq">
+  <div class="trade-hq-inner">
+    <div class="trade-hq-header">
+      <div class="eyebrow">Trade HQ</div>
+      <h2>Trade In Your Clubs &amp;<br><em>Get What You Want</em></h2>
+      <p>Submit your clubs for a trade-in valuation, or tell us what you're hunting for. We keep a running list and reach out when something lands.</p>
+    </div>
+    <div class="trade-forms">
+
+      <!-- TRADE-IN FORM -->
+      <div class="trade-panel">
+        <div class="trade-panel-title">Trade-In Your Clubs</div>
+        <div class="trade-panel-desc">Tell us what you've got. We'll come back to you with a fair offer — no pressure.</div>
+        <form id="trade-in-form" onsubmit="submitTradeIn(event)" novalidate>
+          <div class="form-field" id="fi-club">
+            <label for="ti-club">Club / Set Name *</label>
+            <input type="text" id="ti-club" name="club" placeholder="e.g. Titleist T100 Irons 4-PW" autocomplete="off">
+            <span class="err-msg">Please enter the club or set name.</span>
+          </div>
+          <div class="form-field" id="fi-condition">
+            <label for="ti-condition">Condition *</label>
+            <select id="ti-condition" name="condition">
+              <option value="">Select condition…</option>
+              <option value="Like New">Like New — minimal use, no marks</option>
+              <option value="Excellent">Excellent — light bag wear only</option>
+              <option value="Good">Good — normal play wear, no damage</option>
+              <option value="Fair">Fair — visible wear, may need regrip</option>
+            </select>
+            <span class="err-msg">Please select a condition.</span>
+          </div>
+          <div class="form-field">
+            <label for="ti-price">Your Asking Price (optional)</label>
+            <input type="text" id="ti-price" name="price" placeholder="e.g. $350 or open to offers">
+          </div>
+          <div class="form-field" id="fi-name">
+            <label for="ti-name">Your Name *</label>
+            <input type="text" id="ti-name" name="name" placeholder="First &amp; last name" autocomplete="name">
+            <span class="err-msg">Please enter your name.</span>
+          </div>
+          <div class="form-field" id="fi-email">
+            <label for="ti-email">Email Address *</label>
+            <input type="email" id="ti-email" name="email" placeholder="you@example.com" autocomplete="email">
+            <span class="err-msg">Please enter a valid email address.</span>
+          </div>
+          <div class="form-field">
+            <label for="ti-phone">Phone (optional)</label>
+            <input type="tel" id="ti-phone" name="phone" placeholder="(214) 555-0100" autocomplete="tel">
+          </div>
+          <div class="form-field">
+            <label for="ti-notes">Notes (optional)</label>
+            <textarea id="ti-notes" name="notes" placeholder="Shaft specs, photos available, any defects…"></textarea>
+          </div>
+          <button class="form-submit" type="submit">Submit Trade-In →</button>
+        </form>
+        <div class="form-success" id="trade-in-success">
+          <div class="check-icon">✅</div>
+          <h3>Trade-In Received!</h3>
+          <p>Thanks — we'll review your submission and reach out to <span id="ti-confirm-email"></span> within 24 hours with a valuation.</p>
+        </div>
+      </div>
+
+      <!-- MARKET INTEL FORM -->
+      <div class="trade-panel">
+        <div class="trade-panel-title">What Are You Looking For?</div>
+        <div class="trade-panel-desc">Tell us your wishlist. We source new stock regularly and will ping you when we land something you want.</div>
+        <form id="intel-form" onsubmit="submitIntel(event)" novalidate>
+          <div class="form-field">
+            <label>Club Type(s) *</label>
+            <div class="check-group" id="intel-types">
+              <label class="check-label"><input type="checkbox" value="Irons"> Irons</label>
+              <label class="check-label"><input type="checkbox" value="Driver"> Driver</label>
+              <label class="check-label"><input type="checkbox" value="Putter"> Putter</label>
+              <label class="check-label"><input type="checkbox" value="Hybrid"> Hybrid / Wood</label>
+              <label class="check-label"><input type="checkbox" value="Wedge"> Wedge</label>
+              <label class="check-label"><input type="checkbox" value="Full Bag"> Full Bag</label>
+            </div>
+            <div class="err-msg" id="intel-types-err" style="display:none;font-size:10px;color:#e05c5c;margin-top:4px;">Please select at least one club type.</div>
+          </div>
+          <div class="form-field">
+            <label for="intel-brand">Preferred Brand(s) (optional)</label>
+            <input type="text" id="intel-brand" name="brand" placeholder="e.g. Titleist, Scotty Cameron, Miura">
+          </div>
+          <div class="form-field" id="fi-intel-budget">
+            <label for="intel-budget">Budget Range *</label>
+            <select id="intel-budget" name="budget">
+              <option value="">Select budget…</option>
+              <option value="Under $200">Under $200</option>
+              <option value="$200–$500">$200 – $500</option>
+              <option value="$500–$1,000">$500 – $1,000</option>
+              <option value="$1,000–$2,000">$1,000 – $2,000</option>
+              <option value="$2,000+">$2,000+</option>
+              <option value="Flexible">Flexible — right club matters more</option>
+            </select>
+            <span class="err-msg">Please select a budget range.</span>
+          </div>
+          <div class="form-field" id="fi-intel-name">
+            <label for="intel-name">Your Name *</label>
+            <input type="text" id="intel-name" name="name" placeholder="First &amp; last name" autocomplete="name">
+            <span class="err-msg">Please enter your name.</span>
+          </div>
+          <div class="form-field" id="fi-intel-email">
+            <label for="intel-email">Email Address *</label>
+            <input type="email" id="intel-email" name="email" placeholder="you@example.com" autocomplete="email">
+            <span class="err-msg">Please enter a valid email address.</span>
+          </div>
+          <div class="form-field">
+            <label for="intel-notes">Any specifics? (optional)</label>
+            <textarea id="intel-notes" name="notes" placeholder="Shaft flex, hand, condition preference, set configuration…"></textarea>
+          </div>
+          <button class="form-submit" type="submit">Join the Waitlist →</button>
+        </form>
+        <div class="form-success" id="intel-success">
+          <div class="check-icon">✅</div>
+          <h3>You're on the List!</h3>
+          <p>Thanks — a confirmation has been sent to <span id="intel-confirm-email"></span>. We'll reach out the moment we source something that fits your wishlist.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="footer-inner">
@@ -406,10 +572,13 @@ function goToSlide(id, idx) { slideState[id] = idx; updateGallery(id); }
 
 function updateGallery(id) {
   const idx = slideState[id] || 0;
+  const club = clubs.find(c => c.id === id);
   const track = document.querySelector(`[data-gallery="${id}"] .gallery-slides`);
   const dots = document.querySelectorAll(`[data-gallery="${id}"] .gallery-dot`);
+  const counter = document.querySelector(`[data-gallery="${id}"] .gallery-counter`);
   if (track) track.style.transform = `translateX(-${idx * 100}%)`;
   dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  if (counter && club) counter.textContent = `${idx + 1} / ${club.photos.length}`;
 }
 
 function shareClub(name) {
@@ -465,10 +634,13 @@ function render() {
     const dots = club.photos.length > 1
       ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide('${esc(club.id)}',${i})"></div>`).join('')}</div>` : '';
 
+    const counter = club.photos.length > 1
+      ? `<div class="gallery-counter">1 / ${club.photos.length}</div>` : '';
+
     return `<div class="club-card">
       <div class="card-gallery" data-gallery="${esc(club.id)}">
         <div class="gallery-slides">${slides}</div>
-        ${arrows}${dots}
+        ${arrows}${dots}${counter}
         <div class="type-badge">${esc(club.type)}</div>
       </div>
       <div class="card-body">
@@ -489,6 +661,90 @@ function render() {
 }
 
 render();
+
+/* ── TRADE HQ FORMS ── */
+
+const SHOP_EMAIL = 'adamsjerram11@gmail.com';
+
+function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+
+function checkField(fieldId, condition) {
+  const el = document.getElementById(fieldId);
+  if (el) el.classList.toggle('error', !condition);
+  return condition;
+}
+
+function submitTradeIn(e) {
+  e.preventDefault();
+  const club  = document.getElementById('ti-club').value.trim();
+  const cond  = document.getElementById('ti-condition').value;
+  const name  = document.getElementById('ti-name').value.trim();
+  const email = document.getElementById('ti-email').value.trim();
+
+  const valid = [
+    checkField('fi-club',      !!club),
+    checkField('fi-condition', !!cond),
+    checkField('fi-name',      !!name),
+    checkField('fi-email',     validateEmail(email))
+  ].every(Boolean);
+
+  if (!valid) return;
+
+  const subject = encodeURIComponent(`Trade-In: ${club}`);
+  const body    = encodeURIComponent(
+    `Trade-In Submission\n` +
+    `-------------------\n` +
+    `Club / Set: ${club}\n` +
+    `Condition:  ${cond}\n` +
+    `Asking:     ${document.getElementById('ti-price').value.trim() || 'Not specified'}\n` +
+    `Name:       ${name}\n` +
+    `Email:      ${email}\n` +
+    `Phone:      ${document.getElementById('ti-phone').value.trim() || 'Not provided'}\n` +
+    `Notes:      ${document.getElementById('ti-notes').value.trim() || 'None'}\n`
+  );
+  window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
+
+  document.getElementById('ti-confirm-email').textContent = email;
+  document.getElementById('trade-in-form').style.display    = 'none';
+  document.getElementById('trade-in-success').style.display = 'block';
+}
+
+function submitIntel(e) {
+  e.preventDefault();
+  const types  = [...document.querySelectorAll('#intel-types input:checked')].map(cb => cb.value);
+  const budget = document.getElementById('intel-budget').value;
+  const name   = document.getElementById('intel-name').value.trim();
+  const email  = document.getElementById('intel-email').value.trim();
+
+  const typesErr = document.getElementById('intel-types-err');
+  typesErr.style.display = types.length === 0 ? 'block' : 'none';
+
+  const valid = [
+    types.length > 0,
+    checkField('fi-intel-budget', !!budget),
+    checkField('fi-intel-name',   !!name),
+    checkField('fi-intel-email',  validateEmail(email))
+  ].every(Boolean);
+
+  if (!valid) return;
+
+  const subject = encodeURIComponent(`Market Intel: Looking for ${types.join(', ')}`);
+  const body    = encodeURIComponent(
+    `Market Intel Submission\n` +
+    `-----------------------\n` +
+    `Club Types: ${types.join(', ')}\n` +
+    `Brand Pref: ${document.getElementById('intel-brand').value.trim() || 'Any'}\n` +
+    `Budget:     ${budget}\n` +
+    `Name:       ${name}\n` +
+    `Email:      ${email}\n` +
+    `Notes:      ${document.getElementById('intel-notes').value.trim() || 'None'}\n`
+  );
+  window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
+
+  document.getElementById('intel-confirm-email').textContent = email;
+  document.getElementById('intel-form').style.display    = 'none';
+  document.getElementById('intel-success').style.display = 'block';
+}
 </script>
 </body>
 </html>
