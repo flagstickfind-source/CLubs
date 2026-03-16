@@ -92,8 +92,6 @@
 
   /* GALLERY */
   .card-gallery { position: relative; width: 100%; height: 260px; background: var(--cream-dark); overflow: hidden; }
-  .gallery-slides { display: flex; height: 100%; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); }
-  .gallery-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
   .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .gallery-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; background: linear-gradient(160deg, #ede6d6 0%, #ddd5c5 100%); }
   .gallery-placeholder .ph-icon { opacity: 0.18; }
@@ -182,6 +180,51 @@
 
   @media (max-width: 700px) { .trade-forms { grid-template-columns: 1fr; } }
 
+  /* ANNOUNCE BAR */
+  .announce-bar { background: var(--gold); padding: 0.45rem 1.25rem; text-align: center; font-size: 12px; color: var(--green); font-weight: 500; letter-spacing: 0.04em; }
+  .announce-bar a { color: var(--green); text-decoration: none; font-weight: 700; cursor: pointer; }
+  .announce-bar a:hover { text-decoration: underline; }
+
+  /* TRADE HQ HIGHLIGHT */
+  @keyframes tradeGlow {
+    0%   { box-shadow: inset 0 0 0 2px transparent; }
+    25%  { box-shadow: inset 0 0 0 2px var(--gold), 0 0 28px 6px rgba(201,168,76,0.35); }
+    100% { box-shadow: inset 0 0 0 2px transparent, 0 0 0 0 rgba(201,168,76,0); }
+  }
+  .trade-hq.glow { animation: tradeGlow 1.3s ease-out forwards; }
+
+  /* HOW IT WORKS STRIP */
+  .how-it-works { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(201,168,76,0.18); border: 1px solid rgba(201,168,76,0.22); margin-bottom: 2.5rem; }
+  .how-step { background: rgba(26,46,26,0.55); padding: 1.5rem 1.25rem; text-align: center; }
+  .how-step-num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); margin-bottom: 0.5rem; }
+  .how-step-text { font-size: 12px; color: #aab8aa; line-height: 1.6; }
+  @media (max-width: 600px) { .how-it-works { grid-template-columns: 1fr; } }
+
+  /* TRANSPARENCY SNIPPET */
+  .transparency-note { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.22); padding: 0.85rem 1.1rem; margin-bottom: 2rem; font-size: 11px; color: #aab8aa; line-height: 1.65; text-align: center; }
+  .transparency-note strong { color: var(--gold); }
+
+  /* TRADE MODES */
+  .trade-modes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 0.75rem; margin-bottom: 1.5rem; }
+  .trade-mode-item { display: flex; align-items: flex-start; gap: 9px; background: rgba(26,46,26,0.55); border: 1px solid rgba(201,168,76,0.2); padding: 0.7rem 1rem; flex: 1; min-width: 200px; }
+  .trade-mode-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .trade-mode-text strong { display: block; font-size: 12px; color: var(--cream); margin-bottom: 2px; }
+  .trade-mode-text span { font-size: 11px; color: #7a9a7a; }
+
+  /* TRADE CHOICE RADIO */
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .radio-label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--cream); cursor: pointer; background: rgba(26,46,26,0.6); border: 1px solid rgba(201,168,76,0.2); padding: 5px 11px; transition: border-color 0.15s, color 0.15s; }
+  .radio-label input[type="radio"] { accent-color: var(--gold); cursor: pointer; }
+  .radio-label:has(input:checked) { border-color: var(--gold); color: var(--gold); }
+
+  /* PHOTO LINK HINT */
+  .field-hint { display: block; font-size: 10px; color: #4a6a4a; margin-top: 4px; line-height: 1.5; }
+
+  /* GALLERY FADE */
+  .gallery-slides { position: relative; height: 100%; }
+  .gallery-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.42s ease; pointer-events: none; }
+  .gallery-slide.active { opacity: 1; pointer-events: auto; }
+
   @media (max-width: 640px) {
     .club-grid { grid-template-columns: 1fr; }
     .logo-sub { display: none; }
@@ -191,6 +234,10 @@
 </style>
 </head>
 <body>
+
+<div class="announce-bar">
+  🏌️ <strong>Trade HQ:</strong> Tell us your dream club — trade-in, cash top-up, or referral &nbsp;<a onclick="scrollToTradeHQ();return false;" href="#trade-hq">→ Find Out How</a>
+</div>
 
 <header>
   <div class="header-inner">
@@ -219,7 +266,7 @@
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Pro Shop</div>
-    <h1>Find Your Next<br><em>Favourite Club</em></h1>
+    <h1>Your Game Is Calling —<br><em>Go Find It.</em></h1>
     <p>Hand-selected irons, putters, hybrids and drivers. Every club priced to move — from DFW to your doorstep.</p>
     <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
     <div class="hero-stats">
@@ -251,7 +298,7 @@
     <button class="filter-btn" onclick="filter('Iron')">Irons</button>
     <button class="filter-btn" onclick="filter('Hybrid')">Hybrids &amp; Woods</button>
     <button class="filter-btn" onclick="filter('Driver')">Drivers</button>
-    <button class="filter-btn" onclick="document.getElementById('trade-hq').scrollIntoView({behavior:'smooth'})">Trade HQ ⇄</button>
+    <button class="filter-btn" onclick="scrollToTradeHQ()">Trade HQ ⇄</button>
   </div>
 </nav>
 
@@ -264,9 +311,56 @@
   <div class="trade-hq-inner">
     <div class="trade-hq-header">
       <div class="eyebrow">Trade HQ</div>
-      <h2>Trade In Your Clubs &amp;<br><em>Get What You Want</em></h2>
-      <p>Submit your clubs for a trade-in valuation, or tell us what you're hunting for. We keep a running list and reach out when something lands.</p>
+      <h2>Find Your Dream Club<br><em>Through Trade</em></h2>
+      <p>Trade in your current gear, top up with cash if needed, or connect through a referral — we'll help you land the club you actually want.</p>
     </div>
+
+    <!-- TRADE MODES -->
+    <div class="trade-modes">
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">🔄</div>
+        <div class="trade-mode-text">
+          <strong>Trade-In Only</strong>
+          <span>Swap your club straight across for something in the shop.</span>
+        </div>
+      </div>
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">💰</div>
+        <div class="trade-mode-text">
+          <strong>Trade-In + Cash on Top</strong>
+          <span>Bridge the gap — add a little cash to step up in quality.</span>
+        </div>
+      </div>
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">🤝</div>
+        <div class="trade-mode-text">
+          <strong>Referrals</strong>
+          <span>Know someone looking? Send them our way — we'll take care of them. (Referral program coming soon.)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how-it-works">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-text">Tell us what you have and what you're after using the form below.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <div class="how-step-text">We value your trade and match it to current inventory or source your dream club.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <div class="how-step-text">Walk away with the club you want — no fluff, no hidden fees, just a fair deal.</div>
+      </div>
+    </div>
+
+    <!-- TRANSPARENCY NOTE -->
+    <div class="transparency-note">
+      <strong>Our pricing philosophy:</strong> We aim to offer approximately <strong>10% above eBay's lowest comparable listing</strong> when condition matches — giving you more than the open market. This is a guide based on real-time data, not a formal guarantee.
+    </div>
+
     <div class="trade-forms">
 
       <!-- TRADE-IN FORM -->
@@ -291,7 +385,22 @@
             <span class="err-msg">Please select a condition.</span>
           </div>
           <div class="form-field">
-            <label for="ti-price">Your Asking Price (optional)</label>
+            <label>Trade Preference</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="ti-trade-type" value="Trade-in only" checked> Trade-in only</label>
+              <label class="radio-label"><input type="radio" name="ti-trade-type" value="Trade-in + cash on top"> Trade-in + cash on top</label>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="ti-dream">Dream Club / Ideal Club (optional)</label>
+            <input type="text" id="ti-dream" name="dream" placeholder="e.g. Scotty Cameron Newport 2, Miura CB-57">
+          </div>
+          <div class="form-field">
+            <label for="ti-budget">Your Budget (optional)</label>
+            <input type="text" id="ti-budget" name="budget" placeholder="e.g. $300, $200–$400, flexible">
+          </div>
+          <div class="form-field">
+            <label for="ti-price">Your Asking Price for Trade-In (optional)</label>
             <input type="text" id="ti-price" name="price" placeholder="e.g. $350 or open to offers">
           </div>
           <div class="form-field" id="fi-name">
@@ -309,8 +418,13 @@
             <input type="tel" id="ti-phone" name="phone" placeholder="(214) 555-0100" autocomplete="tel">
           </div>
           <div class="form-field">
-            <label for="ti-notes">Notes (optional)</label>
-            <textarea id="ti-notes" name="notes" placeholder="Shaft specs, photos available, any defects…"></textarea>
+            <label for="ti-photos">Photo Links (optional)</label>
+            <input type="text" id="ti-photos" name="photos" placeholder="Google Photos / Dropbox / iCloud share link">
+            <span class="field-hint">Or simply reply to the confirmation email with photos attached.</span>
+          </div>
+          <div class="form-field">
+            <label for="ti-notes">Notes / Wishlist (optional)</label>
+            <textarea id="ti-notes" name="notes" placeholder="Shaft specs, any defects, specific clubs you're after…"></textarea>
           </div>
           <button class="form-submit" type="submit">Submit Trade-In →</button>
         </form>
@@ -339,21 +453,16 @@
             <div class="err-msg" id="intel-types-err" style="display:none;font-size:10px;color:#e05c5c;margin-top:4px;">Please select at least one club type.</div>
           </div>
           <div class="form-field">
+            <label for="intel-dream">Dream Club / Ideal Club (optional)</label>
+            <input type="text" id="intel-dream" name="dream" placeholder="e.g. Scotty Cameron Newport 2, Ping i230">
+          </div>
+          <div class="form-field">
             <label for="intel-brand">Preferred Brand(s) (optional)</label>
             <input type="text" id="intel-brand" name="brand" placeholder="e.g. Titleist, Scotty Cameron, Miura">
           </div>
           <div class="form-field" id="fi-intel-budget">
-            <label for="intel-budget">Budget Range *</label>
-            <select id="intel-budget" name="budget">
-              <option value="">Select budget…</option>
-              <option value="Under $200">Under $200</option>
-              <option value="$200–$500">$200 – $500</option>
-              <option value="$500–$1,000">$500 – $1,000</option>
-              <option value="$1,000–$2,000">$1,000 – $2,000</option>
-              <option value="$2,000+">$2,000+</option>
-              <option value="Flexible">Flexible — right club matters more</option>
-            </select>
-            <span class="err-msg">Please select a budget range.</span>
+            <label for="intel-budget">Budget (optional — ranges welcome)</label>
+            <input type="text" id="intel-budget" name="budget" placeholder="e.g. $300, $200–$500, flexible">
           </div>
           <div class="form-field" id="fi-intel-name">
             <label for="intel-name">Your Name *</label>
@@ -387,7 +496,7 @@
     <div class="footer-logo">Flagstick <span>Finder</span></div>
     <div class="footer-divider"></div>
     <div class="footer-links">
-      <a href="https://www.facebook.com/marketplace" target="_blank">Facebook Marketplace</a>
+      <a href="https://www.facebook.com/marketplace/profile/61587199800096/" target="_blank">Message Flagstick Finds</a>
       <a href="mailto:adamsjerram11@gmail.com">Email Us</a>
       <a href="#" onclick="shareShop();return false;">Share This Shop ↗</a>
     </div>
@@ -399,138 +508,152 @@
 
 <script>
 const clubs = [
+  // PUTTERS
   {
-    id: 'scotty-california',
-    name: 'Scotty Cameron California',
-    type: 'Putter', ideal: 400, low: 300, obo: false,
-    photos: ['California%20face.jpg','California%20Grip.jpg','calfornia.jpg'],
-    desc: 'California series — clean lines, classic feel and collectible craftsmanship.'
+    id: 'scotty-phantom-x7',
+    name: 'Phantom X 7',
+    type: 'Putter', ideal: 250, low: 200, obo: false,
+    photos: ['Phantom%20X%207.jpg','phantom%20x%20face.jpg','Phatnom%20grip.jpg'],
+    desc: 'High-MOI mallet putter with alignment-aiding frame and exceptional stability.'
   },
   {
     id: 'scotty-newport',
     name: 'Scotty Cameron Newport',
-    type: 'Putter', ideal: 350, low: 250, obo: false,
+    type: 'Putter', ideal: 350, low: 275, obo: false,
     photos: ['Newport%20face.jpg','newport%20back.jpg'],
     desc: 'Iconic Newport design, tour-proven feel used by champions worldwide.'
   },
   {
     id: 'scotty-golo3',
     name: 'Scotty Cameron GoLo 3',
-    type: 'Putter', ideal: 300, low: 250, obo: false,
+    type: 'Putter', ideal: 300, low: 225, obo: false,
     photos: ['GoLo%20Face.jpg','GoLo%20back.jpg','GoLo%20grip.jpg','GoLo%201.5.jpg'],
     desc: 'Mallet-style with red badge and precision-milled face for consistent roll.'
   },
   {
-    id: 'scotty-futura7m',
-    name: 'Scotty Cameron Futura 7m',
-    type: 'Putter', ideal: 280, low: 220, obo: true,
-    photos: ['futura%20face.jpg','Futura%20fullpic.jpg','Futura%20side%20(main%20pic).jpg','Futura%2C%20top.jpg'],
-    desc: 'High-MOI mallet with multi-material construction and deep face milling.'
+    id: 'futura-putter',
+    name: 'Futura Putter',
+    type: 'Putter', ideal: 350, low: 300, obo: false,
+    photos: ['futura%20face.jpg','Futura%20fullpic.jpg'],
+    desc: 'Clean mallet design with multi-material construction for a smooth, consistent feel.'
   },
   {
     id: 'odyssey-select',
-    name: 'Odyssey Select Putter',
-    type: 'Putter', ideal: 180, low: 140, obo: false,
+    name: 'Super Select 1.5 Flashback',
+    type: 'Putter', ideal: 325, low: 275, obo: false,
     photos: ['Select%20Face.JPG','Select%20top.JPG','Select%20grip.JPG','select%20flashback.jpg'],
-    desc: 'Tour-proven design with a soft insert for a smooth, consistent feel at impact.'
+    desc: 'Super Select Flashback 1.5 — tour-proven design with a soft insert for a smooth, consistent feel at impact.'
   },
   {
-    id: 'odyssey-phantom-x',
-    name: 'Odyssey Phantom X 7 Putter',
-    type: 'Putter', ideal: 210, low: 160, obo: false,
-    photos: ['Phantom%20X%207.jpg','phantom%20x%20face.jpg','Phatnom%20grip.jpg'],
-    desc: 'Alignment-aiding frame design with a high-MOI head for added stability.'
+    id: 'scotty-california',
+    name: 'Scotty Cameron California',
+    type: 'Putter', ideal: 400, low: 325, obo: false,
+    photos: ['California%20face.jpg','California%20Grip.jpg','calfornia.jpg'],
+    desc: 'California series — clean lines, classic feel and collectible craftsmanship.'
+  },
+  {
+    id: 'scotty-futura7m',
+    name: 'Scotty Cameron Futura 7m',
+    type: 'Putter', ideal: 250, low: 175, obo: true,
+    photos: ['Futura%20side%20(main%20pic).jpg','Futura%2C%20top.jpg'],
+    desc: 'High-MOI mallet with deep face milling and adjustable weighting.'
   },
   {
     id: 'odyssey-ai-putter',
     name: 'Odyssey AI One Putter',
-    type: 'Putter', ideal: 200, low: 150, obo: true,
-    photos: ['Oddessey%20ai.jpg','Oddesey%20Ai%20.jpg','Oddeseey%20Ai%20top.jpg'],
+    type: 'Putter', ideal: 200, low: 125, obo: true,
+    photos: ['Oddesey%20Ai%20.jpg','Oddessey%20ai.jpg','Oddeseey%20Ai%20top.jpg'],
     desc: 'AI-designed milled face for incredibly consistent roll on every surface.'
   },
   {
     id: 'spider-gtx-putter',
-    name: 'TaylorMade Spider GTX Tour',
-    type: 'Putter', ideal: 275, low: 175, obo: true,
+    name: 'Spider GTX Tour',
+    type: 'Putter', ideal: 300, low: 225, obo: true,
     photos: ['Spider%20face.jpg','Spider%20top.jpg','SPider%20grip.jpg','spider%20faceee.jpg'],
     desc: 'Tour-level mallet with True Path alignment and pure roll insert technology.'
   },
+
+  // IRONS
   {
     id: 'miura-tc201-irons',
     name: 'Miura TC-201 Irons',
     type: 'Iron', ideal: 1150, low: 850, obo: false,
-    photos: ['newMuiraTC201%27s%20face.JPG','newMuiraTC201%27s%20full.jpg','newMuiraTC201%27s%20top.JPG','newMuiraTC201%27s%20good%20angle.jpg'],
+    photos: ['newMuiraTC201%27s%20face.JPG','newMuiraTC201%27s%20full.jpg','newMuiraTC201%27s%20top.JPG','newMuiraTC201%27s%20good%20angle.jpg','newMuiraTC201%27s%20good%20an.jpg'],
     desc: 'Forged Miura blades — tour-quality feel, unmatched workability and shot-shaping.'
   },
   {
     id: 'miura-cb57-irons',
     name: 'Miura CB57 Irons',
     type: 'Iron', ideal: 1100, low: 750, obo: false,
-    photos: ['Muira%20CB%2057%20FACE.jpg','Muira%20CB57%20Irons.jpg','Muira%20cb%2057%20face%202.jpg','Muira%20cb57%20grips.jpg','Muira%20cb%2057%20shaft.jpg'],
+    photos: ['Muira%20CB%2057%20FACE.jpg','Muira%20CB57%20Irons.jpg','Muira%20cb%2057%20face%202.jpg','Muira%20cb57%20grips.jpg','Muira%20cb%2057%20shaft.jpg','Muira%20cb57%204.jpg'],
     desc: 'Cavity-back forged construction blending the feel of a blade with added forgiveness.'
   },
   {
     id: 'miura-tournament-irons',
-    name: 'Miura Tournament Irons',
+    name: 'Miura Tournament Irons (5,8,9,PW,SW)',
     type: 'Iron', ideal: 250, low: 125, obo: true,
-    photos: ['Miuita%20tourney%20COVER%20PHOTO.jpg','miura%20tourney.jpg','Muira%2056%20degree%20(TOURNEY).jpg','dd%20Muira%20tourney.jpg'],
+    photos: ['Miuita%20tourney%20COVER%20PHOTO.jpg','miura%20tourney.jpg','Muira%2056%20degree%20(TOURNEY).jpg','dd%20Muira%20tourney.jpg','Muira%20.jpg','Muira%20cb57%20tourney.jpg','good%20angle.jpg'],
     desc: 'Full tournament set — includes 5, 8, 9, PW, and a 56-degree wedge.'
   },
   {
     id: 'mizuno-mp20-irons',
     name: 'Mizuno MP-20 Irons',
-    type: 'Iron', ideal: 750, low: 550, obo: false,
+    type: 'Iron', ideal: 750, low: 600, obo: false,
     photos: ['Mizuno%20face.jpg','Mizuno%20Cover%204-pw.jpg','Mizuno%20Grips.jpg','Mixuno%20MP-20%20Sun.jpg'],
     desc: 'Legendary Mizuno feel in a modern grain-flow forged package — 4-PW set.'
   },
   {
     id: 'ping-i59-irons',
     name: 'Ping i59 Irons',
-    type: 'Iron', ideal: 550, low: 350, obo: false,
+    type: 'Iron', ideal: 650, low: 500, obo: false,
     photos: ['Pingi59.jpg','Pingi59%202.jpg','Pingi59%20grips.jpg','Ping%20i59%20Sun.jpg'],
     desc: 'Forged face with hollow body — elite distance and control in a compact blade.'
   },
   {
     id: 'taylormade-p7mb-irons',
-    name: 'TaylorMade MB7 3/4 Driving Iron',
-    type: 'Iron', ideal: 350, low: 280, obo: true,
+    name: 'TaylorMade P7MB (3/4 Iron)',
+    type: 'Iron', ideal: 200, low: 135, obo: true,
     photos: ['Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg'],
-    desc: 'Forged muscle-back long irons — penetrating flight and tour-level precision.'
+    desc: 'Players long iron — penetrating flight and tour-level precision.'
+  },
+
+  // HYBRIDS & WOODS
+  {
+    id: 'callaway-rogue-hybrid',
+    name: 'Callaway Rogue 3&4 Hybrid',
+    type: 'Hybrid', ideal: 275, low: 180, obo: false,
+    photos: ['Rogue%203%264%20hybrid%20face.jpg','Rogue%203%264%20hybrid%20full.jpg','Rogue%203%264%20hybrid%20top.jpg','Rogue%203%264%20hybrid%20jumbo%20grip.jpg'],
+    desc: 'Jailbreak-powered hybrids — long, forgiving, and easy to launch high.'
   },
   {
     id: 'taylormade-qi10-5wood',
     name: 'TaylorMade Qi10 5-Wood',
-    type: 'Hybrid', ideal: 330, low: 270, obo: true,
+    type: 'Hybrid', ideal: 225, low: 165, obo: true,
     photos: ['Qi10%205%20wood.jpg','qi10%205wood%20face.jpg'],
     desc: 'Latest Qi10 speed technology in a versatile, forgiving 5-wood.'
   },
   {
     id: 'taylormade-simmax-5wood',
     name: 'TaylorMade SIM Max 5-Wood',
-    type: 'Hybrid', ideal: 280, low: 220, obo: true,
+    type: 'Hybrid', ideal: 225, low: 150, obo: true,
     photos: ['Sim%20Max%205%20wood%20%20full.jpg','Sim%20Max%205%20wood%20face.jpg','Sim%20Max%205%20wood%20topandface.jpg','Sim%20Max%205%20wood%20shaft.jpg'],
     desc: 'Speed Injected Twist Face delivers consistent distance on every mis-hit.'
   },
   {
-    id: 'callaway-rogue-hybrid',
-    name: 'Callaway Rogue 3&4 Hybrid',
-    type: 'Hybrid', ideal: 270, low: 220, obo: false,
-    photos: ['Rogue%203%264%20hybrid%20face.jpg','Rogue%203%264%20hybrid%20full.jpg','Rogue%203%264%20hybrid%20top.jpg','Rogue%203%264%20hybrid%20jumbo%20grip.jpg'],
-    desc: 'Jailbreak-powered hybrids — long, forgiving, and easy to launch high.'
+    id: 'ping-425-hybrid',
+    name: 'Ping 425 Hybrid',
+    type: 'Hybrid', ideal: 225, low: 175, obo: false,
+    photos: ['Ping425%20face.jpg','Ping425%20back.jpg','Ping425%20gripshaft.jpg'],
+    desc: 'Reliable distance and forgiveness with aerodynamic design.'
   },
+
+  // DRIVERS
   {
     id: 'titleist-918-driver',
     name: 'Titleist 918 D2 Driver',
-    type: 'Driver', ideal: 250, low: 180, obo: true,
+    type: 'Driver', ideal: 175, low: 100, obo: true,
     photos: ['Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20topandface.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20top.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20shaft.jpg'],
     desc: 'Adjustable SureFit hosel, 10.5° loft, penetrating ball flight with forgiveness.'
-  },
-  {
-    id: 'ping-g425-driver',
-    name: 'Ping G425 Driver',
-    type: 'Driver', ideal: 220, low: 170, obo: false,
-    photos: ['Ping425%20face.jpg','Ping425%20back.jpg','Ping425%20gripshaft.jpg'],
-    desc: 'Aerodynamic design with moveable tungsten weight for max forgiveness.'
   },
   {
     id: 'callaway-m7-driver',
@@ -540,6 +663,17 @@ const clubs = [
     desc: 'Jailbreak and Twist Face technologies combine for more speed and distance.'
   }
 ];
+
+function scrollToTradeHQ() {
+  const section = document.getElementById('trade-hq');
+  section.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    section.classList.remove('glow');
+    void section.offsetWidth; // force reflow so the browser resets the animation, allowing re-trigger
+    section.classList.add('glow');
+    setTimeout(() => section.classList.remove('glow'), 1400);
+  }, 500);
+}
 
 let activeFilter = 'All';
 let slideState = {};
@@ -561,24 +695,71 @@ function filter(cat) {
   render();
 }
 
+function getActiveSlides(id) {
+  return [...document.querySelectorAll(`[data-gallery="${id}"] .gallery-slide`)].filter(s => !s.dataset.failed);
+}
+
 function slide(id, dir) {
-  const club = clubs.find(c => c.id === id);
-  if (!club || club.photos.length <= 1) return;
-  slideState[id] = ((slideState[id] || 0) + dir + club.photos.length) % club.photos.length;
+  const activeSlides = getActiveSlides(id);
+  const n = activeSlides.length;
+  if (n <= 1) return;
+  slideState[id] = ((slideState[id] || 0) + dir + n) % n;
   updateGallery(id);
 }
 
-function goToSlide(id, idx) { slideState[id] = idx; updateGallery(id); }
+function goToSlide(id, idx) {
+  const activeSlides = getActiveSlides(id);
+  slideState[id] = Math.min(idx, activeSlides.length - 1);
+  updateGallery(id);
+}
 
 function updateGallery(id) {
   const idx = slideState[id] || 0;
-  const club = clubs.find(c => c.id === id);
-  const track = document.querySelector(`[data-gallery="${id}"] .gallery-slides`);
-  const dots = document.querySelectorAll(`[data-gallery="${id}"] .gallery-dot`);
+  const activeSlides = getActiveSlides(id);
+  const allSlides = document.querySelectorAll(`[data-gallery="${id}"] .gallery-slide`);
+  const dotsContainer = document.querySelector(`[data-gallery="${id}"] .gallery-dots`);
   const counter = document.querySelector(`[data-gallery="${id}"] .gallery-counter`);
-  if (track) track.style.transform = `translateX(-${idx * 100}%)`;
-  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-  if (counter && club) counter.textContent = `${idx + 1} / ${club.photos.length}`;
+
+  allSlides.forEach(s => s.classList.remove('active'));
+  if (activeSlides[idx]) activeSlides[idx].classList.add('active');
+
+  if (dotsContainer) {
+    const dots = dotsContainer.querySelectorAll('.gallery-dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+  if (counter) counter.textContent = `${idx + 1} / ${activeSlides.length}`;
+}
+
+function onPhotoError(img) {
+  const slide = img.closest('.gallery-slide');
+  if (!slide) return;
+  slide.dataset.failed = '1';
+  slide.style.display = 'none';
+  const gallery = slide.closest('[data-gallery]');
+  if (!gallery) return;
+  const id = gallery.dataset.gallery;
+  const active = getActiveSlides(id);
+  // clamp current index
+  if ((slideState[id] || 0) >= active.length) slideState[id] = Math.max(0, active.length - 1);
+  // rebuild dots
+  const dotsContainer = gallery.querySelector('.gallery-dots');
+  if (dotsContainer) {
+    dotsContainer.innerHTML = active.length > 1
+      ? active.map((_, i) => `<div class="gallery-dot${i === (slideState[id]||0) ? ' active' : ''}" onclick="goToSlide('${esc(id)}',${i})"></div>`).join('')
+      : '';
+  }
+  const counter = gallery.querySelector('.gallery-counter');
+  if (counter) {
+    if (active.length <= 1) counter.style.display = 'none';
+    else counter.textContent = `${(slideState[id]||0) + 1} / ${active.length}`;
+  }
+  const prevBtn = gallery.querySelector('.gallery-prev');
+  const nextBtn = gallery.querySelector('.gallery-next');
+  if (active.length <= 1) {
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+  }
+  updateGallery(id);
 }
 
 function shareClub(name) {
@@ -617,8 +798,8 @@ function render() {
 
   grid.innerHTML = visible.map(club => {
     const slides = club.photos.length
-      ? club.photos.map(src => `<div class="gallery-slide"><img src="${esc(src)}" alt="${esc(club.name)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`).join('')
-      : `<div class="gallery-slide"><div class="gallery-placeholder">
+      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}"><img src="${esc(src)}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
+      : `<div class="gallery-slide active"><div class="gallery-placeholder">
           <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
             <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
             <circle cx="16" cy="22" r="5" stroke="#888" stroke-width="1.5"/>
@@ -653,7 +834,7 @@ function render() {
         </div>
       </div>
       <div class="card-footer">
-        <a class="card-cta primary" href="https://www.facebook.com/marketplace" target="_blank">Message on FB</a>
+        <a class="card-cta primary" href="https://www.facebook.com/marketplace/profile/61587199800096/" target="_blank">Message Flagstick Finds</a>
         <a class="card-cta" href="#" onclick="shareClub('${esc(club.name)}');return false;">Share ↗</a>
       </div>
     </div>`;
@@ -690,17 +871,22 @@ function submitTradeIn(e) {
 
   if (!valid) return;
 
+  const tradeType = (document.querySelector('input[name="ti-trade-type"]:checked') || {}).value || 'Not specified';
   const subject = encodeURIComponent(`Trade-In: ${club}`);
   const body    = encodeURIComponent(
     `Trade-In Submission\n` +
     `-------------------\n` +
-    `Club / Set: ${club}\n` +
-    `Condition:  ${cond}\n` +
-    `Asking:     ${document.getElementById('ti-price').value.trim() || 'Not specified'}\n` +
-    `Name:       ${name}\n` +
-    `Email:      ${email}\n` +
-    `Phone:      ${document.getElementById('ti-phone').value.trim() || 'Not provided'}\n` +
-    `Notes:      ${document.getElementById('ti-notes').value.trim() || 'None'}\n`
+    `Club / Set:    ${club}\n` +
+    `Condition:     ${cond}\n` +
+    `Trade Type:    ${tradeType}\n` +
+    `Dream Club:    ${document.getElementById('ti-dream').value.trim() || 'Not specified'}\n` +
+    `Budget:        ${document.getElementById('ti-budget').value.trim() || 'Not specified'}\n` +
+    `Asking Price:  ${document.getElementById('ti-price').value.trim() || 'Not specified'}\n` +
+    `Name:          ${name}\n` +
+    `Email:         ${email}\n` +
+    `Phone:         ${document.getElementById('ti-phone').value.trim() || 'Not provided'}\n` +
+    `Photo Links:   ${document.getElementById('ti-photos').value.trim() || 'None — will reply with photos if needed'}\n` +
+    `Notes:         ${document.getElementById('ti-notes').value.trim() || 'None'}\n`
   );
   window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
 
@@ -712,7 +898,6 @@ function submitTradeIn(e) {
 function submitIntel(e) {
   e.preventDefault();
   const types  = [...document.querySelectorAll('#intel-types input:checked')].map(cb => cb.value);
-  const budget = document.getElementById('intel-budget').value;
   const name   = document.getElementById('intel-name').value.trim();
   const email  = document.getElementById('intel-email').value.trim();
 
@@ -721,7 +906,6 @@ function submitIntel(e) {
 
   const valid = [
     types.length > 0,
-    checkField('fi-intel-budget', !!budget),
     checkField('fi-intel-name',   !!name),
     checkField('fi-intel-email',  validateEmail(email))
   ].every(Boolean);
@@ -732,12 +916,13 @@ function submitIntel(e) {
   const body    = encodeURIComponent(
     `Market Intel Submission\n` +
     `-----------------------\n` +
-    `Club Types: ${types.join(', ')}\n` +
-    `Brand Pref: ${document.getElementById('intel-brand').value.trim() || 'Any'}\n` +
-    `Budget:     ${budget}\n` +
-    `Name:       ${name}\n` +
-    `Email:      ${email}\n` +
-    `Notes:      ${document.getElementById('intel-notes').value.trim() || 'None'}\n`
+    `Club Types:  ${types.join(', ')}\n` +
+    `Dream Club:  ${document.getElementById('intel-dream').value.trim() || 'Not specified'}\n` +
+    `Brand Pref:  ${document.getElementById('intel-brand').value.trim() || 'Any'}\n` +
+    `Budget:      ${document.getElementById('intel-budget').value.trim() || 'Not specified'}\n` +
+    `Name:        ${name}\n` +
+    `Email:       ${email}\n` +
+    `Notes:       ${document.getElementById('intel-notes').value.trim() || 'None'}\n`
   );
   window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
 
