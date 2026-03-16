@@ -94,17 +94,17 @@
     "name": "Miura TC-201 Irons",
     "type": "Iron",
     "ideal": 1150,
-    "low": 850,
+    "low": 1000,
     "obo": false,
     "photos": ["newMuiraTC201%27s%20face.JPG", "newMuiraTC201%27s%20full.jpg", "newMuiraTC201%27s%20top.JPG", "newMuiraTC201%27s%20good%20angle.jpg", "newMuiraTC201%27s%20good%20an.jpg"],
-    "desc": "Forged Miura blades — tour-quality feel, unmatched workability and shot-shaping."
+    "desc": "Forged Miura blades — tour-quality feel, unmatched workability and shot-shaping with brand new Midsize grips."
   },
   {
     "id": "miura-cb57-irons",
     "name": "Miura CB57 Irons",
     "type": "Iron",
     "ideal": 1100,
-    "low": 750,
+    "low": 900,
     "obo": false,
     "photos": ["Muira%20CB%2057%20FACE.jpg", "Muira%20CB57%20Irons.jpg", "Muira%20cb%2057%20face%202.jpg", "Muira%20cb57%20grips.jpg", "Muira%20cb%2057%20shaft.jpg", "Muira%20cb57%204.jpg"],
     "desc": "Cavity-back forged construction blending the feel of a blade with added forgiveness."
@@ -143,11 +143,11 @@
     "id": "taylormade-p7mb-irons",
     "name": "TaylorMade P7MB (3/4 Iron)",
     "type": "Iron",
-    "ideal": 200,
-    "low": 135,
+    "ideal": 150,
+    "low": 0,
     "obo": true,
     "photos": ["Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg"],
-    "desc": "Players long iron — penetrating flight and tour-level precision."
+    "desc": "Players long iron — penetrating flight and tour-level precision. $80 for 1, $150 for both."
   },
   {
     "id": "callaway-rogue-hybrid",
@@ -157,14 +157,14 @@
     "low": 180,
     "obo": false,
     "photos": ["Rogue%203%264%20hybrid%20face.jpg", "Rogue%203%264%20hybrid%20full.jpg", "Rogue%203%264%20hybrid%20top.jpg", "Rogue%203%264%20hybrid%20jumbo%20grip.jpg"],
-    "desc": "Jailbreak-powered hybrids — long, forgiving, and easy to launch high."
+    "desc": "Jailbreak-powered hybrids — long, forgiving, and easy to launch high with brand new Jumbo grips."
   },
   {
     "id": "taylormade-qi10-5wood",
     "name": "TaylorMade Qi10 5-Wood",
     "type": "Hybrid",
     "ideal": 225,
-    "low": 165,
+    "low": 185,
     "obo": true,
     "photos": ["Qi10%205%20wood.jpg", "qi10%205wood%20face.jpg"],
     "desc": "Latest Qi10 speed technology in a versatile, forgiving 5-wood."
@@ -174,7 +174,7 @@
     "name": "TaylorMade SIM Max 5-Wood",
     "type": "Hybrid",
     "ideal": 225,
-    "low": 150,
+    "low": 170,
     "obo": true,
     "photos": ["Sim%20Max%205%20wood%20%20full.jpg", "Sim%20Max%205%20wood%20face.jpg", "Sim%20Max%205%20wood%20topandface.jpg", "Sim%20Max%205%20wood%20shaft.jpg"],
     "desc": "Speed Injected Twist Face delivers consistent distance on every mis-hit."
