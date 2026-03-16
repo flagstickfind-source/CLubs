@@ -1,0 +1,212 @@
+[
+  {
+    "id": "scotty-phantom-x7",
+    "name": "Phantom X 7",
+    "type": "Putter",
+    "ideal": 250,
+    "low": 200,
+    "obo": false,
+    "photos": ["Phantom%20X%207.jpg", "phantom%20x%20face.jpg", "Phatnom%20grip.jpg"],
+    "desc": "High-MOI mallet putter with alignment-aiding frame and exceptional stability."
+  },
+  {
+    "id": "scotty-newport",
+    "name": "Scotty Cameron Newport",
+    "type": "Putter",
+    "ideal": 350,
+    "low": 275,
+    "obo": false,
+    "photos": ["Newport%20face.jpg", "newport%20back.jpg"],
+    "desc": "Iconic Newport design, tour-proven feel used by champions worldwide."
+  },
+  {
+    "id": "scotty-golo3",
+    "name": "Scotty Cameron GoLo 3",
+    "type": "Putter",
+    "ideal": 300,
+    "low": 225,
+    "obo": false,
+    "photos": ["GoLo%20Face.jpg", "GoLo%20back.jpg", "GoLo%20grip.jpg", "GoLo%201.5.jpg"],
+    "desc": "Mallet-style with red badge and precision-milled face for consistent roll."
+  },
+  {
+    "id": "futura-putter",
+    "name": "Futura Putter",
+    "type": "Putter",
+    "ideal": 350,
+    "low": 300,
+    "obo": false,
+    "photos": ["futura%20face.jpg", "Futura%20fullpic.jpg"],
+    "desc": "Clean mallet design with multi-material construction for a smooth, consistent feel."
+  },
+  {
+    "id": "odyssey-select",
+    "name": "Super Select 1.5 Flashback",
+    "type": "Putter",
+    "ideal": 325,
+    "low": 275,
+    "obo": false,
+    "photos": ["Select%20Face.JPG", "Select%20top.JPG", "Select%20grip.JPG", "select%20flashback.jpg"],
+    "desc": "Super Select Flashback 1.5 — tour-proven design with a soft insert for a smooth, consistent feel at impact."
+  },
+  {
+    "id": "scotty-california",
+    "name": "Scotty Cameron California",
+    "type": "Putter",
+    "ideal": 400,
+    "low": 325,
+    "obo": false,
+    "photos": ["California%20face.jpg", "California%20Grip.jpg", "calfornia.jpg"],
+    "desc": "California series — clean lines, classic feel and collectible craftsmanship."
+  },
+  {
+    "id": "scotty-futura7m",
+    "name": "Scotty Cameron Futura 7m",
+    "type": "Putter",
+    "ideal": 250,
+    "low": 175,
+    "obo": true,
+    "photos": ["Futura%20side%20(main%20pic).jpg", "Futura%2C%20top.jpg"],
+    "desc": "High-MOI mallet with deep face milling and adjustable weighting."
+  },
+  {
+    "id": "odyssey-ai-putter",
+    "name": "Odyssey AI One Putter",
+    "type": "Putter",
+    "ideal": 200,
+    "low": 125,
+    "obo": true,
+    "photos": ["Oddesey%20Ai%20.jpg", "Oddessey%20ai.jpg", "Oddeseey%20Ai%20top.jpg"],
+    "desc": "AI-designed milled face for incredibly consistent roll on every surface."
+  },
+  {
+    "id": "spider-gtx-putter",
+    "name": "Spider GTX Tour",
+    "type": "Putter",
+    "ideal": 300,
+    "low": 225,
+    "obo": true,
+    "photos": ["Spider%20face.jpg", "Spider%20top.jpg", "SPider%20grip.jpg", "spider%20faceee.jpg"],
+    "desc": "Tour-level mallet with True Path alignment and pure roll insert technology."
+  },
+  {
+    "id": "miura-tc201-irons",
+    "name": "Miura TC-201 Irons",
+    "type": "Iron",
+    "ideal": 1150,
+    "low": 850,
+    "obo": false,
+    "photos": ["newMuiraTC201%27s%20face.JPG", "newMuiraTC201%27s%20full.jpg", "newMuiraTC201%27s%20top.JPG", "newMuiraTC201%27s%20good%20angle.jpg", "newMuiraTC201%27s%20good%20an.jpg"],
+    "desc": "Forged Miura blades — tour-quality feel, unmatched workability and shot-shaping."
+  },
+  {
+    "id": "miura-cb57-irons",
+    "name": "Miura CB57 Irons",
+    "type": "Iron",
+    "ideal": 1100,
+    "low": 750,
+    "obo": false,
+    "photos": ["Muira%20CB%2057%20FACE.jpg", "Muira%20CB57%20Irons.jpg", "Muira%20cb%2057%20face%202.jpg", "Muira%20cb57%20grips.jpg", "Muira%20cb%2057%20shaft.jpg", "Muira%20cb57%204.jpg"],
+    "desc": "Cavity-back forged construction blending the feel of a blade with added forgiveness."
+  },
+  {
+    "id": "miura-tournament-irons",
+    "name": "Miura Tournament Irons (5,8,9,PW,SW)",
+    "type": "Iron",
+    "ideal": 250,
+    "low": 125,
+    "obo": true,
+    "photos": ["Miuita%20tourney%20COVER%20PHOTO.jpg", "miura%20tourney.jpg", "Muira%2056%20degree%20(TOURNEY).jpg", "dd%20Muira%20tourney.jpg", "Muira%20.jpg", "Muira%20cb57%20tourney.jpg", "good%20angle.jpg"],
+    "desc": "Full tournament set — includes 5, 8, 9, PW, and a 56-degree wedge."
+  },
+  {
+    "id": "mizuno-mp20-irons",
+    "name": "Mizuno MP-20 Irons",
+    "type": "Iron",
+    "ideal": 750,
+    "low": 600,
+    "obo": false,
+    "photos": ["Mizuno%20face.jpg", "Mizuno%20Cover%204-pw.jpg", "Mizuno%20Grips.jpg", "Mixuno%20MP-20%20Sun.jpg"],
+    "desc": "Legendary Mizuno feel in a modern grain-flow forged package — 4-PW set."
+  },
+  {
+    "id": "ping-i59-irons",
+    "name": "Ping i59 Irons",
+    "type": "Iron",
+    "ideal": 650,
+    "low": 500,
+    "obo": false,
+    "photos": ["Pingi59.jpg", "Pingi59%202.jpg", "Pingi59%20grips.jpg", "Ping%20i59%20Sun.jpg"],
+    "desc": "Forged face with hollow body — elite distance and control in a compact blade."
+  },
+  {
+    "id": "taylormade-p7mb-irons",
+    "name": "TaylorMade P7MB (3/4 Iron)",
+    "type": "Iron",
+    "ideal": 200,
+    "low": 135,
+    "obo": true,
+    "photos": ["Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg"],
+    "desc": "Players long iron — penetrating flight and tour-level precision."
+  },
+  {
+    "id": "callaway-rogue-hybrid",
+    "name": "Callaway Rogue 3&4 Hybrid",
+    "type": "Hybrid",
+    "ideal": 275,
+    "low": 180,
+    "obo": false,
+    "photos": ["Rogue%203%264%20hybrid%20face.jpg", "Rogue%203%264%20hybrid%20full.jpg", "Rogue%203%264%20hybrid%20top.jpg", "Rogue%203%264%20hybrid%20jumbo%20grip.jpg"],
+    "desc": "Jailbreak-powered hybrids — long, forgiving, and easy to launch high."
+  },
+  {
+    "id": "taylormade-qi10-5wood",
+    "name": "TaylorMade Qi10 5-Wood",
+    "type": "Hybrid",
+    "ideal": 225,
+    "low": 165,
+    "obo": true,
+    "photos": ["Qi10%205%20wood.jpg", "qi10%205wood%20face.jpg"],
+    "desc": "Latest Qi10 speed technology in a versatile, forgiving 5-wood."
+  },
+  {
+    "id": "taylormade-simmax-5wood",
+    "name": "TaylorMade SIM Max 5-Wood",
+    "type": "Hybrid",
+    "ideal": 225,
+    "low": 150,
+    "obo": true,
+    "photos": ["Sim%20Max%205%20wood%20%20full.jpg", "Sim%20Max%205%20wood%20face.jpg", "Sim%20Max%205%20wood%20topandface.jpg", "Sim%20Max%205%20wood%20shaft.jpg"],
+    "desc": "Speed Injected Twist Face delivers consistent distance on every mis-hit."
+  },
+  {
+    "id": "ping-425-hybrid",
+    "name": "Ping 425 Hybrid",
+    "type": "Hybrid",
+    "ideal": 225,
+    "low": 175,
+    "obo": false,
+    "photos": ["Ping425%20face.jpg", "Ping425%20back.jpg", "Ping425%20gripshaft.jpg"],
+    "desc": "Reliable distance and forgiveness with aerodynamic design."
+  },
+  {
+    "id": "titleist-918-driver",
+    "name": "Titleist 918 D2 Driver",
+    "type": "Driver",
+    "ideal": 175,
+    "low": 100,
+    "obo": true,
+    "photos": ["Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg", "Titlist%20918%20D2%20Driver%2010.5%20degree%20topandface.jpg", "Titlist%20918%20D2%20Driver%2010.5%20degree%20%20top.jpg", "Titlist%20918%20D2%20Driver%2010.5%20degree%20%20shaft.jpg"],
+    "desc": "Adjustable SureFit hosel, 10.5° loft, penetrating ball flight with forgiveness."
+  },
+  {
+    "id": "callaway-m7-driver",
+    "name": "Callaway M7 Driver",
+    "type": "Driver",
+    "ideal": 240,
+    "low": 190,
+    "obo": false,
+    "photos": ["M7%20face.jpg", "M7%20Grips.jpg", "M7.jpg"],
+    "desc": "Jailbreak and Twist Face technologies combine for more speed and distance."
+  }
+]
