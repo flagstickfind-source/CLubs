@@ -337,7 +337,7 @@
   <div class="trade-hq-inner">
     <div class="trade-hq-header">
       <div class="eyebrow">Trade HQ</div>
-      <h2>Find Your Dream Club<br><em>Through Trade</em></h2>
+      <h2>Request a Club<b>Through Trade</b></h2>
       <p>Trade in your current gear, top up with cash if needed, or connect through a referral — we'll help you land the club you actually want.</p>
     </div>
 
@@ -463,7 +463,7 @@
 
       <!-- MARKET INTEL FORM -->
       <div class="trade-panel">
-        <div class="trade-panel-title">What Are You Looking For?</div>
+        <div class="trade-panel-title">Request a Club</div>
         <div class="trade-panel-desc">Tell us your wishlist. We source new stock regularly and will ping you when we land something you want.</div>
         <form id="intel-form" onsubmit="submitIntel(event)" novalidate>
           <div class="form-field">
@@ -504,7 +504,7 @@
             <label for="intel-notes">Any specifics? (optional)</label>
             <textarea id="intel-notes" name="notes" placeholder="Shaft flex, hand, condition preference, set configuration…"></textarea>
           </div>
-          <button class="form-submit" type="submit">Join the Waitlist →</button>
+          <button class="form-submit" type="submit">Request a Club →</button>
         </form>
         <div class="form-success" id="intel-success">
           <div class="check-icon">✅</div>
@@ -690,7 +690,7 @@ function render() {
 
   grid.innerHTML = visible.map(club => {
     const slides = club.photos.length
-      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}" onclick="openLightbox('${esc(club.id)}')"><img src="${esc(src)}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
+      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}" onclick="openLightbox('${esc(club.id)}')"><img src="/${esc(src)}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
       : `<div class="gallery-slide active"><div class="gallery-placeholder">
           <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
             <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
