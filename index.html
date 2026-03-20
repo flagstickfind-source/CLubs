@@ -91,8 +91,8 @@
   .club-card:hover { z-index: 1; transform: translateY(-3px); box-shadow: 0 16px 48px rgba(26,46,26,0.14); }
 
   /* GALLERY */
-  .card-gallery { position: relative; width: 100%; height: 260px; background: var(--cream-dark); overflow: hidden; }
-  .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-gallery { position: relative; width: 100%; height: 260px; background: #f5f0e8; overflow: hidden; }
+  .gallery-slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .gallery-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; background: linear-gradient(160deg, #ede6d6 0%, #ddd5c5 100%); }
   .gallery-placeholder .ph-icon { opacity: 0.18; }
   .gallery-placeholder span { font-size: 10px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
@@ -544,7 +544,7 @@
 let clubs = [];
 
 // Load clubs from JSON file
-fetch('_data/clubs.json')
+fetch('/_data/clubs.json')
   .then(response => response.json())
   .then(data => {
     clubs = data;
@@ -690,7 +690,7 @@ function render() {
 
   grid.innerHTML = visible.map(club => {
     const slides = club.photos.length
-      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}" onclick="openLightbox('${esc(club.id)}')"><img src="${src}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
+      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}" onclick="openLightbox('${esc(club.id)}')"><img src="/${src}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
       : `<div class="gallery-slide active"><div class="gallery-placeholder">
           <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
             <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
