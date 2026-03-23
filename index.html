@@ -701,11 +701,11 @@ function render() {
         </div></div>`;
 
     const arrows = club.photos.length > 1
-      ? `<button class="gallery-prev" onclick="slide('${esc(club.id)}',-1)">&#8249;</button>
-         <button class="gallery-next" onclick="slide('${esc(club.id)}',1)">&#8250;</button>` : '';
+      ? `<button class="gallery-prev" onclick="event.stopPropagation();slide('${esc(club.id)}',-1)">&#8249;</button>
+         <button class="gallery-next" onclick="event.stopPropagation();slide('${esc(club.id)}',1)">&#8250;</button>` : '';
 
     const dots = club.photos.length > 1
-      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide('${esc(club.id)}',${i})"></div>`).join('')}</div>` : '';
+      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="event.stopPropagation();goToSlide('${esc(club.id)}',${i})"></div>`).join('')}</div>` : '';
 
     const counter = club.photos.length > 1
       ? `<div class="gallery-counter">1 / ${club.photos.length}</div>` : '';
