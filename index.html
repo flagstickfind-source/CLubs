@@ -281,7 +281,7 @@ let modalClub = null;
 let modalIdx = 0;
 
 function imgUrl(filename) {
-  return filename;
+  return filename.split('/').map(encodeURIComponent).join('/');
 }
 
 function buildCard(club) {
