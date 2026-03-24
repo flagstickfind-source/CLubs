@@ -92,8 +92,6 @@
 
   /* GALLERY */
   .card-gallery { position: relative; width: 100%; height: 260px; background: var(--cream); overflow: hidden; }
-  .gallery-slides { display: flex; height: 100%; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); }
-  .gallery-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--cream); }
   .gallery-slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .gallery-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 100%; background: linear-gradient(160deg, #ede6d6 0%, #ddd5c5 100%); }
   .gallery-placeholder .ph-icon { opacity: 0.18; }
@@ -117,347 +115,764 @@
 
   /* CARD FOOTER */
   .card-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-light); }
-  .card-cta { display: block; padding: 0.85rem; text-align: center; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: background 0.2s, color 0.2s; background: var(--white); }
-  .card-cta-primary { color: var(--green); }
-  .card-cta-primary:hover { background: var(--green); color: var(--cream); }
-  .card-cta-secondary { color: var(--gray); }
-  .card-cta-secondary:hover { background: var(--cream-dark); color: var(--text); }
+  .card-cta { display: block; padding: 0.8rem; text-align: center; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; text-decoration: none; background: var(--white); color: var(--green); transition: background 0.15s, color 0.15s; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .card-cta:hover { background: var(--green); color: var(--gold); }
+  .card-cta.primary { background: var(--green); color: var(--cream); }
+  .card-cta.primary:hover { background: var(--green-mid); }
 
-  /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,20,10,0.75); z-index: 500; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); max-width: 860px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; display: grid; grid-template-columns: 1fr 1fr; }
-  @media (max-width: 640px) { .modal { grid-template-columns: 1fr; } }
-  .modal-gallery { position: relative; height: 380px; background: var(--cream); overflow: hidden; }
-  @media (max-width: 640px) { .modal-gallery { height: 260px; } }
-  .modal-slides { display: flex; height: 100%; transition: transform 0.38s cubic-bezier(0.4,0,0.2,1); }
-  .modal-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--cream); }
-  .modal-slide img { width: 100%; height: 100%; object-fit: contain; }
-  .modal-prev, .modal-next { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: rgba(26,46,26,0.85); border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; color: var(--cream); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; font-size: 18px; }
-  .modal-prev { left: 12px; } .modal-next { right: 12px; }
-  .modal-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 2; }
-  .modal-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.2s; }
-  .modal-dot.active { background: var(--gold); }
-  .modal-info { padding: 2.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .modal-badge { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); padding: 3px 10px; display: inline-block; width: fit-content; }
-  .modal-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.2; }
-  .modal-desc { font-size: 13px; color: var(--gray); line-height: 1.7; }
-  .modal-price-row { display: flex; align-items: baseline; gap: 12px; padding: 1rem 0; border-top: 1px solid var(--cream-dark); border-bottom: 1px solid var(--cream-dark); }
-  .modal-price-ask { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--green); font-weight: 600; }
-  .modal-price-floor { font-size: 13px; color: var(--gray); }
-  .modal-obo { font-size: 9px; padding: 3px 10px; border: 1px solid var(--gold); color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-left: auto; }
-  .modal-cta { display: block; padding: 1rem 2rem; background: var(--green); color: var(--cream); text-align: center; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
-  .modal-cta:hover { background: var(--green-mid); }
-  .modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(26,46,26,0.85); border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; color: var(--cream); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; z-index: 10; }
+  /* TOAST */
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: var(--cream); border: 1px solid var(--gold); padding: 0.75rem 2rem; font-size: 12px; letter-spacing: 0.08em; transition: transform 0.3s; z-index: 999; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
 
   /* FOOTER */
-  footer { background: var(--green); color: #7a9a7a; padding: 3rem 2rem; text-align: center; border-top: 2px solid var(--gold); }
-  .footer-inner { max-width: 600px; margin: 0 auto; }
-  .footer-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--cream); margin-bottom: 0.5rem; }
+  footer { background: var(--green); padding: 3rem 2rem; border-top: 2px solid var(--gold); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; text-align: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); }
   .footer-logo span { color: var(--gold); font-style: italic; }
-  .footer-tagline { font-size: 11px; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
-  .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
-  .footer-links a { color: #7a9a7a; text-decoration: none; font-size: 11px; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-divider { width: 40px; height: 1px; background: var(--gold); opacity: 0.4; }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+  .footer-links a { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a9a7a; text-decoration: none; transition: color 0.15s; }
   .footer-links a:hover { color: var(--gold); }
-  .footer-copy { font-size: 10px; opacity: 0.5; }
+  .footer-copy { font-size: 11px; color: #4a6a4a; }
 
-  /* EMPTY STATE */
-  .empty-state { text-align: center; padding: 5rem 2rem; color: var(--gray); }
-  .empty-state h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text); margin-bottom: 0.5rem; }
+  .empty { text-align: center; padding: 4rem 2rem; color: var(--gray); background: var(--white); font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; }
+
+  /* PHOTO COUNTER */
+  .gallery-counter { position: absolute; top: 10px; right: 10px; background: rgba(26,46,26,0.82); color: var(--cream); font-size: 10px; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 10px; z-index: 2; pointer-events: none; border: 1px solid rgba(201,168,76,0.25); }
+
+  /* TRADE HQ */
+  .trade-hq { background: var(--green); padding: 4rem 2rem; border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+  .trade-hq-inner { max-width: 900px; margin: 0 auto; }
+  .trade-hq-header { text-align: center; margin-bottom: 3rem; }
+  .trade-hq-header .eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .trade-hq-header .eyebrow::before, .trade-hq-header .eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .trade-hq-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 38px); color: var(--cream); margin-bottom: 0.75rem; }
+  .trade-hq-header h2 em { color: var(--gold); font-style: italic; }
+  .trade-hq-header p { font-size: 13px; color: #aab8aa; line-height: 1.7; max-width: 520px; margin: 0 auto; }
+  .trade-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .trade-panel { background: rgba(45,74,45,0.45); border: 1px solid rgba(201,168,76,0.22); padding: 2rem; }
+  .trade-panel-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold); margin-bottom: 0.4rem; }
+  .trade-panel-desc { font-size: 12px; color: #7a9a7a; margin-bottom: 1.5rem; line-height: 1.6; }
+  .form-field { margin-bottom: 1rem; }
+  .form-field label { display: block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #aab8aa; margin-bottom: 5px; }
+  .form-field input, .form-field select, .form-field textarea {
+    width: 100%; background: rgba(26,46,26,0.7); border: 1px solid rgba(201,168,76,0.22); color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 0.65rem 0.85rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: #4a6a4a; }
+  .form-field select option { background: var(--green); color: var(--cream); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--gold); }
+  .form-field.error input, .form-field.error select, .form-field.error textarea { border-color: #e05c5c; }
+  .form-field .err-msg { display: none; font-size: 10px; color: #e05c5c; margin-top: 4px; letter-spacing: 0.04em; }
+  .form-field.error .err-msg { display: block; }
+  .form-field textarea { resize: vertical; min-height: 76px; }
+  .check-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .check-label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--cream); text-transform: none; letter-spacing: 0; cursor: pointer; background: rgba(26,46,26,0.6); border: 1px solid rgba(201,168,76,0.2); padding: 5px 11px; transition: border-color 0.15s, color 0.15s; }
+  .check-label input[type="checkbox"] { accent-color: var(--gold); width: 13px; height: 13px; cursor: pointer; }
+  .check-label:has(input:checked) { border-color: var(--gold); color: var(--gold); }
+  .form-submit { display: block; width: 100%; padding: 0.9rem; background: var(--gold); color: var(--green); border: none; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+  .form-submit:hover { background: var(--gold-light); }
+  .form-success { display: none; text-align: center; padding: 2rem 1rem; }
+  .form-success .check-icon { font-size: 40px; margin-bottom: 0.75rem; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--gold); margin-bottom: 0.5rem; }
+  .form-success p { font-size: 12px; color: #aab8aa; line-height: 1.65; }
+
+  @media (max-width: 700px) { .trade-forms { grid-template-columns: 1fr; } }
+
+  /* ANNOUNCE BAR */
+  .announce-bar { background: var(--gold); padding: 0.45rem 1.25rem; text-align: center; font-size: 12px; color: var(--green); font-weight: 500; letter-spacing: 0.04em; }
+  .announce-bar a { color: var(--green); text-decoration: none; font-weight: 700; cursor: pointer; }
+  .announce-bar a:hover { text-decoration: underline; }
+
+  /* TRADE HQ HIGHLIGHT */
+  @keyframes tradeGlow {
+    0%   { box-shadow: inset 0 0 0 2px transparent; }
+    25%  { box-shadow: inset 0 0 0 2px var(--gold), 0 0 28px 6px rgba(201,168,76,0.35); }
+    100% { box-shadow: inset 0 0 0 2px transparent, 0 0 0 0 rgba(201,168,76,0); }
+  }
+  .trade-hq.glow { animation: tradeGlow 1.3s ease-out forwards; }
+
+  /* HOW IT WORKS STRIP */
+  .how-it-works { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(201,168,76,0.18); border: 1px solid rgba(201,168,76,0.22); margin-bottom: 2.5rem; }
+  .how-step { background: rgba(26,46,26,0.55); padding: 1.5rem 1.25rem; text-align: center; }
+  .how-step-num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); margin-bottom: 0.5rem; }
+  .how-step-text { font-size: 12px; color: #aab8aa; line-height: 1.6; }
+  @media (max-width: 600px) { .how-it-works { grid-template-columns: 1fr; } }
+
+  /* TRANSPARENCY SNIPPET */
+  .transparency-note { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.22); padding: 0.85rem 1.1rem; margin-bottom: 2rem; font-size: 11px; color: #aab8aa; line-height: 1.65; text-align: center; }
+  .transparency-note strong { color: var(--gold); }
+
+  /* TRADE MODES */
+  .trade-modes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 0.75rem; margin-bottom: 1.5rem; }
+  .trade-mode-item { display: flex; align-items: flex-start; gap: 9px; background: rgba(26,46,26,0.55); border: 1px solid rgba(201,168,76,0.2); padding: 0.7rem 1rem; flex: 1; min-width: 200px; }
+  .trade-mode-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .trade-mode-text strong { display: block; font-size: 12px; color: var(--cream); margin-bottom: 2px; }
+  .trade-mode-text span { font-size: 11px; color: #7a9a7a; }
+
+  /* TRADE CHOICE RADIO */
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .radio-label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--cream); cursor: pointer; background: rgba(26,46,26,0.6); border: 1px solid rgba(201,168,76,0.2); padding: 5px 11px; transition: border-color 0.15s, color 0.15s; }
+  .radio-label input[type="radio"] { accent-color: var(--gold); cursor: pointer; }
+  .radio-label:has(input:checked) { border-color: var(--gold); color: var(--gold); }
+
+  /* PHOTO LINK HINT */
+  .field-hint { display: block; font-size: 10px; color: #4a6a4a; margin-top: 4px; line-height: 1.5; }
+
+  /* GALLERY FADE */
+  .gallery-slides { position: relative; height: 100%; }
+  .gallery-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.42s ease; pointer-events: none; }
+  .gallery-slide.active { opacity: 1; pointer-events: auto; }
+
+  @media (max-width: 768px) {
+    .club-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+    .card-gallery { height: 175px; }
+    .card-body { padding: 0.7rem 0.7rem 0.5rem; gap: 4px; }
+    .card-name { font-size: 13px; }
+    .card-desc { display: none; }
+    .price-row { margin-top: 6px; padding-top: 6px; gap: 6px; }
+    .price-ask { font-size: 17px; }
+    .price-floor { font-size: 10px; }
+    .card-footer { grid-template-columns: 1fr; }
+    .card-cta { padding: 0.65rem; font-size: 9px; }
+    .gallery-prev, .gallery-next { opacity: 0.75; width: 26px; height: 26px; font-size: 13px; }
+    .gallery-counter { font-size: 9px; padding: 2px 7px; }
+  }
 
   @media (max-width: 640px) {
-    .hero-stats { flex-direction: column; }
+    .logo-sub { display: none; }
     .trust-inner { gap: 1.5rem; }
+    .footer-links { flex-direction: column; gap: 0.75rem; }
   }
+
+  /* LIGHTBOX */
+  .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 2000; display: none; align-items: center; justify-content: center; touch-action: none; }
+  .lightbox.open { display: flex; }
+  .lightbox-img { max-width: 92vw; max-height: 84vh; object-fit: contain; display: block; user-select: none; -webkit-user-drag: none; }
+  .lightbox-close { position: absolute; top: 14px; right: 18px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; font-size: 22px; width: 40px; height: 40px; cursor: pointer; z-index: 2001; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; transition: background 0.15s; }
+  .lightbox-close:hover { background: rgba(255,255,255,0.22); }
+  .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; font-size: 26px; width: 46px; height: 46px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2001; border-radius: 50%; transition: background 0.15s; }
+  .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.22); }
+  .lightbox-prev { left: 14px; } .lightbox-next { right: 14px; }
+  .lightbox-counter { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.65); font-size: 13px; letter-spacing: 0.08em; pointer-events: none; }
+  .gallery-slide { cursor: zoom-in; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<div class="announce-bar">
+  🏌️ <strong>Trade HQ:</strong> Request a Club — trade-in, cash top-up, or referral &nbsp;<a onclick="scrollToTradeHQ();return false;" href="#trade-hq">→ Find Out How</a>
+</div>
+
 <header>
   <div class="header-inner">
-    <a href="#" class="logo-lockup">
-      <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="22" cy="22" r="21" stroke="#c9a84c" stroke-width="1.5"/>
-        <path d="M14 34 L14 12 L28 12" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="28" cy="16" r="4" fill="#c9a84c" opacity="0.8"/>
-        <path d="M14 20 L24 20" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <a class="logo-lockup" href="#">
+      <svg class="logo-icon" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="21" stroke="#c9a84c" stroke-width="1.2" fill="rgba(45,74,45,0.6)"/>
+        <line x1="22" y1="8" x2="22" y2="36" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M22 8 L34 13 L22 18 Z" fill="#c9a84c" opacity="0.9"/>
+        <path d="M14 36 Q22 34 30 36" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <ellipse cx="22" cy="36" rx="4" ry="1.5" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
       </svg>
       <div class="logo-text">
-        <span class="logo-name">Flagstick <span>Finder</span></span>
-        <span class="logo-sub">Pro Shop</span>
+        <div class="logo-name">Flagstick <span>Finder</span></div>
+        <div class="logo-sub">Pro Shop</div>
       </div>
     </a>
     <div class="header-right">
-      <span class="header-tagline">Tour-Quality. Fairly Priced.</span>
-      <span class="header-location">Westfield, NJ</span>
+      <div class="header-tagline">Premium Used Golf Clubs</div>
+      <div class="header-location">Dallas · Fort Worth · Ships Nationwide</div>
     </div>
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Private Collection</div>
-    <h1>Premium Golf Clubs<br><em>Curator Priced</em></h1>
-    <p>A personally curated selection of tour-level irons, putters, woods and hybrids — available now, ships fast.</p>
-    <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Collection</button>
+    <div class="hero-eyebrow">Pro Shop</div>
+    <h1>Your Game Is Calling —<br><em>Go Find It.</em></h1>
+    <p>Hand-selected irons, putters, hybrids and drivers. Every club priced to move — from DFW to your doorstep.</p>
+    <button class="hero-cta" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">Browse the Shop</button>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="num">18</span><span class="label">Clubs Listed</span></div>
-      <div class="hero-stat"><span class="num">5★</span><span class="label">Condition</span></div>
-      <div class="hero-stat"><span class="num">NJ</span><span class="label">Ships From</span></div>
+      <div class="hero-stat"><span class="num" id="total-count">20</span><span class="label">Clubs Listed</span></div>
+      <div class="hero-stat"><span class="num">DFW</span><span class="label">Based In</span></div>
+      <div class="hero-stat"><span class="num">✓</span><span class="label">Ships Nationwide</span></div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BAR -->
 <div class="trust-bar">
   <div class="trust-inner">
-    <div class="trust-item"><div class="trust-dot"></div>All clubs personally inspected</div>
-    <div class="trust-item"><div class="trust-dot"></div>Fast shipping from Westfield, NJ</div>
-    <div class="trust-item"><div class="trust-dot"></div>Questions? Text or email anytime</div>
-    <div class="trust-item"><div class="trust-dot"></div>Serious offers considered</div>
+    <div class="trust-item"><span class="trust-dot"></span>Hand-selected clubs</div>
+    <div class="trust-item"><span class="trust-dot"></span>Honest condition descriptions</div>
+    <div class="trust-item"><span class="trust-dot"></span>Secure via Facebook Marketplace</div>
+    <div class="trust-item"><span class="trust-dot"></span>Fast DFW pickup or ships next day</div>
   </div>
 </div>
 
-<!-- BUNDLE BANNER -->
 <div class="bundle-banner">
-  <p>Buying multiple clubs? <em>Bundle discounts available.</em></p>
-  <span>Reach out before purchasing — we'll work something out.</span>
+  <p>Building a full bag? Ask about <em>bundle pricing</em> — mix and match for a deal.</p>
+  <span>Message on Facebook Marketplace to discuss</span>
 </div>
 
-<!-- FILTER -->
 <nav class="filter-bar">
   <div class="filter-inner">
-    <button class="filter-btn active" data-filter="all">All Clubs</button>
-    <button class="filter-btn" data-filter="Putter">Putters</button>
-    <button class="filter-btn" data-filter="Iron">Irons</button>
-    <button class="filter-btn" data-filter="Wood">Woods</button>
-    <button class="filter-btn" data-filter="Hybrid">Hybrids</button>
-    <button class="filter-btn" data-filter="Driver">Drivers</button>
+    <button class="filter-btn active" onclick="filter('All')">All Clubs</button>
+    <button class="filter-btn" onclick="filter('Putter')">Putters</button>
+    <button class="filter-btn" onclick="filter('Iron')">Irons</button>
+    <button class="filter-btn" onclick="filter('Hybrid')">Hybrids &amp; Woods</button>
+    <button class="filter-btn" onclick="filter('Driver')">Drivers</button>
+    <button class="filter-btn" onclick="scrollToTradeHQ()">Trade HQ ⇄</button>
   </div>
 </nav>
 
-<!-- GRID -->
-<section class="grid-section">
-  <div class="section-label">Available Now</div>
-  <div class="club-grid" id="clubGrid"></div>
+<main class="grid-section">
+  <div class="section-label" id="section-label">All Clubs</div>
+  <div class="club-grid" id="club-grid"></div>
+</main>
+
+<section class="trade-hq" id="trade-hq">
+  <div class="trade-hq-inner">
+    <div class="trade-hq-header">
+      <div class="eyebrow">Trade HQ</div>
+      <h2>Request a Club<b>Through Trade</b></h2>
+      <p>Trade in your current gear, top up with cash if needed, or connect through a referral — we'll help you land the club you actually want.</p>
+    </div>
+
+    <!-- TRADE MODES -->
+    <div class="trade-modes">
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">🔄</div>
+        <div class="trade-mode-text">
+          <strong>Trade-In Only</strong>
+          <span>Swap your club straight across for something in the shop.</span>
+        </div>
+      </div>
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">💰</div>
+        <div class="trade-mode-text">
+          <strong>Trade-In + Cash on Top</strong>
+          <span>Bridge the gap — add a little cash to step up in quality.</span>
+        </div>
+      </div>
+      <div class="trade-mode-item">
+        <div class="trade-mode-icon">🤝</div>
+        <div class="trade-mode-text">
+          <strong>Referrals</strong>
+          <span>Know someone looking? Send them our way — we'll take care of them. (Referral program coming soon.)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how-it-works">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-text">Tell us what you have and what you're after using the form below.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <div class="how-step-text">We value your trade and match it to current inventory or source your dream club.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <div class="how-step-text">Walk away with the club you want — no fluff, no hidden fees, just a fair deal.</div>
+      </div>
+    </div>
+
+    <!-- TRANSPARENCY NOTE -->
+    <div class="transparency-note">
+      <strong>Our pricing philosophy:</strong> We aim to offer approximately <strong>10% above eBay's lowest comparable listing</strong> when condition matches — giving you more than the open market. This is a guide based on real-time data, not a formal guarantee.
+    </div>
+
+    <div class="trade-forms">
+
+      <!-- TRADE-IN FORM -->
+      <div class="trade-panel">
+        <div class="trade-panel-title">Trade-In Your Clubs</div>
+        <div class="trade-panel-desc">Tell us what you've got. We'll come back to you with a fair offer — no pressure.</div>
+        <form id="trade-in-form" onsubmit="submitTradeIn(event)" novalidate>
+          <div class="form-field" id="fi-club">
+            <label for="ti-club">Club / Set Name *</label>
+            <input type="text" id="ti-club" name="club" placeholder="e.g. Titleist T100 Irons 4-PW" autocomplete="off">
+            <span class="err-msg">Please enter the club or set name.</span>
+          </div>
+          <div class="form-field" id="fi-condition">
+            <label for="ti-condition">Condition *</label>
+            <select id="ti-condition" name="condition">
+              <option value="">Select condition…</option>
+              <option value="Like New">Like New — minimal use, no marks</option>
+              <option value="Excellent">Excellent — light bag wear only</option>
+              <option value="Good">Good — normal play wear, no damage</option>
+              <option value="Fair">Fair — visible wear, may need regrip</option>
+            </select>
+            <span class="err-msg">Please select a condition.</span>
+          </div>
+          <div class="form-field">
+            <label>Trade Preference</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="ti-trade-type" value="Trade-in only" checked> Trade-in only</label>
+              <label class="radio-label"><input type="radio" name="ti-trade-type" value="Trade-in + cash on top"> Trade-in + cash on top</label>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="ti-dream">Dream Club / Ideal Club (optional)</label>
+            <input type="text" id="ti-dream" name="dream" placeholder="e.g. Scotty Cameron Newport 2, Miura CB-57">
+          </div>
+          <div class="form-field">
+            <label for="ti-budget">Your Budget (optional)</label>
+            <input type="text" id="ti-budget" name="budget" placeholder="e.g. $300, $200–$400, flexible">
+          </div>
+          <div class="form-field">
+            <label for="ti-price">Your Asking Price for Trade-In (optional)</label>
+            <input type="text" id="ti-price" name="price" placeholder="e.g. $350 or open to offers">
+          </div>
+          <div class="form-field" id="fi-name">
+            <label for="ti-name">Your Name *</label>
+            <input type="text" id="ti-name" name="name" placeholder="First &amp; last name" autocomplete="name">
+            <span class="err-msg">Please enter your name.</span>
+          </div>
+          <div class="form-field" id="fi-email">
+            <label for="ti-email">Email Address *</label>
+            <input type="email" id="ti-email" name="email" placeholder="you@example.com" autocomplete="email">
+            <span class="err-msg">Please enter a valid email address.</span>
+          </div>
+          <div class="form-field">
+            <label for="ti-phone">Phone (optional)</label>
+            <input type="tel" id="ti-phone" name="phone" placeholder="(214) 555-0100" autocomplete="tel">
+          </div>
+          <div class="form-field">
+            <label for="ti-photos">Photo Links (optional)</label>
+            <input type="text" id="ti-photos" name="photos" placeholder="Google Photos / Dropbox / iCloud share link">
+            <span class="field-hint">Or simply reply to the confirmation email with photos attached.</span>
+          </div>
+          <div class="form-field">
+            <label for="ti-notes">Notes / Wishlist (optional)</label>
+            <textarea id="ti-notes" name="notes" placeholder="Shaft specs, any defects, specific clubs you're after…"></textarea>
+          </div>
+          <button class="form-submit" type="submit">Submit Trade-In →</button>
+        </form>
+        <div class="form-success" id="trade-in-success">
+          <div class="check-icon">✅</div>
+          <h3>Trade-In Received!</h3>
+          <p>Thanks — we'll review your submission and reach out to <span id="ti-confirm-email"></span> within 24 hours with a valuation.</p>
+        </div>
+      </div>
+
+      <!-- MARKET INTEL FORM -->
+      <div class="trade-panel">
+        <div class="trade-panel-title">Request a Club</div>
+        <div class="trade-panel-desc">Tell us your wishlist. We source new stock regularly and will ping you when we land something you want.</div>
+        <form id="intel-form" onsubmit="submitIntel(event)" novalidate>
+          <div class="form-field">
+            <label>Club Type(s) *</label>
+            <div class="check-group" id="intel-types">
+              <label class="check-label"><input type="checkbox" value="Irons"> Irons</label>
+              <label class="check-label"><input type="checkbox" value="Driver"> Driver</label>
+              <label class="check-label"><input type="checkbox" value="Putter"> Putter</label>
+              <label class="check-label"><input type="checkbox" value="Hybrid"> Hybrid / Wood</label>
+              <label class="check-label"><input type="checkbox" value="Wedge"> Wedge</label>
+              <label class="check-label"><input type="checkbox" value="Full Bag"> Full Bag</label>
+            </div>
+            <div class="err-msg" id="intel-types-err" style="display:none;font-size:10px;color:#e05c5c;margin-top:4px;">Please select at least one club type.</div>
+          </div>
+          <div class="form-field">
+            <label for="intel-dream">Dream Club / Ideal Club (optional)</label>
+            <input type="text" id="intel-dream" name="dream" placeholder="e.g. Scotty Cameron Newport 2, Ping i230">
+          </div>
+          <div class="form-field">
+            <label for="intel-brand">Preferred Brand(s) (optional)</label>
+            <input type="text" id="intel-brand" name="brand" placeholder="e.g. Titleist, Scotty Cameron, Miura">
+          </div>
+          <div class="form-field" id="fi-intel-budget">
+            <label for="intel-budget">Budget (optional — ranges welcome)</label>
+            <input type="text" id="intel-budget" name="budget" placeholder="e.g. $300, $200–$500, flexible">
+          </div>
+          <div class="form-field" id="fi-intel-name">
+            <label for="intel-name">Your Name *</label>
+            <input type="text" id="intel-name" name="name" placeholder="First &amp; last name" autocomplete="name">
+            <span class="err-msg">Please enter your name.</span>
+          </div>
+          <div class="form-field" id="fi-intel-email">
+            <label for="intel-email">Email Address *</label>
+            <input type="email" id="intel-email" name="email" placeholder="you@example.com" autocomplete="email">
+            <span class="err-msg">Please enter a valid email address.</span>
+          </div>
+          <div class="form-field">
+            <label for="intel-notes">Any specifics? (optional)</label>
+            <textarea id="intel-notes" name="notes" placeholder="Shaft flex, hand, condition preference, set configuration…"></textarea>
+          </div>
+          <button class="form-submit" type="submit">Request a Club →</button>
+        </form>
+        <div class="form-success" id="intel-success">
+          <div class="check-icon">✅</div>
+          <h3>You're on the List!</h3>
+          <p>Thanks — a confirmation has been sent to <span id="intel-confirm-email"></span>. We'll reach out the moment we source something that fits your wishlist.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal">
-    <div class="modal-gallery">
-      <div class="modal-slides" id="modalSlides"></div>
-      <button class="modal-prev" id="modalPrev">&#8592;</button>
-      <button class="modal-next" id="modalNext">&#8594;</button>
-      <div class="modal-dots" id="modalDots"></div>
-    </div>
-    <div class="modal-info" id="modalInfo"></div>
-    <button class="modal-close" id="modalClose">&#10005;</button>
-  </div>
-</div>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Flagstick <span>Finder</span></div>
-    <div class="footer-tagline">Tour-Quality Golf Equipment · Westfield, NJ</div>
+    <div class="footer-divider"></div>
     <div class="footer-links">
-      <a href="mailto:flagstickfinder@gmail.com">Email Us</a>
-      <a href="sms:+19085551234">Text Us</a>
+      <a href="https://www.facebook.com/marketplace/profile/61587199800096/" target="_blank">Message Flagstick Finds</a>
+      <a href="mailto:adamsjerram11@gmail.com">Email Us</a>
+      <a href="#" onclick="shareShop();return false;">Share This Shop ↗</a>
     </div>
-    <div class="footer-copy">&copy; 2025 Flagstick Finder. All rights reserved.</div>
+    <div class="footer-copy">Dallas–Fort Worth · Nationwide Shipping Available</div>
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&#10005;</button>
+  <button class="lightbox-prev" id="lb-prev" onclick="lightboxSlide(-1)" aria-label="Previous">&#8249;</button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+  <button class="lightbox-next" id="lb-next" onclick="lightboxSlide(1)" aria-label="Next">&#8250;</button>
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<div class="toast" id="toast">Link copied!</div>
+
 <script>
-const clubs = [
-  {"id":"scotty-phantom-x7","name":"Phantom X 7","type":"Putter","ideal":299,"low":200,"obo":false,"photos":["Phantom%20X%207.jpg","phantom%20x%20face.jpg","Phatnom%20grip.jpg"],"desc":"High-MOI mallet putter with alignment-aiding frame and exceptional stability."},
-  {"id":"scotty-newport","name":"Scotty Cameron Newport","type":"Putter","ideal":350,"low":325,"obo":false,"photos":["Newport%20face.jpg","newport%20back.jpg"],"desc":"Iconic Newport design, tour-proven feel used by champions worldwide."},
-  {"id":"scotty-golo3","name":"Scotty Cameron GoLo 3","type":"Putter","ideal":265,"low":235,"obo":false,"photos":["GoLo%20Face.jpg","GoLo%20back.jpg","GoLo%20grip.jpg","GoLo%201.5.jpg","GoLo%20alt.jpg"],"desc":"Mallet-style with red badge and precision-milled face for consistent roll."},
-  {"id":"odyssey-select","name":"Super Select Flashback 1.5","type":"Putter","ideal":325,"low":275,"obo":false,"photos":["Select%20Face.JPG","Select%20top.JPG","Select%20grip.JPG","select%20flashback.jpg"],"desc":"Super Select Flashback 1.5  tour-proven design with a soft insert for a smooth, consistent feel at impact."},
-  {"id":"scotty-california","name":"Scotty Cameron California","type":"Putter","ideal":350,"low":275,"obo":false,"photos":["California%20face.jpg","California%20Grip.jpg","calfornia.jpg","California%20alt.jpg"],"desc":"California series  clean lines, classic feel and collectible craftsmanship."},
-  {"id":"scotty-futura7m","name":"Scotty Cameron Futura 7m","type":"Putter","ideal":300,"low":275,"obo":true,"photos":["Futura%20side%20(main%20pic).jpg","Futura%2C%20top.jpg","futura%20face.jpg","Futura%20fullpic.jpg"],"desc":"High-MOI mallet with deep face milling and adjustable weighting."},
-  {"id":"odyssey-ai-putter","name":"Odyssey AI One Blade","type":"Putter","ideal":200,"low":175,"obo":true,"photos":["Oddesey%20Ai%20.jpg","Oddessey%20ai.jpg","Oddeseey%20Ai%20top.jpg"],"desc":"AI-designed milled face for incredibly consistent roll on every surface."},
-  {"id":"spider-gtx-putter","name":"Spider GTX Tour","type":"Putter","ideal":300,"low":275,"obo":true,"photos":["Spider%20face.jpg","Spider%20top.jpg","SPider%20grip.jpg","spider%20faceee.jpg"],"desc":"Tour-level mallet with True Path alignment and pure roll insert technology."},
-  {"id":"miura-tc201-irons","name":"Miura TC-201 Irons","type":"Iron","ideal":1150,"low":1000,"obo":false,"photos":["newMuiraTC201%27s%20face.JPG","newMuiraTC201%27s%20full.jpg","newMuiraTC201%27s%20top.JPG","newMuiraTC201%27s%20good%20angle.jpg","newMuiraTC201%27s%20good%20an.jpg"],"desc":"Forged Miura blades  tour-quality feel, unmatched workability and shot-shaping with brand new Midsize grips."},
-  {"id":"miura-cb57-irons","name":"Miura CB57 Irons","type":"Iron","ideal":1000,"low":800,"obo":false,"photos":["Muira%20CB57%20Irons.jpg","Muira%20CB%2057%20FACE.jpg","Muira%20cb%2057%20face%202.jpg","Muira%20cb57%20grips.jpg","Muira%20cb%2057%20shaft.jpg","Muira%20cb57%204.jpg","Muira%20cb57%20tourney.jpg"],"desc":"Cavity-back forged construction blending the feel of a blade with added forgiveness."},
-  {"id":"miura-tournament-irons","name":"Miura Tournament Irons (5,8,9,PW,SW)","type":"Iron","ideal":200,"low":150,"obo":true,"photos":["Miuita%20tourney%20COVER%20PHOTO.jpg","miura%20tourney.jpg","Muira%2056%20degree%20(TOURNEY).jpg","dd%20Muira%20tourney.jpg","Muira%20.jpg"],"desc":"Full tournament set  includes 5, 8, 9, PW, and a 56-degree wedge."},
-  {"id":"mizuno-mp20-irons","name":"Mizuno MP-20 Irons","type":"Iron","ideal":750,"low":625,"obo":false,"photos":["Mizuno%20face.jpg","Mizuno%20Cover%204-pw.jpg","Mizuno%20Grips.jpg","Mixuno%20MP-20%20Sun.jpg"],"desc":"Legendary Mizuno feel in a modern grain-flow forged package  4-PW set."},
-  {"id":"ping-i59-irons","name":"Ping i59 Irons","type":"Iron","ideal":650,"low":550,"obo":false,"photos":["Pingi59.jpg","Pingi59%202.jpg","Pingi59%20grips.jpg","Ping%20i59%20Sun.jpg","Pingi59%20extra.jpg"],"desc":"Forged face with hollow body  elite distance and control in a compact blade."},
-  {"id":"taylormade-p7mb-irons","name":"TaylorMade P7MB (3/4 Iron)","type":"Iron","ideal":150,"low":75,"obo":true,"photos":["Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg","M7%20face.jpg","M7%20Grips.jpg","M7.jpg"],"desc":"Players long iron  penetrating flight and tour-level precision. $80 for 1, $150 for both."},
-  {"id":"callaway-rogue-hybrid","name":"Callaway Rogue 3&4 Hybrid","type":"Hybrid","ideal":85,"low":85,"obo":false,"photos":["Rogue%203%264%20hybrid%20face.jpg","Rogue%203%264%20hybrid%20full.jpg","Rogue%203%264%20hybrid%20top.jpg","Rogue%203%264%20hybrid%20jumbo%20grip.jpg"],"desc":"Jailbreak-powered hybrids  long, forgiving, and easy to launch high with brand new Jumbo grips."},
-  {"id":"taylormade-qi10-5wood","name":"TaylorMade Qi10 5-Wood","type":"Wood","ideal":225,"low":200,"obo":true,"photos":["Qi10%205%20wood.jpg","qi10%205wood%20face.jpg"],"desc":"Latest Qi10 speed technology in a versatile, forgiving 5-wood."},
-  {"id":"taylormade-simmax-5wood","name":"TaylorMade SIM Max 5-Wood","type":"Wood","ideal":225,"low":215,"obo":true,"photos":["Sim%20Max%205%20wood%20%20full.jpg","Sim%20Max%205%20wood%20face.jpg","Sim%20Max%205%20wood%20topandface.jpg","Sim%20Max%205%20wood%20shaft.jpg"],"desc":"Speed Injected Twist Face delivers consistent distance on every mis-hit."},
-  {"id":"ping-425-hybrid","name":"Ping 425 Hybrid","type":"Hybrid","ideal":225,"low":175,"obo":false,"photos":["Ping425%20face.jpg","Ping425%20back.jpg","Ping425%20gripshaft.jpg"],"desc":"Reliable distance and forgiveness with aerodynamic design."},
-  {"id":"titleist-918-driver","name":"Titleist 918 D2 Driver","type":"Driver","ideal":175,"low":150,"obo":true,"photos":["Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg","Titlist%20918%20D2%20Driver%2010.5%20degree%20topandface.jpg","Titlist%20918%20D2%20Driver%2010.5%20degree%20%20top.jpg","Titlist%20918%20D2%20Driver%2010.5%20degree%20%20shaft.jpg"],"desc":"Adjustable SureFit hosel, 10.5° loft, penetrating ball flight with forgiveness."
-];
+let clubs = [];
 
-let activeFilter = 'all';
-let modalClub = null;
-let modalIdx = 0;
+// Load clubs from JSON file
+fetch('/_data/clubs.json')
+  .then(response => response.json())
+  .then(data => {
+    clubs = data;
+    render();
+  })
+  .catch(error => {
+    console.error('Error loading clubs:', error);
+    const grid = document.getElementById('club-grid');
+    if (grid) grid.innerHTML = '<div class="empty">Unable to load club listings. Please refresh the page or contact us if the issue persists.</div>';
+  });
 
-function imgUrl(filename) {
-  return 'https://raw.githubusercontent.com/flagstickfind-source/CLubs/main/' + filename;
+function scrollToTradeHQ() {
+  const section = document.getElementById('trade-hq');
+  section.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    section.classList.remove('glow');
+    void section.offsetWidth; // force reflow so the browser resets the animation, allowing re-trigger
+    section.classList.add('glow');
+    setTimeout(() => section.classList.remove('glow'), 1400);
+  }, 500);
 }
 
-function buildCard(club) {
-  const firstPhoto = club.photos && club.photos.length > 0 ? club.photos[0] : null;
-  const galleryHTML = firstPhoto
-    ? `<div class="gallery-slides"><div class="gallery-slide"><img src="${imgUrl(firstPhoto)}" alt="${club.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>No Image</span></div>'"></div></div>`
-    : `<div class="gallery-placeholder"><span>No Image</span></div>`;
+let activeFilter = 'All';
+let slideState = {};
 
-  const dotsHTML = club.photos && club.photos.length > 1
-    ? club.photos.map((_, i) => `<div class="gallery-dot${i===0?' active':''}" data-i="${i}"></div>`).join('')
-    : '';
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
-  const navHTML = club.photos && club.photos.length > 1
-    ? `<button class="gallery-prev">&#8592;</button><button class="gallery-next">&#8594;</button><div class="gallery-dots">${dotsHTML}</div>`
-    : '';
+function filter(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', cat === 'All' ? b.textContent.trim() === 'All Clubs' : b.textContent.trim().startsWith(cat));
+  });
+  render();
+}
 
-  return `
-    <div class="club-card" data-id="${club.id}" data-type="${club.type}">
-      <div class="card-gallery">
-        <div class="type-badge">${club.type}</div>
-        ${galleryHTML}
-        ${navHTML}
+function getActiveSlides(id) {
+  return [...document.querySelectorAll(`[data-gallery="${id}"] .gallery-slide`)].filter(s => !s.dataset.failed);
+}
+
+function slide(id, dir) {
+  const activeSlides = getActiveSlides(id);
+  const n = activeSlides.length;
+  if (n <= 1) return;
+  slideState[id] = ((slideState[id] || 0) + dir + n) % n;
+  updateGallery(id);
+}
+
+function goToSlide(id, idx) {
+  const activeSlides = getActiveSlides(id);
+  slideState[id] = Math.min(idx, activeSlides.length - 1);
+  updateGallery(id);
+}
+
+function updateGallery(id) {
+  const idx = slideState[id] || 0;
+  const activeSlides = getActiveSlides(id);
+  const allSlides = document.querySelectorAll(`[data-gallery="${id}"] .gallery-slide`);
+  const dotsContainer = document.querySelector(`[data-gallery="${id}"] .gallery-dots`);
+  const counter = document.querySelector(`[data-gallery="${id}"] .gallery-counter`);
+
+  allSlides.forEach(s => s.classList.remove('active'));
+  if (activeSlides[idx]) activeSlides[idx].classList.add('active');
+
+  if (dotsContainer) {
+    const dots = dotsContainer.querySelectorAll('.gallery-dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+  if (counter) counter.textContent = `${idx + 1} / ${activeSlides.length}`;
+}
+
+function onPhotoError(img) {
+  const slide = img.closest('.gallery-slide');
+  if (!slide) return;
+  slide.dataset.failed = '1';
+  slide.style.display = 'none';
+  const gallery = slide.closest('[data-gallery]');
+  if (!gallery) return;
+  const id = gallery.dataset.gallery;
+  const active = getActiveSlides(id);
+  // clamp current index
+  if ((slideState[id] || 0) >= active.length) slideState[id] = Math.max(0, active.length - 1);
+  // rebuild dots
+  const dotsContainer = gallery.querySelector('.gallery-dots');
+  if (dotsContainer) {
+    dotsContainer.innerHTML = active.length > 1
+      ? active.map((_, i) => `<div class="gallery-dot${i === (slideState[id]||0) ? ' active' : ''}" onclick="goToSlide('${esc(id)}',${i})"></div>`).join('')
+      : '';
+  }
+  const counter = gallery.querySelector('.gallery-counter');
+  if (counter) {
+    if (active.length <= 1) counter.style.display = 'none';
+    else counter.textContent = `${(slideState[id]||0) + 1} / ${active.length}`;
+  }
+  const prevBtn = gallery.querySelector('.gallery-prev');
+  const nextBtn = gallery.querySelector('.gallery-next');
+  if (active.length <= 1) {
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+  }
+  updateGallery(id);
+}
+
+function shareClub(name) {
+  if (navigator.share) {
+    navigator.share({ title: 'Flagstick Finder', text: `Check out this ${name} for sale!`, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied — share with your golf crew!'));
+  }
+}
+
+function shareShop() {
+  if (navigator.share) {
+    navigator.share({ title: 'Flagstick Finder Pro Shop', text: 'Premium used golf clubs — DFW', url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied — share the shop!'));
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function render() {
+  const grid = document.getElementById('club-grid');
+  const label = document.getElementById('section-label');
+  const visible = activeFilter === 'All' ? clubs : clubs.filter(c => c.type === activeFilter);
+  document.getElementById('total-count').textContent = clubs.length;
+  label.textContent = activeFilter === 'All'
+    ? `All Clubs — ${clubs.length} Available`
+    : `${activeFilter}s — ${visible.length} Available`;
+
+  if (!visible.length) { grid.innerHTML = '<div class="empty">Nothing here yet.</div>'; return; }
+
+  grid.innerHTML = visible.map(club => {
+    const slides = club.photos.length
+      ? club.photos.map((src, i) => `<div class="gallery-slide${i === 0 ? ' active' : ''}" onclick="openLightbox('${esc(club.id)}')"><img src="/${src}" alt="${esc(club.name)}" loading="lazy" onerror="onPhotoError(this)"></div>`).join('')
+      : `<div class="gallery-slide active"><div class="gallery-placeholder">
+          <svg class="ph-icon" width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="4" y="10" width="36" height="26" rx="3" stroke="#888" stroke-width="1.5"/>
+            <circle cx="16" cy="22" r="5" stroke="#888" stroke-width="1.5"/>
+            <path d="M4 30l9-9 7 7 7-9 9 11" stroke="#888" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Photo coming soon</span>
+        </div></div>`;
+
+    const arrows = club.photos.length > 1
+      ? `<button class="gallery-prev" onclick="event.stopPropagation();slide('${esc(club.id)}',-1)">&#8249;</button>
+         <button class="gallery-next" onclick="event.stopPropagation();slide('${esc(club.id)}',1)">&#8250;</button>` : '';
+
+    const dots = club.photos.length > 1
+      ? `<div class="gallery-dots">${club.photos.map((_, i) => `<div class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="event.stopPropagation();goToSlide('${esc(club.id)}',${i})"></div>`).join('')}</div>` : '';
+
+    const counter = club.photos.length > 1
+      ? `<div class="gallery-counter">1 / ${club.photos.length}</div>` : '';
+
+    return `<div class="club-card">
+      <div class="card-gallery" data-gallery="${esc(club.id)}">
+        <div class="gallery-slides">${slides}</div>
+        ${arrows}${dots}${counter}
+        <div class="type-badge">${esc(club.type)}</div>
       </div>
       <div class="card-body">
-        <div class="card-name">${club.name}</div>
-        <div class="card-desc">${club.desc}</div>
+        <div class="card-name">${esc(club.name)}</div>
+        <div class="card-desc">${esc(club.desc)}</div>
         <div class="price-row">
-          <span class="price-ask">$${club.ideal}</span>
-          <span class="price-floor">Low: $${club.low}</span>
+          <div class="price-ask">$${club.ideal.toLocaleString()}</div>
+          <div class="price-floor">floor $${club.low.toLocaleString()}</div>
           ${club.obo ? '<span class="obo-pill">OBO</span>' : ''}
         </div>
       </div>
       <div class="card-footer">
-        <button class="card-cta card-cta-primary" onclick="openModal('${club.id}')">View Details</button>
-        <a class="card-cta card-cta-secondary" href="mailto:flagstickfinder@gmail.com?subject=Interested in ${encodeURIComponent(club.name)}">Inquire</a>
+        <a class="card-cta primary" href="https://www.facebook.com/marketplace/profile/61587199800096/" target="_blank">Message Flagstick Finds</a>
+        <a class="card-cta" href="#" onclick="shareClub('${esc(club.name)}');return false;">Share ↗</a>
       </div>
     </div>`;
+  }).join('');
 }
 
-function render() {
-  const grid = document.getElementById('clubGrid');
-  const filtered = activeFilter === 'all' ? clubs : clubs.filter(c => c.type === activeFilter);
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><h3>No clubs in that category</h3><p>Check back soon or view all clubs.</p></div>';
-    return;
-  }
-  grid.innerHTML = filtered.map(buildCard).join('');
-  initCardGalleries();
+/* ── TRADE HQ FORMS ── */
+
+const SHOP_EMAIL = 'adamsjerram11@gmail.com';
+
+function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+
+function checkField(fieldId, condition) {
+  const el = document.getElementById(fieldId);
+  if (el) el.classList.toggle('error', !condition);
+  return condition;
 }
 
-function initCardGalleries() {
-  document.querySelectorAll('.club-card').forEach(card => {
-    const id = card.dataset.id;
-    const club = clubs.find(c => c.id === id);
-    if (!club || !club.photos || club.photos.length <= 1) return;
+function submitTradeIn(e) {
+  e.preventDefault();
+  const club  = document.getElementById('ti-club').value.trim();
+  const cond  = document.getElementById('ti-condition').value;
+  const name  = document.getElementById('ti-name').value.trim();
+  const email = document.getElementById('ti-email').value.trim();
 
-    let idx = 0;
-    const slidesEl = card.querySelector('.gallery-slides');
-    const dots = card.querySelectorAll('.gallery-dot');
+  const valid = [
+    checkField('fi-club',      !!club),
+    checkField('fi-condition', !!cond),
+    checkField('fi-name',      !!name),
+    checkField('fi-email',     validateEmail(email))
+  ].every(Boolean);
 
-    function loadSlide(i) {
-      if (!slidesEl.children[i]) {
-        const slide = document.createElement('div');
-        slide.className = 'gallery-slide';
-        slide.innerHTML = `<img src="${imgUrl(club.photos[i])}" alt="${club.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>No Image</span></div>'">`;
-        slidesEl.appendChild(slide);
-      }
-    }
+  if (!valid) return;
 
-    function goTo(i) {
-      loadSlide(i);
-      idx = i;
-      slidesEl.style.transform = `translateX(-${idx * 100}%)`;
-      dots.forEach((d, di) => d.classList.toggle('active', di === idx));
-    }
+  const tradeType = (document.querySelector('input[name="ti-trade-type"]:checked') || {}).value || 'Not specified';
+  const subject = encodeURIComponent(`Trade-In: ${club}`);
+  const body    = encodeURIComponent(
+    `Trade-In Submission\n` +
+    `-------------------\n` +
+    `Club / Set:    ${club}\n` +
+    `Condition:     ${cond}\n` +
+    `Trade Type:    ${tradeType}\n` +
+    `Dream Club:    ${document.getElementById('ti-dream').value.trim() || 'Not specified'}\n` +
+    `Budget:        ${document.getElementById('ti-budget').value.trim() || 'Not specified'}\n` +
+    `Asking Price:  ${document.getElementById('ti-price').value.trim() || 'Not specified'}\n` +
+    `Name:          ${name}\n` +
+    `Email:         ${email}\n` +
+    `Phone:         ${document.getElementById('ti-phone').value.trim() || 'Not provided'}\n` +
+    `Photo Links:   ${document.getElementById('ti-photos').value.trim() || 'None — will reply with photos if needed'}\n` +
+    `Notes:         ${document.getElementById('ti-notes').value.trim() || 'None'}\n`
+  );
+  window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
 
-    card.querySelector('.gallery-prev').addEventListener('click', e => { e.stopPropagation(); goTo((idx - 1 + club.photos.length) % club.photos.length); });
-    card.querySelector('.gallery-next').addEventListener('click', e => { e.stopPropagation(); goTo((idx + 1) % club.photos.length); });
-    dots.forEach((d, di) => d.addEventListener('click', e => { e.stopPropagation(); goTo(di); }));
-  });
+  document.getElementById('ti-confirm-email').textContent = email;
+  document.getElementById('trade-in-form').style.display    = 'none';
+  document.getElementById('trade-in-success').style.display = 'block';
 }
 
-function openModal(id) {
-  modalClub = clubs.find(c => c.id === id);
-  if (!modalClub) return;
-  modalIdx = 0;
+function submitIntel(e) {
+  e.preventDefault();
+  const types  = [...document.querySelectorAll('#intel-types input:checked')].map(cb => cb.value);
+  const name   = document.getElementById('intel-name').value.trim();
+  const email  = document.getElementById('intel-email').value.trim();
 
-  const slidesEl = document.getElementById('modalSlides');
-  const dotsEl = document.getElementById('modalDots');
-  const infoEl = document.getElementById('modalInfo');
+  const typesErr = document.getElementById('intel-types-err');
+  typesErr.style.display = types.length === 0 ? 'block' : 'none';
 
-  slidesEl.innerHTML = modalClub.photos.map((p, i) =>
-    `<div class="modal-slide"><img src="${imgUrl(p)}" alt="${modalClub.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=padding:2rem;color:#999>Image not available</div>'"></div>`
-  ).join('');
+  const valid = [
+    types.length > 0,
+    checkField('fi-intel-name',   !!name),
+    checkField('fi-intel-email',  validateEmail(email))
+  ].every(Boolean);
 
-  dotsEl.innerHTML = modalClub.photos.map((_, i) =>
-    `<div class="modal-dot${i===0?' active':''}" data-i="${i}"></div>`
-  ).join('');
+  if (!valid) return;
 
-  dotsEl.querySelectorAll('.modal-dot').forEach((d, di) => {
-    d.addEventListener('click', () => modalGoTo(di));
-  });
+  const subject = encodeURIComponent(`Market Intel: Looking for ${types.join(', ')}`);
+  const body    = encodeURIComponent(
+    `Market Intel Submission\n` +
+    `-----------------------\n` +
+    `Club Types:  ${types.join(', ')}\n` +
+    `Dream Club:  ${document.getElementById('intel-dream').value.trim() || 'Not specified'}\n` +
+    `Brand Pref:  ${document.getElementById('intel-brand').value.trim() || 'Any'}\n` +
+    `Budget:      ${document.getElementById('intel-budget').value.trim() || 'Not specified'}\n` +
+    `Name:        ${name}\n` +
+    `Email:       ${email}\n` +
+    `Notes:       ${document.getElementById('intel-notes').value.trim() || 'None'}\n`
+  );
+  window.location.href = `mailto:${SHOP_EMAIL}?subject=${subject}&body=${body}`;
 
-  infoEl.innerHTML = `
-    <div class="modal-badge">${modalClub.type}</div>
-    <div class="modal-name">${modalClub.name}</div>
-    <div class="modal-desc">${modalClub.desc}</div>
-    <div class="modal-price-row">
-      <span class="modal-price-ask">$${modalClub.ideal}</span>
-      <span class="modal-price-floor">Low: $${modalClub.low}</span>
-      ${modalClub.obo ? '<span class="modal-obo">OBO</span>' : ''}
-    </div>
-    <a class="modal-cta" href="mailto:flagstickfinder@gmail.com?subject=Interested in ${encodeURIComponent(modalClub.name)}&body=Hi, I'm interested in the ${encodeURIComponent(modalClub.name)} listed for $${modalClub.ideal}. Is it still available?">
-      Email to Inquire
-    </a>`;
+  document.getElementById('intel-confirm-email').textContent = email;
+  document.getElementById('intel-form').style.display    = 'none';
+  document.getElementById('intel-success').style.display = 'block';
+/* ── LIGHTBOX ── */
+let lbPhotos = [], lbIdx = 0, lbTouchStartX = 0, lbTouchStartY = 0;
 
-  document.getElementById('modalOverlay').classList.add('open');
+function openLightbox(clubId) {
+  const gallery = document.querySelector(`[data-gallery="${clubId}"]`);
+  if (!gallery) return;
+  const activeSlides = [...gallery.querySelectorAll('.gallery-slide')].filter(s => !s.dataset.failed);
+  lbPhotos = activeSlides.map(s => { const img = s.querySelector('img'); return img ? img.src : null; }).filter(Boolean);
+  if (!lbPhotos.length) return;
+  lbIdx = slideState[clubId] || 0;
+  if (lbIdx >= lbPhotos.length) lbIdx = 0;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
-  modalGoTo(0);
 }
 
-function modalGoTo(i) {
-  modalIdx = i;
-  document.getElementById('modalSlides').style.transform = `translateX(-${i * 100}%)`;
-  document.querySelectorAll('.modal-dot').forEach((d, di) => d.classList.toggle('active', di === i));
-}
-
-document.getElementById('modalPrev').addEventListener('click', () => {
-  if (!modalClub) return;
-  modalGoTo((modalIdx - 1 + modalClub.photos.length) % modalClub.photos.length);
-});
-document.getElementById('modalNext').addEventListener('click', () => {
-  if (!modalClub) return;
-  modalGoTo((modalIdx + 1) % modalClub.photos.length);
-});
-document.getElementById('modalClose').addEventListener('click', () => {
-  document.getElementById('modalOverlay').classList.remove('open');
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
-});
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modalOverlay')) {
-    document.getElementById('modalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
+}
+
+function lightboxSlide(dir) {
+  if (!lbPhotos.length) return;
+  lbIdx = (lbIdx + dir + lbPhotos.length) % lbPhotos.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  document.getElementById('lb-img').src = lbPhotos[lbIdx];
+  const multi = lbPhotos.length > 1;
+  document.getElementById('lb-prev').style.display = multi ? 'flex' : 'none';
+  document.getElementById('lb-next').style.display = multi ? 'flex' : 'none';
+  document.getElementById('lb-counter').textContent = multi ? `${lbIdx + 1} / ${lbPhotos.length}` : '';
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowLeft') lightboxSlide(-1);
+  else if (e.key === 'ArrowRight') lightboxSlide(1);
 });
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = btn.dataset.filter;
-    render();
-  });
-});
+document.addEventListener('touchstart', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  lbTouchStartX = e.touches[0].clientX;
+  lbTouchStartY = e.touches[0].clientY;
+}, { passive: true });
 
-render();
+document.addEventListener('touchend', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  const dx = e.changedTouches[0].clientX - lbTouchStartX;
+  const dy = e.changedTouches[0].clientY - lbTouchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) lightboxSlide(dx < 0 ? 1 : -1);
+}, { passive: true });
 </script>
 </body>
 </html>
