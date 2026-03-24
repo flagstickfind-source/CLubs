@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "."
+public_folder: "/"
 
 collections:
   - name: "clubs"
@@ -22,7 +22,7 @@ collections:
               - label: "Type"
                 name: "type"
                 widget: "select"
-                options: ["Putter", "Iron", "Hybrid", "Driver"]
+                options: ["Putter", "Iron", "Wood", "Hybrid", "Driver"]
               - { label: "Ideal Price", name: "ideal",  widget: "number" }
               - { label: "Floor Price", name: "low",    widget: "number" }
               - { label: "OBO",         name: "obo",    widget: "boolean", default: false }

@@ -439,7 +439,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 fetch('_data/clubs.json')
   .then(r => r.json())
-  .then(data => { clubs = data; render(); })
+  .then(data => { clubs = data.clubs || data; render(); })
   .catch(err => {
     console.error('Failed to load clubs:', err);
     document.getElementById('clubGrid').innerHTML = '<div class="empty-state"><h3>Unable to load clubs</h3><p>Please try refreshing the page.</p></div>';
