@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Flagstick Finds — Admin Panel</title>
+<title>Flagstick Finds — Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,12 +15,13 @@
   --cream:#f0ebe0;--white:#ffffff;--black:#0d0d0d;
   --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#8a6a00;
   --gray:#7a7265;--gbray:#e0d9ce;
+  --red:#c0392b;--red-bg:#fee;
   --radius:10px;--trans:0.2s ease;
 }
 html{scroll-behavior:smooth}
 body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);font-size:14px;line-height:1.6;}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);}
 .login-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
 .login-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--dark);text-align:center;margin-bottom:0.25rem;}
@@ -32,10 +33,10 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 .login-input:focus{border-color:var(--green);}
 .login-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--trans);margin-top:0.5rem;}
 .login-btn:hover{background:var(--mid);}
-.login-error{color:#c0392b;font-size:12px;margin-top:0.75rem;text-align:center;display:none;}
+.login-error{color:var(--red);font-size:12px;margin-top:0.75rem;text-align:center;display:none;}
 .login-info{color:var(--gray);font-size:11px;margin-top:1rem;text-align:center;}
 
-/* ── OTP SCREEN ── */
+/* OTP */
 #otp-screen{min-height:100vh;display:none;align-items:center;justify-content:center;background:var(--dark);}
 .otp-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;}
 .otp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--dark);margin-bottom:0.5rem;}
@@ -43,12 +44,12 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 .otp-input{width:100%;padding:0.8rem;border:1px solid var(--gbray);border-radius:8px;font-size:18px;font-family:'Barlow',sans-serif;text-align:center;letter-spacing:0.3em;outline:none;}
 .otp-input:focus{border-color:var(--green);}
 .otp-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:1rem;}
-.otp-error{color:#c0392b;font-size:12px;margin-top:0.75rem;display:none;}
+.otp-error{color:var(--red);font-size:12px;margin-top:0.75rem;display:none;}
 
-/* ── ADMIN SHELL ── */
+/* ADMIN SHELL */
 #admin-shell{display:none;}
 .admin-nav{background:var(--dark);height:56px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:sticky;top:0;z-index:50;}
-.admin-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--white);}
+.admin-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--white);text-decoration:none;}
 .admin-logo span{color:var(--gold);}
 .admin-tabs{display:flex;gap:0.25rem;flex:1;justify-content:center;}
 .admin-tab{font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);padding:0.4rem 1rem;border-radius:6px;cursor:pointer;transition:all var(--trans);border:none;background:none;letter-spacing:0.02em;}
@@ -57,13 +58,19 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 .admin-logout{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.15);padding:0.35rem 0.85rem;border-radius:6px;cursor:pointer;transition:all var(--trans);}
 .admin-logout:hover{color:var(--white);border-color:rgba(255,255,255,0.4);}
 
-/* ── PANELS ── */
+/* PANELS */
 .panel{display:none;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
 .panel.active{display:block;}
 .panel-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;color:var(--black);margin-bottom:0.5rem;}
 .panel-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem;}
 
-/* ── TABLE ── */
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+.dash-card{background:var(--white);border:1px solid var(--gbray);border-radius:var(--radius);padding:1.25rem;text-align:center;}
+.dash-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--green);line-height:1;}
+.dash-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);margin-top:4px;}
+
+/* TABLE */
 .tbl-wrap{overflow-x:auto;border:1px solid var(--gbray);border-radius:var(--radius);background:var(--white);}
 table{width:100%;border-collapse:collapse;}
 th{background:var(--pale);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);padding:0.7rem 0.75rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--gbray);}
@@ -73,24 +80,32 @@ tr:hover{background:var(--pale);}
 .tbl-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--pale);}
 .tbl-name{font-weight:600;color:var(--black);}
 .tbl-price{font-weight:700;color:var(--green);}
-.tbl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em;}
-.tbl-badge-sold{background:#fee;color:#c0392b;}
+.tbl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em;display:inline-block;}
+.tbl-badge-sold{background:var(--red-bg);color:var(--red);}
 .tbl-badge-active{background:#efd;color:var(--green);}
-.tbl-actions{display:flex;gap:0.35rem;}
-.btn-sm{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;transition:all var(--trans);border:none;}
+.tbl-badge-draft{background:#fff3cd;color:#856404;}
+.tbl-actions{display:flex;gap:0.35rem;flex-wrap:wrap;}
+.btn-sm{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;transition:all var(--trans);border:none;white-space:nowrap;}
 .btn-edit{background:var(--pale);color:var(--green);border:1px solid var(--gborder);}
 .btn-edit:hover{background:var(--green);color:var(--white);}
 .btn-sold{background:#fff8e1;color:var(--gold-d);border:1px solid var(--gold-l);}
 .btn-sold:hover{background:var(--gold);color:#1a1a1a;}
-.btn-del{background:#fee;color:#c0392b;border:1px solid #fcc;}
-.btn-del:hover{background:#c0392b;color:#fff;}
+.btn-del{background:var(--red-bg);color:var(--red);border:1px solid #fcc;}
+.btn-del:hover{background:var(--red);color:#fff;}
+.btn-fb{background:#1877f2;color:#fff;border:1px solid #1877f2;}
+.btn-fb:hover{background:#0d6ce8;}
+.btn-share{background:var(--cream);color:var(--black);border:1px solid var(--gbray);}
+.btn-share:hover{background:var(--gbray);}
 .btn-add{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.25rem;background:var(--green);color:var(--white);border:none;border-radius:8px;cursor:pointer;transition:background var(--trans);margin-bottom:1.5rem;}
 .btn-add:hover{background:var(--mid);}
+.top-bar{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+.search-input{flex:1;min-width:200px;padding:0.55rem 0.85rem;border:1px solid var(--gbray);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;}
+.search-input:focus{border-color:var(--green);}
 
-/* ── MODAL ── */
+/* MODAL */
 .adm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
 .adm-modal-overlay.open{display:flex;}
-.adm-modal{background:var(--white);border-radius:12px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,0.2);margin-top:2rem;margin-bottom:2rem;}
+.adm-modal{background:var(--white);border-radius:12px;width:100%;max-width:640px;box-shadow:0 20px 60px rgba(0,0,0,0.2);margin-top:2rem;margin-bottom:2rem;}
 .adm-modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--gbray);}
 .adm-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;}
 .adm-modal-close{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:var(--gray);display:flex;align-items:center;justify-content:center;}
@@ -105,28 +120,37 @@ tr:hover{background:var(--pale);}
 .fg-check{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;}
 .fg-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);}
 .fg-check label{font-size:12px;color:var(--black);text-transform:none;letter-spacing:0;}
-.photo-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;}
-.photo-item{position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);}
+
+/* PHOTOS */
+.photo-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;min-height:40px;}
+.photo-item{position:relative;width:72px;height:72px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);cursor:grab;transition:transform 0.15s;}
+.photo-item.dragging{opacity:0.4;transform:scale(0.9);}
+.photo-item.drag-over{border-color:var(--green);border-width:2px;}
 .photo-item img{width:100%;height:100%;object-fit:cover;}
 .photo-item .photo-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-item .photo-badge{position:absolute;bottom:2px;left:2px;font-size:8px;background:var(--green);color:#fff;padding:1px 4px;border-radius:2px;}
 .upload-area{border:2px dashed var(--gbray);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--trans);position:relative;}
 .upload-area:hover{border-color:var(--green);background:var(--pale);}
 .upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .upload-area-text{font-size:12px;color:var(--gray);}
 .upload-progress{font-size:11px;color:var(--gold-d);margin-top:0.5rem;display:none;}
+.upload-hint{font-size:10px;color:var(--gray);margin-top:4px;}
 
-/* ── WISHLIST TABLE ── */
-.wl-dream{font-weight:600;color:var(--green);}
+/* FB BLURB MODAL */
+.fb-blurb-box{background:#f8f8f8;border:1px solid var(--gbray);border-radius:8px;padding:1rem;font-size:13px;line-height:1.7;white-space:pre-wrap;max-height:300px;overflow-y:auto;font-family:'Barlow',sans-serif;}
+.fb-blurb-box::selection{background:var(--gold-l);}
 
-/* ── TOAST ── */
+/* TOAST */
 .adm-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--black);color:#fff;padding:0.75rem 1.25rem;border-radius:8px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s ease;pointer-events:none;max-width:360px;line-height:1.5;}
 .adm-toast.show{transform:translateY(0);opacity:1;}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:768px){
   .fg-row{grid-template-columns:1fr;}
   .admin-tabs{gap:0;flex-wrap:wrap;}
   .admin-tab{font-size:11px;padding:0.35rem 0.6rem;}
+  .dash-grid{grid-template-columns:1fr 1fr;}
+  .top-bar{flex-direction:column;align-items:stretch;}
 }
 </style>
 </head>
@@ -161,60 +185,73 @@ tr:hover{background:var(--pale);}
 <!-- ADMIN SHELL -->
 <div id="admin-shell">
   <nav class="admin-nav">
-    <div class="admin-logo">FLAGSTICK <span>FINDS</span></div>
+    <a class="admin-logo" href="/" target="_blank">FLAGSTICK <span>FINDS</span></a>
     <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchPanel('listings',this)">Listings</button>
+      <button class="admin-tab active" onclick="switchPanel('dashboard',this)">Dashboard</button>
+      <button class="admin-tab" onclick="switchPanel('listings',this)">Listings</button>
       <button class="admin-tab" onclick="switchPanel('sold',this)">Sold</button>
       <button class="admin-tab" onclick="switchPanel('wishlist',this)">Wishlist</button>
     </div>
     <button class="admin-logout" onclick="logout()">Sign Out</button>
   </nav>
 
-  <!-- LISTINGS PANEL -->
-  <div class="panel active" id="panel-listings">
-    <div class="panel-title">Manage Listings</div>
-    <div class="panel-sub">Add, edit, and manage your club inventory.</div>
-    <button class="btn-add" onclick="openAddModal()">+ Add New Listing</button>
-    <div class="tbl-wrap">
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="panel-title">Dashboard</div>
+    <div class="panel-sub">Overview of your inventory and sales.</div>
+    <div class="dash-grid">
+      <div class="dash-card"><div class="dash-num" id="d-active">—</div><div class="dash-label">Active Listings</div></div>
+      <div class="dash-card"><div class="dash-num" id="d-sold">—</div><div class="dash-label">Total Sold</div></div>
+      <div class="dash-card"><div class="dash-num" id="d-revenue">—</div><div class="dash-label">Total Revenue</div></div>
+      <div class="dash-card"><div class="dash-num" id="d-wishlist">—</div><div class="dash-label">Wishlist Requests</div></div>
+      <div class="dash-card"><div class="dash-num" id="d-inventory">—</div><div class="dash-label">Inventory Value</div></div>
+      <div class="dash-card"><div class="dash-num" id="d-nophotos">—</div><div class="dash-label">Missing Photos</div></div>
+    </div>
+    <div class="panel-title" style="font-size:20px;margin-top:1rem;">Recent Activity</div>
+    <div class="tbl-wrap" style="margin-top:1rem;">
       <table>
-        <thead>
-          <tr><th>Photo</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr>
-        </thead>
-        <tbody id="listings-tbody">
-          <tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
-        </tbody>
+        <thead><tr><th>Club</th><th>Event</th><th>Date</th></tr></thead>
+        <tbody id="activity-tbody"><tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-  <!-- SOLD PANEL -->
+  <!-- LISTINGS -->
+  <div class="panel" id="panel-listings">
+    <div class="panel-title">Manage Listings</div>
+    <div class="panel-sub">Add, edit, and manage your club inventory.</div>
+    <div class="top-bar">
+      <button class="btn-add" style="margin:0;" onclick="openAddModal()">+ Add New Listing</button>
+      <input class="search-input" type="text" id="listings-search" placeholder="Search clubs..." oninput="filterListings()">
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="listings-tbody"><tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SOLD -->
   <div class="panel" id="panel-sold">
     <div class="panel-title">Sold Items</div>
     <div class="panel-sub">Clubs that have been marked as sold.</div>
     <div class="tbl-wrap">
       <table>
-        <thead>
-          <tr><th>Photo</th><th>Name</th><th>Type</th><th>Sold Price</th><th>Date</th></tr>
-        </thead>
-        <tbody id="sold-tbody">
-          <tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
-        </tbody>
+        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>Sold Price</th><th>Date</th></tr></thead>
+        <tbody id="sold-tbody"><tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-  <!-- WISHLIST PANEL -->
+  <!-- WISHLIST -->
   <div class="panel" id="panel-wishlist">
     <div class="panel-title">Wishlist Submissions</div>
     <div class="panel-sub">Caddie's Lane wishlist entries from customers.</div>
     <div class="tbl-wrap">
       <table>
-        <thead>
-          <tr><th>Dream Club</th><th>Contact</th><th>Date</th></tr>
-        </thead>
-        <tbody id="wishlist-tbody">
-          <tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
-        </tbody>
+        <thead><tr><th>Dream Club</th><th>Contact</th><th>Date</th></tr></thead>
+        <tbody id="wishlist-tbody"><tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -237,20 +274,20 @@ tr:hover{background:var(--pale);}
         <div class="fg">
           <label>Type *</label>
           <select id="f-type">
-            <option value="">Select…</option>
+            <option value="">Select...</option>
             <option value="Putter">Putter</option>
             <option value="Iron">Iron</option>
             <option value="TeeBox">Tee Box</option>
             <option value="Wedge">Wedge</option>
             <option value="Driver">Driver</option>
             <option value="Hybrid">Hybrid</option>
-            <option value="Fairway">Fairway Wood</option>
+            <option value="Wood">Fairway Wood</option>
           </select>
         </div>
         <div class="fg">
           <label>Condition</label>
           <select id="f-condition">
-            <option value="">Select…</option>
+            <option value="">Select...</option>
             <option value="Like New">Like New</option>
             <option value="Great">Great</option>
             <option value="Good/Gamer">Good/Gamer</option>
@@ -270,7 +307,7 @@ tr:hover{background:var(--pale);}
       </div>
       <div class="fg">
         <label>Description</label>
-        <textarea id="f-desc" placeholder="Short description of the club…"></textarea>
+        <textarea id="f-desc" placeholder="Short description of the club..."></textarea>
       </div>
       <div class="fg-row">
         <div class="fg-check"><input type="checkbox" id="f-obo"><label for="f-obo">OBO (Or Best Offer)</label></div>
@@ -285,13 +322,14 @@ tr:hover{background:var(--pale);}
         <div class="fg-check"><input type="checkbox" id="f-badge-limited"><label for="f-badge-limited">Limited</label></div>
       </div>
       <div class="fg">
-        <label>Photos</label>
+        <label>Photos <span style="font-weight:400;text-transform:none;">(drag to reorder, first photo = cover)</span></label>
         <div class="photo-list" id="photo-list"></div>
         <div class="upload-area" id="upload-area">
           <input type="file" id="photo-upload" multiple accept="image/*" onchange="handlePhotoUpload(this)">
-          <div class="upload-area-text">📸 Click or drag to upload photos</div>
+          <div class="upload-area-text">📸 Click or drag photos here &middot; Auto-optimized before upload</div>
         </div>
         <div class="upload-progress" id="upload-progress"></div>
+        <div class="upload-hint">Images are resized to 1600px max and compressed before uploading.</div>
       </div>
     </div>
     <div class="adm-modal-foot">
@@ -310,18 +348,34 @@ tr:hover{background:var(--pale);}
     </div>
     <div class="adm-modal-body">
       <input type="hidden" id="sold-listing-id">
-      <div class="fg">
-        <label>Club</label>
-        <input type="text" id="sold-club-name" readonly style="background:#f9f9f9;">
-      </div>
-      <div class="fg">
-        <label>Sold Price (cents) *</label>
-        <input type="number" id="sold-price" placeholder="e.g. 22000 = $220">
-      </div>
+      <div class="fg"><label>Club</label><input type="text" id="sold-club-name" readonly style="background:#f9f9f9;"></div>
+      <div class="fg"><label>Sold Price (cents) *</label><input type="number" id="sold-price" placeholder="e.g. 22000 = $220"></div>
     </div>
     <div class="adm-modal-foot">
       <button class="btn-sm btn-edit" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="closeSoldModal()">Cancel</button>
       <button class="btn-sm btn-sold" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="confirmMarkSold()">Confirm Sold</button>
+    </div>
+  </div>
+</div>
+
+<!-- FB BLURB MODAL -->
+<div class="adm-modal-overlay" id="fb-modal">
+  <div class="adm-modal" style="max-width:500px;">
+    <div class="adm-modal-head">
+      <div class="adm-modal-title">Facebook Marketplace Post</div>
+      <button class="adm-modal-close" onclick="closeFbModal()">×</button>
+    </div>
+    <div class="adm-modal-body">
+      <p style="font-size:12px;color:var(--gray);margin-bottom:1rem;">Copy this text for your FB Marketplace listing. Photos are in the gallery below.</p>
+      <div class="fb-blurb-box" id="fb-blurb"></div>
+      <div style="margin-top:1rem;">
+        <label style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;">Quick Photo Links</label>
+        <div id="fb-photos" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;"></div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm btn-share" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="copyFbBlurb()">Copy Text</button>
+      <button class="btn-sm btn-fb" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="openFbMarketplace()">Open FB Marketplace</button>
     </div>
   </div>
 </div>
@@ -333,22 +387,26 @@ tr:hover{background:var(--pale);}
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
 const BUCKET='Flagstick Finds - Images';
+const SITE_URL='https://flagstickfinds.com';
 const{createClient}=supabase;
 const sb=createClient(SUPA_URL,SUPA_KEY);
 
+let allListings=[];
 let currentPhotos=[];
 let loginEmail='';
+let dragIdx=null;
 
 function toast(msg){const t=document.getElementById('adm-toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
 function fmtPrice(c){return c?'$'+(c/100).toLocaleString('en-US',{minimumFractionDigits:0}):'—';}
 function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function daysAgo(d){if(!d)return'—';return Math.round((Date.now()-new Date(d))/86400000)+' days';}
 
-// ── AUTH ──
+// AUTH
 async function sendOtp(){
   const email=document.getElementById('login-email').value.trim();
   if(!email){showLoginErr('Please enter your email.');return;}
   loginEmail=email;
-  document.getElementById('login-btn').textContent='Sending…';
+  document.getElementById('login-btn').textContent='Sending...';
   const{error}=await sb.auth.signInWithOtp({email});
   document.getElementById('login-btn').textContent='Sign In with Magic Link';
   if(error){showLoginErr(error.message);return;}
@@ -370,24 +428,19 @@ function showOtpErr(msg){const el=document.getElementById('otp-error');el.textCo
 
 async function checkSession(){
   const{data:{session}}=await sb.auth.getSession();
-  if(session){showAdmin();}
+  if(session)showAdmin();
 }
 
 function showAdmin(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('otp-screen').style.display='none';
   document.getElementById('admin-shell').style.display='block';
-  loadListings();
-  loadSoldItems();
-  loadWishlist();
+  loadAll();
 }
 
-async function logout(){
-  await sb.auth.signOut();
-  location.reload();
-}
+async function logout(){await sb.auth.signOut();location.reload();}
 
-// ── PANELS ──
+// PANELS
 function switchPanel(name,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
@@ -395,49 +448,86 @@ function switchPanel(name,btn){
   btn.classList.add('active');
 }
 
-// ── LISTINGS ──
+async function loadAll(){
+  await loadListings();
+  loadSoldItems();
+  loadWishlist();
+  loadDashboard();
+}
+
+// DASHBOARD
+async function loadDashboard(){
+  const{data:listings}=await sb.from('listings').select('*');
+  const{data:sold}=await sb.from('sold').select('*');
+  const{data:wishlist}=await sb.from('wishlist').select('*');
+  const active=(listings||[]).filter(c=>!c.sold);
+  const totalRev=(sold||[]).reduce((a,s)=>a+(s.sold_price||0),0);
+  const invValue=active.reduce((a,c)=>a+(c.price||0),0);
+  const noPhotos=active.filter(c=>!c.photos||c.photos.length===0).length;
+
+  document.getElementById('d-active').textContent=active.length;
+  document.getElementById('d-sold').textContent=(sold||[]).length;
+  document.getElementById('d-revenue').textContent=fmtPrice(totalRev);
+  document.getElementById('d-wishlist').textContent=(wishlist||[]).length;
+  document.getElementById('d-inventory').textContent=fmtPrice(invValue);
+  document.getElementById('d-nophotos').textContent=noPhotos;
+
+  const activity=[];
+  (sold||[]).slice(0,5).forEach(s=>activity.push({name:s.name,event:'Sold for '+fmtPrice(s.sold_price),date:s.sold_at}));
+  (listings||[]).filter(c=>!c.sold).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5).forEach(c=>activity.push({name:c.name,event:'Listed',date:c.created_at}));
+  activity.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  const tbody=document.getElementById('activity-tbody');
+  if(!activity.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No activity yet.</td></tr>';return;}
+  tbody.innerHTML=activity.slice(0,10).map(a=>`<tr><td class="tbl-name">${a.name}</td><td>${a.event}</td><td>${fmtDate(a.date)}</td></tr>`).join('');
+}
+
+// LISTINGS
 async function loadListings(){
   const{data,error}=await sb.from('listings').select('*').order('sort_order').order('created_at',{ascending:false});
+  allListings=data||[];
+  renderListings(allListings);
+}
+
+function filterListings(){
+  const q=document.getElementById('listings-search').value.toLowerCase().trim();
+  const filtered=q?allListings.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.type||'').toLowerCase().includes(q)):allListings;
+  renderListings(filtered);
+}
+
+function renderListings(list){
   const tbody=document.getElementById('listings-tbody');
-  if(error||!data||data.length===0){
-    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No listings found.</td></tr>';
-    return;
-  }
-  tbody.innerHTML=data.map(c=>{
-    const photo=(c.photos&&c.photos[0])?`<img class="tbl-thumb" src="${c.photos[0]}" alt="">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
-    const status=c.sold?'<span class="tbl-badge tbl-badge-sold">Sold</span>':'<span class="tbl-badge tbl-badge-active">Active</span>';
-    const soldBtn=c.sold?'':`<button class="btn-sm btn-sold" onclick="openSoldModal('${c.id}','${(c.name||'').replace(/'/g,"\\'")}')">Sold</button>`;
+  if(!list.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No listings found.</td></tr>';return;}
+  tbody.innerHTML=list.map(c=>{
+    const photo=(c.photos&&c.photos[0])?`<img class="tbl-thumb" src="${c.photos[0]}" alt="" loading="lazy">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--pale);">🏌️</div>';
+    const statusBadge=c.sold?'<span class="tbl-badge tbl-badge-sold">Sold</span>':'<span class="tbl-badge tbl-badge-active">Active</span>';
+    const esc=n=>(n||'').replace(/'/g,"\\'");
     return `<tr>
       <td>${photo}</td>
       <td class="tbl-name">${c.name||''}</td>
       <td>${c.type||''}</td>
       <td class="tbl-price">${fmtPrice(c.price)}</td>
-      <td>${status}</td>
+      <td>${statusBadge}</td>
       <td class="tbl-actions">
         <button class="btn-sm btn-edit" onclick="editListing('${c.id}')">Edit</button>
-        ${soldBtn}
-        <button class="btn-sm btn-del" onclick="deleteListing('${c.id}','${(c.name||'').replace(/'/g,"\\'")}')">Delete</button>
+        <button class="btn-sm btn-fb" onclick="openFbBlurb('${c.id}')">FB</button>
+        <button class="btn-sm btn-share" onclick="copyShareLink('${c.id}','${esc(c.name)}')">Link</button>
+        ${c.sold?'':`<button class="btn-sm btn-sold" onclick="openSoldModal('${c.id}','${esc(c.name)}')">Sold</button>`}
+        <button class="btn-sm btn-del" onclick="deleteListing('${c.id}','${esc(c.name)}')">Del</button>
       </td>
     </tr>`;
   }).join('');
 }
 
-// ── ADD / EDIT MODAL ──
+// ADD / EDIT
 function openAddModal(){
   document.getElementById('edit-id').value='';
   document.getElementById('modal-title').textContent='Add Listing';
-  document.getElementById('f-name').value='';
-  document.getElementById('f-type').value='';
-  document.getElementById('f-condition').value='';
+  ['f-name','f-desc'].forEach(id=>document.getElementById(id).value='');
+  ['f-type','f-condition'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-price').value='';
   document.getElementById('f-sort').value='0';
-  document.getElementById('f-desc').value='';
-  document.getElementById('f-obo').checked=false;
-  document.getElementById('f-luxury').checked=false;
-  document.getElementById('f-badge-new').checked=false;
-  document.getElementById('f-badge-featured').checked=false;
-  document.getElementById('f-badge-verified').checked=false;
-  document.getElementById('f-badge-limited').checked=false;
+  ['f-obo','f-luxury','f-badge-new','f-badge-featured','f-badge-verified','f-badge-limited'].forEach(id=>document.getElementById(id).checked=false);
   currentPhotos=[];
   renderPhotos();
   document.getElementById('listing-modal').classList.add('open');
@@ -467,30 +557,66 @@ async function editListing(id){
 
 function closeListingModal(){document.getElementById('listing-modal').classList.remove('open');}
 
+// PHOTOS with drag-and-drop reorder
 function renderPhotos(){
   const list=document.getElementById('photo-list');
-  list.innerHTML=currentPhotos.map((url,i)=>`<div class="photo-item"><img src="${url}" alt=""><button class="photo-remove" onclick="removePhoto(${i})">×</button></div>`).join('');
+  list.innerHTML=currentPhotos.map((url,i)=>`<div class="photo-item" draggable="true" data-idx="${i}" ondragstart="photoDragStart(event,${i})" ondragover="photoDragOver(event)" ondragenter="photoDragEnter(event)" ondragleave="photoDragLeave(event)" ondrop="photoDrop(event,${i})" ondragend="photoDragEnd(event)">
+    <img src="${url}" alt="">
+    <button class="photo-remove" onclick="removePhoto(${i})">×</button>
+    ${i===0?'<div class="photo-badge">Cover</div>':''}
+  </div>`).join('');
 }
 function removePhoto(i){currentPhotos.splice(i,1);renderPhotos();}
+function photoDragStart(e,i){dragIdx=i;e.currentTarget.classList.add('dragging');}
+function photoDragOver(e){e.preventDefault();}
+function photoDragEnter(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function photoDragLeave(e){e.currentTarget.classList.remove('drag-over');}
+function photoDrop(e,targetIdx){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragIdx===null||dragIdx===targetIdx)return;
+  const item=currentPhotos.splice(dragIdx,1)[0];
+  currentPhotos.splice(targetIdx,0,item);
+  renderPhotos();
+}
+function photoDragEnd(e){e.currentTarget.classList.remove('dragging');dragIdx=null;}
+
+async function resizeImage(file,maxW=1600,quality=0.82){
+  return new Promise((resolve)=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      canvas.toBlob(resolve,'image/jpeg',quality);
+    };
+    img.src=URL.createObjectURL(file);
+  });
+}
 
 async function handlePhotoUpload(input){
   if(!input.files||!input.files.length)return;
   const prog=document.getElementById('upload-progress');
   prog.style.display='block';
-  for(let i=0;i<input.files.length;i++){
+  const total=input.files.length;
+  for(let i=0;i<total;i++){
     const file=input.files[i];
-    prog.textContent=`Uploading ${i+1}/${input.files.length}: ${file.name}…`;
-    const ext=file.name.split('.').pop();
-    const path=`admin-uploads/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
-    const{error}=await sb.storage.from(BUCKET).upload(path,file,{cacheControl:'31536000',upsert:false});
+    prog.textContent=`Optimizing & uploading ${i+1}/${total}: ${file.name}...`;
+    const blob=await resizeImage(file);
+    const ext='jpg';
+    const storagePath=`admin-uploads/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const{error}=await sb.storage.from(BUCKET).upload(storagePath,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});
     if(error){toast('Upload failed: '+error.message);continue;}
-    const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+    const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(storagePath);
     currentPhotos.push(publicUrl);
   }
   prog.style.display='none';
   input.value='';
   renderPhotos();
-  toast('Photos uploaded!');
+  toast(total+' photo'+(total>1?'s':'')+' uploaded!');
 }
 
 async function saveListing(){
@@ -514,15 +640,13 @@ async function saveListing(){
   };
   const editId=document.getElementById('edit-id').value;
   let error;
-  if(editId){
-    ({error}=await sb.from('listings').update(row).eq('id',editId));
-  }else{
-    ({error}=await sb.from('listings').insert(row));
-  }
+  if(editId){({error}=await sb.from('listings').update(row).eq('id',editId));}
+  else{({error}=await sb.from('listings').insert(row));}
   if(error){toast('Save failed: '+error.message);return;}
   closeListingModal();
   toast(editId?'Listing updated!':'Listing added!');
-  loadListings();
+  await loadListings();
+  loadDashboard();
 }
 
 async function deleteListing(id,name){
@@ -530,10 +654,11 @@ async function deleteListing(id,name){
   const{error}=await sb.from('listings').delete().eq('id',id);
   if(error){toast('Delete failed: '+error.message);return;}
   toast('Listing deleted.');
-  loadListings();
+  await loadListings();
+  loadDashboard();
 }
 
-// ── MARK AS SOLD ──
+// MARK AS SOLD
 function openSoldModal(id,name){
   document.getElementById('sold-listing-id').value=id;
   document.getElementById('sold-club-name').value=name;
@@ -558,40 +683,76 @@ async function confirmMarkSold(){
   if(updErr){toast('Failed to mark as sold: '+updErr.message);return;}
   closeSoldModal();
   toast('Marked as sold!');
-  loadListings();
+  await loadListings();
   loadSoldItems();
+  loadDashboard();
 }
 
-// ── SOLD ITEMS ──
+// FB BLURB
+function openFbBlurb(id){
+  const club=allListings.find(c=>c.id===id);
+  if(!club){toast('Club not found.');return;}
+  const price=fmtPrice(club.price);
+  const obo=club.obo?' (OBO)':'';
+  const condition=club.condition?` | Condition: ${club.condition}`:'';
+  const deepLink=SITE_URL+'?club='+encodeURIComponent(club.id);
+
+  const blurb=`${club.name}
+${price}${obo}${condition}
+
+${club.description||'Premium used golf club. Hand-inspected and ready to ship.'}
+
+${club.type} | Ships Nationwide from DFW
+See full gallery + more clubs: ${deepLink}
+
+#golf #golfclubs #usedgolf #dfw #flagstickfinds`;
+
+  document.getElementById('fb-blurb').textContent=blurb;
+
+  const photosEl=document.getElementById('fb-photos');
+  const photos=club.photos||[];
+  photosEl.innerHTML=photos.length?photos.map((url,i)=>`<a href="${url}" target="_blank" style="display:block;width:56px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);"><img src="${url}" style="width:100%;height:100%;object-fit:cover;" alt="Photo ${i+1}"></a>`).join(''):'<span style="font-size:12px;color:var(--gray);">No photos uploaded yet.</span>';
+
+  document.getElementById('fb-modal').classList.add('open');
+}
+function closeFbModal(){document.getElementById('fb-modal').classList.remove('open');}
+function copyFbBlurb(){
+  const text=document.getElementById('fb-blurb').textContent;
+  navigator.clipboard.writeText(text).then(()=>toast('FB post text copied!'));
+}
+function openFbMarketplace(){window.open('https://www.facebook.com/marketplace/create/item','_blank');}
+
+// SHARE LINK
+function copyShareLink(id,name){
+  const url=SITE_URL+'?club='+encodeURIComponent(id);
+  navigator.clipboard.writeText(url).then(()=>toast('Link copied for '+name+'!'));
+}
+
+// SOLD ITEMS
 async function loadSoldItems(){
   const{data,error}=await sb.from('sold').select('*').order('sold_at',{ascending:false});
   const tbody=document.getElementById('sold-tbody');
-  if(error||!data||data.length===0){
-    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">No sold items.</td></tr>';
-    return;
-  }
+  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">No sold items.</td></tr>';return;}
   tbody.innerHTML=data.map(s=>{
-    const photo=s.photo?`<img class="tbl-thumb" src="${s.photo}" alt="">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
+    const photo=s.photo?`<img class="tbl-thumb" src="${s.photo}" alt="" loading="lazy">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
     return `<tr><td>${photo}</td><td class="tbl-name">${s.name||''}</td><td>${s.type||''}</td><td class="tbl-price">${fmtPrice(s.sold_price)}</td><td>${fmtDate(s.sold_at)}</td></tr>`;
   }).join('');
 }
 
-// ── WISHLIST ──
+// WISHLIST
 async function loadWishlist(){
   const{data,error}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
   const tbody=document.getElementById('wishlist-tbody');
-  if(error||!data||data.length===0){
-    tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';
-    return;
-  }
-  tbody.innerHTML=data.map(w=>`<tr><td class="wl-dream">${w.dream_club||''}</td><td>${w.contact||''}</td><td>${fmtDate(w.created_at)}</td></tr>`).join('');
+  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';return;}
+  tbody.innerHTML=data.map(w=>`<tr><td style="font-weight:600;color:var(--green);">${w.dream_club||''}</td><td>${w.contact||''}</td><td>${fmtDate(w.created_at)}</td></tr>`).join('');
 }
 
-// ── CLICK OUTSIDE MODAL ──
-document.getElementById('listing-modal').addEventListener('click',function(e){if(e.target===this)closeListingModal();});
-document.getElementById('sold-modal').addEventListener('click',function(e){if(e.target===this)closeSoldModal();});
+// MODAL CLICK-OUTSIDE
+['listing-modal','sold-modal','fb-modal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+});
 
-// ── INIT ──
+// INIT
 checkSession();
 </script>
 </body>

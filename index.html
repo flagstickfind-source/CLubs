@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Flagstick Finds — Premium Used Golf Clubs · DFW</title>
 <meta name="description" content="Buy, sell, and trade premium used golf clubs in Dallas–Fort Worth. Scotty Cameron, Miura, Mizuno, Ping and more. Ships nationwide.">
+<meta property="og:title" content="Flagstick Finds — Premium Used Golf Clubs">
+<meta property="og:description" content="Hand-selected irons, putters, hybrids and drivers. Every club priced to move — from DFW to your doorstep.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://flagstickfinds.com">
+<meta property="og:image" content="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1200&q=80&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -862,7 +868,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; Flagstick Finds. All rights reserved.</div>
-      <a href="/admin" style="font-size:11px;color:rgba(255,255,255,0.15);text-decoration:none;">Admin</a>
+      <a href="/admin.html" style="font-size:11px;color:rgba(255,255,255,0.15);text-decoration:none;">Admin</a>
     </div>
   </div>
 </footer>
@@ -1393,11 +1399,52 @@ function subscribeNewsletter2() {
   document.getElementById('footer-nl-email').value = '';
 }
 
+// ── Deep link support ──
+function handleDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const clubId = params.get('club');
+  if (!clubId) return;
+  setTimeout(() => {
+    const card = document.getElementById('card-' + clubId);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.transition = 'box-shadow 0.3s, outline 0.3s';
+      card.style.outline = '3px solid var(--gold)';
+      card.style.boxShadow = '0 0 30px rgba(201,168,76,0.4)';
+      setTimeout(() => {
+        card.style.outline = 'none';
+        card.style.boxShadow = '';
+      }, 3000);
+    }
+  }, 800);
+}
+
+// ── Dynamic OG tags for shared club links ──
+function updateOGForClub(club) {
+  if (!club) return;
+  const price = '$' + (club.price / 100).toLocaleString('en-US', {minimumFractionDigits:0});
+  document.title = club.name + ' — ' + price + ' | Flagstick Finds';
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  const ogImg = document.querySelector('meta[property="og:image"]');
+  if (ogTitle) ogTitle.content = club.name + ' — ' + price;
+  if (ogDesc) ogDesc.content = club.description || 'Premium used golf club. Hand-inspected, ships nationwide from DFW.';
+  if (ogImg && club.photos && club.photos[0]) ogImg.content = club.photos[0];
+}
+
 // ── Initialize ──
-window.addEventListener('DOMContentLoaded', () => {
-  loadInventory();
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadInventory();
   loadSold();
   setupScrollSpy();
+  const params = new URLSearchParams(window.location.search);
+  const clubId = params.get('club');
+  if (clubId) {
+    const club = allClubs.find(c => c.id === clubId);
+    updateOGForClub(club);
+    smoothScroll('pro-shop');
+    handleDeepLink();
+  }
 });
 </script>
 </body>

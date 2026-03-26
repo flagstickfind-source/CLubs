@@ -1,0 +1,24 @@
+{
+  "name": "flagstick-site",
+  "version": "1.0.0",
+  "description": "Your golf club shop website. All club photos are stored in this repository and the site is ready to go live on Netlify.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flagstickfind-source/CLubs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flagstickfind-source/CLubs/issues"
+  },
+  "homepage": "https://github.com/flagstickfind-source/CLubs#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.100.1",
+    "sharp": "^0.34.5"
+  }
+}

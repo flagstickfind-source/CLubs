@@ -1,84 +1,47 @@
-# Flagstick Finder — Pro Shop
+# Flagstick Finds
 
-Your golf club shop website. All club photos are stored in this repository and the site is ready to go live on Netlify.
+Premium used golf club shop — Buy, Sell, Trade from DFW, ships nationwide.
 
----
-
-## ✅ What has already been done
-
-- `index.html` — modern, responsive shop website with all 20 clubs listed
-- All 69 photos already committed to this repository
-- Every photo is wired to the correct club card with a swipeable gallery
-- `netlify.toml` — Netlify deployment config (no extra setup required)
+**Live site:** [flagstickfinds.com](https://flagstickfinds.com)
 
 ---
 
-## 🚀 What you need to do next
+## Architecture
 
-### Step 1 — Merge the Pull Request on GitHub
+- **Frontend:** Static HTML/CSS/JS (no build step) deployed on Netlify free tier
+- **Database:** Supabase (tables: `listings`, `sold`, `wishlist`)
+- **Image Storage:** Supabase Storage bucket "Flagstick Finds - Images"
+- **Forms:** Formspree for customer submissions (offers, sell, trade, caddie requests)
+- **Admin:** OTP-authenticated admin panel at `/admin.html`
 
-1. Go to **https://github.com/flagstickfind-source/CLubs/pulls**
-2. Click on the open pull request titled **"Rebuild index.html with modern design and wire all repository images for Netlify"**
-3. Click **"Ready for review"** (removes draft status)
-4. Click **"Merge pull request"** → **"Confirm merge"**
+## Key Files
 
-> This puts all the website files into your `main` branch.
+| File | Purpose |
+|------|---------|
+| `index.html` | Public site — Pro Shop, Trade HQ, Caddie's Lane |
+| `admin.html` | Admin panel — inventory CRUD, photo uploads, FB blurb generator, dashboard |
+| `netlify.toml` | Netlify deploy configuration |
+| `AGENTS.md` | AI agent instructions for working with this codebase |
 
----
+## Admin Features
 
-### Step 2 — Deploy to Netlify
+- **Dashboard** with inventory stats, revenue tracking, and recent activity
+- **Listing management** — create, edit, delete clubs with drag-and-drop photo reordering
+- **Client-side image optimization** — photos resized to 1600px max and compressed before upload
+- **Facebook Marketplace integration** — generate formatted post text with one click
+- **Deep link sharing** — copy `?club=<id>` links that scroll directly to a club on the public site
+- **Mark as Sold** — moves items to sold history with price tracking
 
-#### First time (new site):
+## Development
 
-1. Go to **https://app.netlify.com** and sign in (or create a free account)
-2. Click **"Add new site"** → **"Import an existing project"**
-3. Choose **"Deploy with GitHub"**
-4. Authorize Netlify and select the **`flagstickfind-source/CLubs`** repository
-5. Leave all build settings blank — the `netlify.toml` file handles everything automatically
-6. Click **"Deploy site"**
+Serve the repo root locally:
 
-Netlify will give you a free URL like `https://flagstick-finder-abc123.netlify.app` within about 60 seconds.
-
-#### Optional — use a custom domain:
-
-1. In Netlify, go to **Site configuration → Domain management**
-2. Click **"Add a domain"** and enter your custom domain (e.g. `flagstickfinder.com`)
-3. Follow Netlify's DNS instructions to point your domain at the site
-
----
-
-### Step 3 — Future updates
-
-Any time you want to update the site (add new clubs, change prices, add photos):
-
-1. Add new photos to the repository via GitHub's web interface — drag and drop on the repository home page
-2. Edit `index.html` to add the new club entry in the `clubs` array
-3. Commit the changes
-4. Netlify automatically re-deploys within ~60 seconds — no manual steps needed
-
----
-
-## 📸 Adding a new club (quick guide)
-
-In `index.html`, find the `clubs` array in the `<script>` section and add an entry like this:
-
-```js
-{
-  id: 'your-club-id',           // unique slug, no spaces
-  name: 'Brand Model Name',     // shown on the card
-  type: 'Putter',               // Putter | Iron | Hybrid | Driver
-  ideal: 250,                   // asking price in $
-  low: 175,                     // lowest you'd accept
-  obo: true,                    // show "OBO" badge?
-  photos: ['Your%20Photo.jpg'], // filenames URL-encoded (spaces → %20)
-  desc: 'Short description of the club condition and specs.'
-},
+```
+python3 -m http.server 8000
 ```
 
----
+No dependencies needed for the site itself. The `scripts/` directory contains optional Node.js migration tools.
 
-## 📬 Contact info on the site
+## Deployment
 
-- **Facebook Marketplace:** https://www.facebook.com/marketplace
-- **Email:** adamsjerram11@gmail.com
-- **Location:** Dallas–Fort Worth, TX · Ships Nationwide
+Pushes to `main` auto-deploy via Netlify. Images are served from Supabase Storage, not from the repo. The `.gitignore` blocks image files from being committed.

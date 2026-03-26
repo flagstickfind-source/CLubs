@@ -1,0 +1,23 @@
+# Images (served from Supabase Storage, not from Git)
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.png
+*.PNG
+*.webp
+*.WEBP
+*.heic
+*.HEIC
+
+# Node
+node_modules/
+package-lock.json
+
+# Migration artifacts
+_data/photo-map.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
