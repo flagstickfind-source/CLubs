@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flagstick Finds — Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1a4731;--dark:#122d20;--mid:#245c3e;--pale:#eef5f1;--gborder:#c3ddd0;
+  --cream:#f0ebe0;--white:#ffffff;--black:#0d0d0d;
+  --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#8a6a00;
+  --gray:#7a7265;--gbray:#e0d9ce;
+  --radius:10px;--trans:0.2s ease;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);font-size:14px;line-height:1.6;}
+
+/* ── LOGIN ── */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);}
+.login-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--dark);text-align:center;margin-bottom:0.25rem;}
+.login-logo span{color:var(--gold);}
+.login-sub{text-align:center;font-size:12px;color:var(--gray);margin-bottom:2rem;letter-spacing:0.06em;text-transform:uppercase;}
+.login-group{margin-bottom:1rem;}
+.login-label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;}
+.login-input{width:100%;padding:0.7rem 0.85rem;border:1px solid var(--gbray);border-radius:8px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
+.login-input:focus{border-color:var(--green);}
+.login-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--trans);margin-top:0.5rem;}
+.login-btn:hover{background:var(--mid);}
+.login-error{color:#c0392b;font-size:12px;margin-top:0.75rem;text-align:center;display:none;}
+.login-info{color:var(--gray);font-size:11px;margin-top:1rem;text-align:center;}
+
+/* ── OTP SCREEN ── */
+#otp-screen{min-height:100vh;display:none;align-items:center;justify-content:center;background:var(--dark);}
+.otp-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;}
+.otp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--dark);margin-bottom:0.5rem;}
+.otp-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem;}
+.otp-input{width:100%;padding:0.8rem;border:1px solid var(--gbray);border-radius:8px;font-size:18px;font-family:'Barlow',sans-serif;text-align:center;letter-spacing:0.3em;outline:none;}
+.otp-input:focus{border-color:var(--green);}
+.otp-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:1rem;}
+.otp-error{color:#c0392b;font-size:12px;margin-top:0.75rem;display:none;}
+
+/* ── ADMIN SHELL ── */
+#admin-shell{display:none;}
+.admin-nav{background:var(--dark);height:56px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:sticky;top:0;z-index:50;}
+.admin-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--white);}
+.admin-logo span{color:var(--gold);}
+.admin-tabs{display:flex;gap:0.25rem;flex:1;justify-content:center;}
+.admin-tab{font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);padding:0.4rem 1rem;border-radius:6px;cursor:pointer;transition:all var(--trans);border:none;background:none;letter-spacing:0.02em;}
+.admin-tab:hover{color:rgba(255,255,255,0.8);}
+.admin-tab.active{color:var(--white);background:rgba(255,255,255,0.1);}
+.admin-logout{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.15);padding:0.35rem 0.85rem;border-radius:6px;cursor:pointer;transition:all var(--trans);}
+.admin-logout:hover{color:var(--white);border-color:rgba(255,255,255,0.4);}
+
+/* ── PANELS ── */
+.panel{display:none;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
+.panel.active{display:block;}
+.panel-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;color:var(--black);margin-bottom:0.5rem;}
+.panel-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem;}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--gbray);border-radius:var(--radius);background:var(--white);}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--pale);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);padding:0.7rem 0.75rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--gbray);}
+td{padding:0.65rem 0.75rem;border-bottom:1px solid var(--gbray);font-size:13px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover{background:var(--pale);}
+.tbl-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--pale);}
+.tbl-name{font-weight:600;color:var(--black);}
+.tbl-price{font-weight:700;color:var(--green);}
+.tbl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em;}
+.tbl-badge-sold{background:#fee;color:#c0392b;}
+.tbl-badge-active{background:#efd;color:var(--green);}
+.tbl-actions{display:flex;gap:0.35rem;}
+.btn-sm{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;transition:all var(--trans);border:none;}
+.btn-edit{background:var(--pale);color:var(--green);border:1px solid var(--gborder);}
+.btn-edit:hover{background:var(--green);color:var(--white);}
+.btn-sold{background:#fff8e1;color:var(--gold-d);border:1px solid var(--gold-l);}
+.btn-sold:hover{background:var(--gold);color:#1a1a1a;}
+.btn-del{background:#fee;color:#c0392b;border:1px solid #fcc;}
+.btn-del:hover{background:#c0392b;color:#fff;}
+.btn-add{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.25rem;background:var(--green);color:var(--white);border:none;border-radius:8px;cursor:pointer;transition:background var(--trans);margin-bottom:1.5rem;}
+.btn-add:hover{background:var(--mid);}
+
+/* ── MODAL ── */
+.adm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+.adm-modal-overlay.open{display:flex;}
+.adm-modal{background:var(--white);border-radius:12px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,0.2);margin-top:2rem;margin-bottom:2rem;}
+.adm-modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--gbray);}
+.adm-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;}
+.adm-modal-close{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:var(--gray);display:flex;align-items:center;justify-content:center;}
+.adm-modal-body{padding:1.5rem;max-height:70vh;overflow-y:auto;}
+.adm-modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--gbray);display:flex;gap:0.75rem;justify-content:flex-end;}
+.fg{margin-bottom:1rem;}
+.fg label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:0.6rem 0.75rem;border:1px solid var(--gbray);border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--green);}
+.fg textarea{resize:vertical;min-height:70px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.fg-check{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;}
+.fg-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);}
+.fg-check label{font-size:12px;color:var(--black);text-transform:none;letter-spacing:0;}
+.photo-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;}
+.photo-item{position:relative;width:64px;height:64px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);}
+.photo-item img{width:100%;height:100%;object-fit:cover;}
+.photo-item .photo-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.upload-area{border:2px dashed var(--gbray);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--trans);position:relative;}
+.upload-area:hover{border-color:var(--green);background:var(--pale);}
+.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-area-text{font-size:12px;color:var(--gray);}
+.upload-progress{font-size:11px;color:var(--gold-d);margin-top:0.5rem;display:none;}
+
+/* ── WISHLIST TABLE ── */
+.wl-dream{font-weight:600;color:var(--green);}
+
+/* ── TOAST ── */
+.adm-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--black);color:#fff;padding:0.75rem 1.25rem;border-radius:8px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s ease;pointer-events:none;max-width:360px;line-height:1.5;}
+.adm-toast.show{transform:translateY(0);opacity:1;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .fg-row{grid-template-columns:1fr;}
+  .admin-tabs{gap:0;flex-wrap:wrap;}
+  .admin-tab{font-size:11px;padding:0.35rem 0.6rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">FLAGSTICK <span>FINDS</span></div>
+    <div class="login-sub">Admin Panel</div>
+    <div class="login-group">
+      <label class="login-label">Email</label>
+      <input class="login-input" type="email" id="login-email" placeholder="admin@flagstickfinds.com">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="sendOtp()">Sign In with Magic Link</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-info">A one-time code will be sent to your email.</div>
+  </div>
+</div>
+
+<!-- OTP -->
+<div id="otp-screen">
+  <div class="otp-box">
+    <div class="otp-title">Check Your Email</div>
+    <div class="otp-sub" id="otp-sub">We sent a 6-digit code to your email.</div>
+    <input class="otp-input" type="text" id="otp-input" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+    <button class="otp-btn" onclick="verifyOtp()">Verify Code</button>
+    <div class="otp-error" id="otp-error"></div>
+  </div>
+</div>
+
+<!-- ADMIN SHELL -->
+<div id="admin-shell">
+  <nav class="admin-nav">
+    <div class="admin-logo">FLAGSTICK <span>FINDS</span></div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchPanel('listings',this)">Listings</button>
+      <button class="admin-tab" onclick="switchPanel('sold',this)">Sold</button>
+      <button class="admin-tab" onclick="switchPanel('wishlist',this)">Wishlist</button>
+    </div>
+    <button class="admin-logout" onclick="logout()">Sign Out</button>
+  </nav>
+
+  <!-- LISTINGS PANEL -->
+  <div class="panel active" id="panel-listings">
+    <div class="panel-title">Manage Listings</div>
+    <div class="panel-sub">Add, edit, and manage your club inventory.</div>
+    <button class="btn-add" onclick="openAddModal()">+ Add New Listing</button>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Photo</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="listings-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SOLD PANEL -->
+  <div class="panel" id="panel-sold">
+    <div class="panel-title">Sold Items</div>
+    <div class="panel-sub">Clubs that have been marked as sold.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Photo</th><th>Name</th><th>Type</th><th>Sold Price</th><th>Date</th></tr>
+        </thead>
+        <tbody id="sold-tbody">
+          <tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- WISHLIST PANEL -->
+  <div class="panel" id="panel-wishlist">
+    <div class="panel-title">Wishlist Submissions</div>
+    <div class="panel-sub">Caddie's Lane wishlist entries from customers.</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Dream Club</th><th>Contact</th><th>Date</th></tr>
+        </thead>
+        <tbody id="wishlist-tbody">
+          <tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- LISTING MODAL -->
+<div class="adm-modal-overlay" id="listing-modal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <div class="adm-modal-title" id="modal-title">Add Listing</div>
+      <button class="adm-modal-close" onclick="closeListingModal()">×</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="edit-id">
+      <div class="fg">
+        <label>Club Name *</label>
+        <input type="text" id="f-name" placeholder="e.g. Scotty Cameron Phantom X 7">
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>Type *</label>
+          <select id="f-type">
+            <option value="">Select…</option>
+            <option value="Putter">Putter</option>
+            <option value="Iron">Iron</option>
+            <option value="TeeBox">Tee Box</option>
+            <option value="Wedge">Wedge</option>
+            <option value="Driver">Driver</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Fairway">Fairway Wood</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Condition</label>
+          <select id="f-condition">
+            <option value="">Select…</option>
+            <option value="Like New">Like New</option>
+            <option value="Great">Great</option>
+            <option value="Good/Gamer">Good/Gamer</option>
+            <option value="Fair">Fair</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>Price (cents) *</label>
+          <input type="number" id="f-price" placeholder="e.g. 25000 = $250">
+        </div>
+        <div class="fg">
+          <label>Sort Order</label>
+          <input type="number" id="f-sort" placeholder="0" value="0">
+        </div>
+      </div>
+      <div class="fg">
+        <label>Description</label>
+        <textarea id="f-desc" placeholder="Short description of the club…"></textarea>
+      </div>
+      <div class="fg-row">
+        <div class="fg-check"><input type="checkbox" id="f-obo"><label for="f-obo">OBO (Or Best Offer)</label></div>
+        <div class="fg-check"><input type="checkbox" id="f-luxury"><label for="f-luxury">Luxury Card</label></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg-check"><input type="checkbox" id="f-badge-new"><label for="f-badge-new">New Arrival</label></div>
+        <div class="fg-check"><input type="checkbox" id="f-badge-featured"><label for="f-badge-featured">Featured</label></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg-check"><input type="checkbox" id="f-badge-verified"><label for="f-badge-verified">Caddie Verified</label></div>
+        <div class="fg-check"><input type="checkbox" id="f-badge-limited"><label for="f-badge-limited">Limited</label></div>
+      </div>
+      <div class="fg">
+        <label>Photos</label>
+        <div class="photo-list" id="photo-list"></div>
+        <div class="upload-area" id="upload-area">
+          <input type="file" id="photo-upload" multiple accept="image/*" onchange="handlePhotoUpload(this)">
+          <div class="upload-area-text">📸 Click or drag to upload photos</div>
+        </div>
+        <div class="upload-progress" id="upload-progress"></div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm btn-edit" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="closeListingModal()">Cancel</button>
+      <button class="btn-add" style="margin:0;" id="modal-save-btn" onclick="saveListing()">Save Listing</button>
+    </div>
+  </div>
+</div>
+
+<!-- SOLD PRICE MODAL -->
+<div class="adm-modal-overlay" id="sold-modal">
+  <div class="adm-modal" style="max-width:400px;">
+    <div class="adm-modal-head">
+      <div class="adm-modal-title">Mark as Sold</div>
+      <button class="adm-modal-close" onclick="closeSoldModal()">×</button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="sold-listing-id">
+      <div class="fg">
+        <label>Club</label>
+        <input type="text" id="sold-club-name" readonly style="background:#f9f9f9;">
+      </div>
+      <div class="fg">
+        <label>Sold Price (cents) *</label>
+        <input type="number" id="sold-price" placeholder="e.g. 22000 = $220">
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn-sm btn-edit" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="closeSoldModal()">Cancel</button>
+      <button class="btn-sm btn-sold" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="confirmMarkSold()">Confirm Sold</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="adm-toast" id="adm-toast"></div>
+
+<script>
+const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
+const BUCKET='Flagstick Finds - Images';
+const{createClient}=supabase;
+const sb=createClient(SUPA_URL,SUPA_KEY);
+
+let currentPhotos=[];
+let loginEmail='';
+
+function toast(msg){const t=document.getElementById('adm-toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+function fmtPrice(c){return c?'$'+(c/100).toLocaleString('en-US',{minimumFractionDigits:0}):'—';}
+function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+// ── AUTH ──
+async function sendOtp(){
+  const email=document.getElementById('login-email').value.trim();
+  if(!email){showLoginErr('Please enter your email.');return;}
+  loginEmail=email;
+  document.getElementById('login-btn').textContent='Sending…';
+  const{error}=await sb.auth.signInWithOtp({email});
+  document.getElementById('login-btn').textContent='Sign In with Magic Link';
+  if(error){showLoginErr(error.message);return;}
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('otp-screen').style.display='flex';
+  document.getElementById('otp-sub').textContent='We sent a 6-digit code to '+email;
+  document.getElementById('otp-input').focus();
+}
+function showLoginErr(msg){const el=document.getElementById('login-error');el.textContent=msg;el.style.display='block';}
+
+async function verifyOtp(){
+  const token=document.getElementById('otp-input').value.trim();
+  if(!token||token.length<6){showOtpErr('Please enter the 6-digit code.');return;}
+  const{error}=await sb.auth.verifyOtp({email:loginEmail,token,type:'email'});
+  if(error){showOtpErr(error.message);return;}
+  showAdmin();
+}
+function showOtpErr(msg){const el=document.getElementById('otp-error');el.textContent=msg;el.style.display='block';}
+
+async function checkSession(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){showAdmin();}
+}
+
+function showAdmin(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('otp-screen').style.display='none';
+  document.getElementById('admin-shell').style.display='block';
+  loadListings();
+  loadSoldItems();
+  loadWishlist();
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  location.reload();
+}
+
+// ── PANELS ──
+function switchPanel(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── LISTINGS ──
+async function loadListings(){
+  const{data,error}=await sb.from('listings').select('*').order('sort_order').order('created_at',{ascending:false});
+  const tbody=document.getElementById('listings-tbody');
+  if(error||!data||data.length===0){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No listings found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map(c=>{
+    const photo=(c.photos&&c.photos[0])?`<img class="tbl-thumb" src="${c.photos[0]}" alt="">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
+    const status=c.sold?'<span class="tbl-badge tbl-badge-sold">Sold</span>':'<span class="tbl-badge tbl-badge-active">Active</span>';
+    const soldBtn=c.sold?'':`<button class="btn-sm btn-sold" onclick="openSoldModal('${c.id}','${(c.name||'').replace(/'/g,"\\'")}')">Sold</button>`;
+    return `<tr>
+      <td>${photo}</td>
+      <td class="tbl-name">${c.name||''}</td>
+      <td>${c.type||''}</td>
+      <td class="tbl-price">${fmtPrice(c.price)}</td>
+      <td>${status}</td>
+      <td class="tbl-actions">
+        <button class="btn-sm btn-edit" onclick="editListing('${c.id}')">Edit</button>
+        ${soldBtn}
+        <button class="btn-sm btn-del" onclick="deleteListing('${c.id}','${(c.name||'').replace(/'/g,"\\'")}')">Delete</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ADD / EDIT MODAL ──
+function openAddModal(){
+  document.getElementById('edit-id').value='';
+  document.getElementById('modal-title').textContent='Add Listing';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-type').value='';
+  document.getElementById('f-condition').value='';
+  document.getElementById('f-price').value='';
+  document.getElementById('f-sort').value='0';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-obo').checked=false;
+  document.getElementById('f-luxury').checked=false;
+  document.getElementById('f-badge-new').checked=false;
+  document.getElementById('f-badge-featured').checked=false;
+  document.getElementById('f-badge-verified').checked=false;
+  document.getElementById('f-badge-limited').checked=false;
+  currentPhotos=[];
+  renderPhotos();
+  document.getElementById('listing-modal').classList.add('open');
+}
+
+async function editListing(id){
+  const{data,error}=await sb.from('listings').select('*').eq('id',id).single();
+  if(error||!data){toast('Failed to load listing.');return;}
+  document.getElementById('edit-id').value=id;
+  document.getElementById('modal-title').textContent='Edit Listing';
+  document.getElementById('f-name').value=data.name||'';
+  document.getElementById('f-type').value=data.type||'';
+  document.getElementById('f-condition').value=data.condition||'';
+  document.getElementById('f-price').value=data.price||'';
+  document.getElementById('f-sort').value=data.sort_order||0;
+  document.getElementById('f-desc').value=data.description||'';
+  document.getElementById('f-obo').checked=!!data.obo;
+  document.getElementById('f-luxury').checked=!!data.luxury;
+  document.getElementById('f-badge-new').checked=!!data.badge_new;
+  document.getElementById('f-badge-featured').checked=!!data.badge_featured;
+  document.getElementById('f-badge-verified').checked=!!data.badge_verified;
+  document.getElementById('f-badge-limited').checked=!!data.badge_limited;
+  currentPhotos=(data.photos||[]).slice();
+  renderPhotos();
+  document.getElementById('listing-modal').classList.add('open');
+}
+
+function closeListingModal(){document.getElementById('listing-modal').classList.remove('open');}
+
+function renderPhotos(){
+  const list=document.getElementById('photo-list');
+  list.innerHTML=currentPhotos.map((url,i)=>`<div class="photo-item"><img src="${url}" alt=""><button class="photo-remove" onclick="removePhoto(${i})">×</button></div>`).join('');
+}
+function removePhoto(i){currentPhotos.splice(i,1);renderPhotos();}
+
+async function handlePhotoUpload(input){
+  if(!input.files||!input.files.length)return;
+  const prog=document.getElementById('upload-progress');
+  prog.style.display='block';
+  for(let i=0;i<input.files.length;i++){
+    const file=input.files[i];
+    prog.textContent=`Uploading ${i+1}/${input.files.length}: ${file.name}…`;
+    const ext=file.name.split('.').pop();
+    const path=`admin-uploads/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const{error}=await sb.storage.from(BUCKET).upload(path,file,{cacheControl:'31536000',upsert:false});
+    if(error){toast('Upload failed: '+error.message);continue;}
+    const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+    currentPhotos.push(publicUrl);
+  }
+  prog.style.display='none';
+  input.value='';
+  renderPhotos();
+  toast('Photos uploaded!');
+}
+
+async function saveListing(){
+  const name=document.getElementById('f-name').value.trim();
+  const type=document.getElementById('f-type').value;
+  const price=parseInt(document.getElementById('f-price').value)||0;
+  if(!name||!type||!price){toast('Name, type, and price are required.');return;}
+  const row={
+    name,type,price,
+    condition:document.getElementById('f-condition').value||null,
+    description:document.getElementById('f-desc').value.trim()||null,
+    sort_order:parseInt(document.getElementById('f-sort').value)||0,
+    obo:document.getElementById('f-obo').checked,
+    luxury:document.getElementById('f-luxury').checked,
+    badge_new:document.getElementById('f-badge-new').checked,
+    badge_featured:document.getElementById('f-badge-featured').checked,
+    badge_verified:document.getElementById('f-badge-verified').checked,
+    badge_limited:document.getElementById('f-badge-limited').checked,
+    photos:currentPhotos,
+    sold:false,
+  };
+  const editId=document.getElementById('edit-id').value;
+  let error;
+  if(editId){
+    ({error}=await sb.from('listings').update(row).eq('id',editId));
+  }else{
+    ({error}=await sb.from('listings').insert(row));
+  }
+  if(error){toast('Save failed: '+error.message);return;}
+  closeListingModal();
+  toast(editId?'Listing updated!':'Listing added!');
+  loadListings();
+}
+
+async function deleteListing(id,name){
+  if(!confirm('Delete "'+name+'"? This cannot be undone.'))return;
+  const{error}=await sb.from('listings').delete().eq('id',id);
+  if(error){toast('Delete failed: '+error.message);return;}
+  toast('Listing deleted.');
+  loadListings();
+}
+
+// ── MARK AS SOLD ──
+function openSoldModal(id,name){
+  document.getElementById('sold-listing-id').value=id;
+  document.getElementById('sold-club-name').value=name;
+  document.getElementById('sold-price').value='';
+  document.getElementById('sold-modal').classList.add('open');
+}
+function closeSoldModal(){document.getElementById('sold-modal').classList.remove('open');}
+
+async function confirmMarkSold(){
+  const id=document.getElementById('sold-listing-id').value;
+  const soldPrice=parseInt(document.getElementById('sold-price').value)||0;
+  if(!soldPrice){toast('Please enter a sold price.');return;}
+  const{data:listing,error:fetchErr}=await sb.from('listings').select('*').eq('id',id).single();
+  if(fetchErr||!listing){toast('Failed to fetch listing.');return;}
+  const{error:insErr}=await sb.from('sold').insert({
+    name:listing.name,type:listing.type,sold_price:soldPrice,
+    photo:(listing.photos&&listing.photos[0])||null,
+    sold_at:new Date().toISOString()
+  });
+  if(insErr){toast('Failed to add to sold: '+insErr.message);return;}
+  const{error:updErr}=await sb.from('listings').update({sold:true}).eq('id',id);
+  if(updErr){toast('Failed to mark as sold: '+updErr.message);return;}
+  closeSoldModal();
+  toast('Marked as sold!');
+  loadListings();
+  loadSoldItems();
+}
+
+// ── SOLD ITEMS ──
+async function loadSoldItems(){
+  const{data,error}=await sb.from('sold').select('*').order('sold_at',{ascending:false});
+  const tbody=document.getElementById('sold-tbody');
+  if(error||!data||data.length===0){
+    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">No sold items.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map(s=>{
+    const photo=s.photo?`<img class="tbl-thumb" src="${s.photo}" alt="">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
+    return `<tr><td>${photo}</td><td class="tbl-name">${s.name||''}</td><td>${s.type||''}</td><td class="tbl-price">${fmtPrice(s.sold_price)}</td><td>${fmtDate(s.sold_at)}</td></tr>`;
+  }).join('');
+}
+
+// ── WISHLIST ──
+async function loadWishlist(){
+  const{data,error}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
+  const tbody=document.getElementById('wishlist-tbody');
+  if(error||!data||data.length===0){
+    tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map(w=>`<tr><td class="wl-dream">${w.dream_club||''}</td><td>${w.contact||''}</td><td>${fmtDate(w.created_at)}</td></tr>`).join('');
+}
+
+// ── CLICK OUTSIDE MODAL ──
+document.getElementById('listing-modal').addEventListener('click',function(e){if(e.target===this)closeListingModal();});
+document.getElementById('sold-modal').addEventListener('click',function(e){if(e.target===this)closeSoldModal();});
+
+// ── INIT ──
+checkSession();
+</script>
+</body>
+</html>
