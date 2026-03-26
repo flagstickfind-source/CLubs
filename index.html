@@ -1052,10 +1052,10 @@ async function loadSold() {
 }
 function renderSoldFallback() {
   const items = [
-    {name:'Scotty Cameron Newport 2',type:'Putter',sold_price:42000,photo:'',sold_at:new Date(Date.now()-2*86400000).toISOString()},
-    {name:'Miura CB57 Irons',type:'Iron',sold_price:95000,photo:'',sold_at:new Date(Date.now()-5*86400000).toISOString()},
-    {name:'Ping G425 Max Driver',type:'Driver',sold_price:21000,photo:'',sold_at:new Date(Date.now()-7*86400000).toISOString()},
-    {name:'Mizuno MP-20 Irons',type:'Iron',sold_price:68000,photo:'',sold_at:new Date(Date.now()-14*86400000).toISOString()},
+    {name:'Scotty Cameron Newport 2',type:'Putter',sold_price:42000,photo:'https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/Flagstick%20Finds%20-%20Images/Newport%20face.jpg',sold_at:new Date(Date.now()-2*86400000).toISOString()},
+    {name:'Miura CB57 Irons',type:'Iron',sold_price:95000,photo:'https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/Flagstick%20Finds%20-%20Images/Muira%20CB57%20Irons.jpg',sold_at:new Date(Date.now()-5*86400000).toISOString()},
+    {name:'Ping G425 Max Driver',type:'Driver',sold_price:21000,photo:'https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/Flagstick%20Finds%20-%20Images/Ping425%20face.jpg',sold_at:new Date(Date.now()-7*86400000).toISOString()},
+    {name:'Mizuno MP-20 Irons',type:'Iron',sold_price:68000,photo:'https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/Flagstick%20Finds%20-%20Images/Mizuno%20Cover%204-pw.jpg',sold_at:new Date(Date.now()-14*86400000).toISOString()},
   ];
   renderSoldGrid(items);
 }
