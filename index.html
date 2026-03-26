@@ -1386,4 +1386,17 @@ function subscribeNewsletter() {
   document.getElementById('nl-email').value = '';
 }
 function subscribeNewsletter2() {
-  const email = document.getElementById('foot
+  const email = document.getElementById('footer-email').value.trim();
+  if (!email) return;
+  showToast('✓ You\'re in the bag! Watch your inbox.');
+  document.getElementById('footer-email').value = '';
+}
+
+// ── Initialize ──
+window.addEventListener('DOMContentLoaded', () => {
+  loadInventory();
+  loadSold();
+});
+</script>
+</body>
+</html>
