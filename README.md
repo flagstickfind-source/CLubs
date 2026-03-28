@@ -18,7 +18,7 @@ Premium used golf club shop — Buy, Sell, Trade from DFW, ships nationwide.
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Public site — Pro Shop, Trade HQ, Caddie's Lane |
+| `index.html` | Public site — Pro Shop, Trade HQ, Caddie Lane |
 | `admin.html` | Admin panel — inventory CRUD, photo uploads, FB blurb generator, dashboard |
 | `netlify.toml` | Netlify deploy configuration |
 | `AGENTS.md` | AI agent instructions for working with this codebase |

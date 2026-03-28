@@ -77,7 +77,7 @@ th{background:var(--pale);font-size:10px;font-weight:700;text-transform:uppercas
 td{padding:0.65rem 0.75rem;border-bottom:1px solid var(--gbray);font-size:13px;vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover{background:var(--pale);}
-.tbl-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--pale);}
+.tbl-thumb{width:40px;height:40px;border-radius:6px;object-fit:contain;background:var(--pale);}
 .tbl-name{font-weight:600;color:var(--black);}
 .tbl-price{font-weight:700;color:var(--green);}
 .tbl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em;display:inline-block;}
@@ -126,7 +126,7 @@ tr:hover{background:var(--pale);}
 .photo-item{position:relative;width:72px;height:72px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);cursor:grab;transition:transform 0.15s;}
 .photo-item.dragging{opacity:0.4;transform:scale(0.9);}
 .photo-item.drag-over{border-color:var(--green);border-width:2px;}
-.photo-item img{width:100%;height:100%;object-fit:cover;}
+.photo-item img{width:100%;height:100%;object-fit:contain;}
 .photo-item .photo-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 .photo-item .photo-badge{position:absolute;bottom:2px;left:2px;font-size:8px;background:var(--green);color:#fff;padding:1px 4px;border-radius:2px;}
 .upload-area{border:2px dashed var(--gbray);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--trans);position:relative;}
@@ -247,7 +247,7 @@ tr:hover{background:var(--pale);}
   <!-- WISHLIST -->
   <div class="panel" id="panel-wishlist">
     <div class="panel-title">Wishlist Submissions</div>
-    <div class="panel-sub">Caddie's Lane wishlist entries from customers.</div>
+    <div class="panel-sub">Caddie Lane wishlist entries from customers.</div>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Dream Club</th><th>Contact</th><th>Date</th></tr></thead>
@@ -269,6 +269,10 @@ tr:hover{background:var(--pale);}
       <div class="fg">
         <label>Club Name *</label>
         <input type="text" id="f-name" placeholder="e.g. Scotty Cameron Phantom X 7">
+      </div>
+      <div class="fg">
+        <label>Brand</label>
+        <input type="text" id="f-brand" placeholder="e.g. Scotty Cameron, Miura, Ping">
       </div>
       <div class="fg-row">
         <div class="fg">
@@ -523,7 +527,7 @@ function renderListings(list){
 function openAddModal(){
   document.getElementById('edit-id').value='';
   document.getElementById('modal-title').textContent='Add Listing';
-  ['f-name','f-desc'].forEach(id=>document.getElementById(id).value='');
+  ['f-name','f-brand','f-desc'].forEach(id=>document.getElementById(id).value='');
   ['f-type','f-condition'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-price').value='';
   document.getElementById('f-sort').value='0';
@@ -539,6 +543,7 @@ async function editListing(id){
   document.getElementById('edit-id').value=id;
   document.getElementById('modal-title').textContent='Edit Listing';
   document.getElementById('f-name').value=data.name||'';
+  document.getElementById('f-brand').value=data.brand||'';
   document.getElementById('f-type').value=data.type||'';
   document.getElementById('f-condition').value=data.condition||'';
   document.getElementById('f-price').value=data.price||'';
@@ -599,9 +604,12 @@ async function resizeImage(file,maxW=1600,quality=0.82){
 
 async function handlePhotoUpload(input){
   if(!input.files||!input.files.length)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){toast('Session expired. Please sign in again.');return;}
   const prog=document.getElementById('upload-progress');
   prog.style.display='block';
   const total=input.files.length;
+  let uploaded=0;
   for(let i=0;i<total;i++){
     const file=input.files[i];
     prog.textContent=`Optimizing & uploading ${i+1}/${total}: ${file.name}...`;
@@ -609,14 +617,19 @@ async function handlePhotoUpload(input){
     const ext='jpg';
     const storagePath=`admin-uploads/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
     const{error}=await sb.storage.from(BUCKET).upload(storagePath,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});
-    if(error){toast('Upload failed: '+error.message);continue;}
+    if(error){
+      console.error('Upload error:',error);
+      toast('Upload failed: '+error.message);
+      continue;
+    }
     const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(storagePath);
     currentPhotos.push(publicUrl);
+    uploaded++;
   }
   prog.style.display='none';
   input.value='';
   renderPhotos();
-  toast(total+' photo'+(total>1?'s':'')+' uploaded!');
+  if(uploaded>0) toast(uploaded+' photo'+(uploaded>1?'s':'')+' uploaded!');
 }
 
 async function saveListing(){
@@ -626,6 +639,7 @@ async function saveListing(){
   if(!name||!type||!price){toast('Name, type, and price are required.');return;}
   const row={
     name,type,price,
+    brand:document.getElementById('f-brand').value.trim()||null,
     condition:document.getElementById('f-condition').value||null,
     description:document.getElementById('f-desc').value.trim()||null,
     sort_order:parseInt(document.getElementById('f-sort').value)||0,
@@ -639,10 +653,10 @@ async function saveListing(){
     sold:false,
   };
   const editId=document.getElementById('edit-id').value;
-  let error;
-  if(editId){({error}=await sb.from('listings').update(row).eq('id',editId));}
-  else{({error}=await sb.from('listings').insert(row));}
-  if(error){toast('Save failed: '+error.message);return;}
+  let result;
+  if(editId){result=await sb.from('listings').update(row).eq('id',editId).select();}
+  else{result=await sb.from('listings').insert(row).select();}
+  if(result.error){toast('Save failed: '+result.error.message);console.error('Save error:',result.error);return;}
   closeListingModal();
   toast(editId?'Listing updated!':'Listing added!');
   await loadListings();
@@ -711,7 +725,7 @@ See full gallery + more clubs: ${deepLink}
 
   const photosEl=document.getElementById('fb-photos');
   const photos=club.photos||[];
-  photosEl.innerHTML=photos.length?photos.map((url,i)=>`<a href="${url}" target="_blank" style="display:block;width:56px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);"><img src="${url}" style="width:100%;height:100%;object-fit:cover;" alt="Photo ${i+1}"></a>`).join(''):'<span style="font-size:12px;color:var(--gray);">No photos uploaded yet.</span>';
+  photosEl.innerHTML=photos.length?photos.map((url,i)=>`<a href="${url}" target="_blank" style="display:block;width:56px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);"><img src="${url}" style="width:100%;height:100%;object-fit:contain;" alt="Photo ${i+1}"></a>`).join(''):'<span style="font-size:12px;color:var(--gray);">No photos uploaded yet.</span>';
 
   document.getElementById('fb-modal').classList.add('open');
 }

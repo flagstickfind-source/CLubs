@@ -18,7 +18,7 @@ Then open `http://localhost:8000`.
 ## Key Files
 | File | Purpose |
 |---|---|
-| `index.html` | Public-facing site (Pro Shop, Trade HQ, Caddie's Lane) |
+| `index.html` | Public-facing site (Pro Shop, Trade HQ, Caddie Lane) |
 | `admin.html` | Admin panel (listings CRUD, photo upload, FB blurb generator, dashboard) |
 | `netlify.toml` | Netlify deploy config |
 | `_data/clubs.json` | Legacy fallback data (Supabase is the primary data source) |
