@@ -184,58 +184,72 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 #trade-hq{background:var(--dark);padding:5rem 0 4rem;}
 .trade-kicker{color:var(--gold);}
 .trade-title{color:var(--white);}
+.trade-slogan{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3vw,28px);color:var(--gold);margin-top:0.75rem;font-weight:400;}
+.trade-slogan-sub{font-family:'Barlow',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin-top:0.35rem;font-weight:300;letter-spacing:0.02em;}
 .trade-promise{color:rgba(255,255,255,0.85);font-family:'Barlow',sans-serif;font-size:14px;line-height:1.8;margin-top:0.75rem;max-width:560px;font-weight:600;}
 .trade-promise span{color:rgba(255,255,255,0.55);font-weight:400;}
-.trade-paths{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem;margin-bottom:2.5rem;}
-.path-card{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.75rem;cursor:pointer;transition:all var(--trans);text-align:left;}
-.path-card:hover,.path-card.active{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.25);}
-.path-card.active{border-color:var(--gold);}
-.path-icon{font-size:28px;margin-bottom:0.75rem;}
-.path-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);text-transform:uppercase;margin-bottom:0.35rem;}
-.path-desc{font-family:'Barlow',sans-serif;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.trade-paths{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;margin-bottom:2.5rem;}
+.path-card{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:2.25rem 2rem;cursor:pointer;transition:all 0.3s ease;text-align:left;position:relative;overflow:hidden;}
+.path-card:hover{background:rgba(255,255,255,0.09);border-color:var(--gold);box-shadow:0 8px 32px rgba(201,168,76,0.08);}
+.path-card.active{border-color:var(--gold);background:rgba(201,168,76,0.06);}
+.path-icon{width:48px;height:48px;border-radius:12px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+.path-icon svg{width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.path-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--white);text-transform:uppercase;margin-bottom:0.5rem;}
+.path-desc{font-family:'Barlow',sans-serif;font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;}
+.path-benefit{font-family:'Barlow',sans-serif;font-size:11px;color:var(--gold);margin-top:0.75rem;letter-spacing:0.04em;font-weight:500;}
 .trade-form-wrap{display:none;}
 .trade-form-wrap.active{display:block;}
 
-/* Wizard */
-.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:2rem;}
-.wiz-step{display:flex;align-items:center;gap:0.5rem;font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.06em;text-transform:uppercase;}
-.wiz-dot{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);flex-shrink:0;transition:all var(--trans);}
+/* Wizard progress bar */
+.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:2.5rem;position:relative;}
+.wiz-progress-track{position:absolute;top:11px;left:12px;right:12px;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;z-index:0;}
+.wiz-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease;width:0%;}
+.wiz-step{display:flex;align-items:center;gap:0.5rem;font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.06em;text-transform:uppercase;z-index:1;}
+.wiz-dot{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);flex-shrink:0;transition:all var(--trans);background:var(--dark);}
 .wiz-step.active .wiz-dot{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.15);}
 .wiz-step.active{color:rgba(255,255,255,0.85);}
-.wiz-step.done .wiz-dot{border-color:var(--green);background:var(--green);color:#fff;}
+.wiz-step.done .wiz-dot{border-color:var(--gold);background:var(--gold);color:var(--dark);}
 .wiz-step.done{color:rgba(255,255,255,0.55);}
-.wiz-line{flex:1;height:1px;background:rgba(255,255,255,0.1);margin:0 0.5rem;}
+.wiz-line{flex:1;height:1px;background:transparent;margin:0 0.5rem;}
 .wizard-panel{display:none;}
 .wizard-panel.active{display:block;}
-.wiz-nav{display:flex;gap:0.75rem;margin-top:1.75rem;align-items:center;}
+.wiz-panel-heading{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--white);margin-bottom:1.5rem;font-weight:400;}
+.wiz-nav{display:flex;gap:0.75rem;margin-top:2rem;align-items:center;}
 
 /* Trade form fields */
-.tf-group{margin-bottom:1.1rem;}
-.tf-label{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:5px;}
-.tf-ctrl{width:100%;padding:0.65rem 0.85rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
+.tf-group{margin-bottom:1.35rem;}
+.tf-label{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;}
+.tf-ctrl{width:100%;padding:0.8rem 1rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);min-height:44px;}
 .tf-ctrl:focus{border-color:var(--gold);}
+.tf-ctrl.tf-error{border-color:#e74c3c;background:rgba(231,76,60,0.06);}
+.tf-error-msg{font-family:'Barlow',sans-serif;font-size:11px;color:#e74c3c;margin-top:3px;display:none;}
 .tf-ctrl option{background:var(--dark);color:var(--white);}
-textarea.tf-ctrl{resize:vertical;min-height:80px;}
+textarea.tf-ctrl{resize:vertical;min-height:100px;}
 .radio-group{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:4px;}
-.radio-pill{display:flex;align-items:center;gap:6px;padding:0.45rem 0.85rem;border-radius:20px;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all var(--trans);}
+.radio-pill{display:flex;align-items:center;gap:6px;padding:0.6rem 1rem;border-radius:20px;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all var(--trans);min-height:44px;}
 .radio-pill:hover{border-color:rgba(255,255,255,0.35);color:rgba(255,255,255,0.8);}
 .radio-pill input{display:none;}
 .radio-pill.checked{border-color:var(--gold);color:var(--white);background:rgba(201,168,76,0.12);}
 .tf-hint{font-family:'Barlow',sans-serif;font-size:11px;color:rgba(255,255,255,0.25);margin-top:4px;}
 .file-input-wrap{position:relative;cursor:pointer;}
 .file-input-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.file-input-face{display:flex;align-items:center;gap:8px;padding:0.65rem 0.85rem;background:rgba(255,255,255,0.07);border:1.5px dashed rgba(255,255,255,0.2);border-radius:8px;color:rgba(255,255,255,0.45);font-family:'Barlow',sans-serif;font-size:12px;transition:all var(--trans);}
+.file-input-face{display:flex;align-items:center;gap:8px;padding:0.8rem 1rem;background:rgba(255,255,255,0.07);border:1.5px dashed rgba(255,255,255,0.2);border-radius:8px;color:rgba(255,255,255,0.45);font-family:'Barlow',sans-serif;font-size:13px;transition:all var(--trans);min-height:44px;}
 .file-input-wrap:hover .file-input-face{border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.7);}
+.file-preview{font-family:'Barlow',sans-serif;font-size:11px;color:var(--gold);margin-top:6px;}
 #sell-file-name,#trade-file-name{font-family:'Barlow',sans-serif;font-size:11px;color:var(--gold);margin-top:4px;display:none;}
-.wiz-submit{font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;padding:0.8rem 2rem;background:var(--white);color:var(--green);border:2px solid var(--white);border-radius:8px;cursor:pointer;transition:all var(--trans);letter-spacing:0.04em;}
-.wiz-submit:hover{background:transparent;color:var(--white);}
-.wiz-back{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:0.75rem 1.1rem;background:transparent;color:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.15);border-radius:8px;cursor:pointer;transition:all var(--trans);}
+.wiz-submit{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;padding:1rem 2.5rem;background:var(--gold);color:var(--dark);border:none;border-radius:8px;cursor:pointer;transition:all var(--trans);letter-spacing:0.06em;text-transform:uppercase;flex:1;}
+.wiz-submit:hover{background:var(--gold-l);box-shadow:0 4px 16px rgba(201,168,76,0.25);}
+.wiz-back{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:0.85rem 1.1rem;background:transparent;color:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.15);border-radius:8px;cursor:pointer;transition:all var(--trans);min-height:44px;}
 .wiz-back:hover{color:var(--white);border-color:rgba(255,255,255,0.35);}
-.wiz-next{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.75rem 1.5rem;background:var(--green);color:var(--white);border:none;border-radius:8px;cursor:pointer;transition:background var(--trans);}
-.wiz-next:hover{background:var(--mid);}
-.form-success{display:none;text-align:center;padding:2.5rem 1rem;}
-.form-success-icon{font-size:40px;margin-bottom:0.75rem;}
-.form-success-text{font-family:'Barlow',sans-serif;font-size:16px;font-weight:500;color:var(--white);}
+.wiz-next{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;padding:0.85rem 2rem;background:var(--gold);color:var(--dark);border:none;border-radius:8px;cursor:pointer;transition:all var(--trans);letter-spacing:0.04em;text-transform:uppercase;flex:1;min-height:44px;}
+.wiz-next:hover{background:var(--gold-l);box-shadow:0 4px 16px rgba(201,168,76,0.25);}
+.form-success{display:none;text-align:center;padding:3.5rem 1.5rem;}
+.form-success-icon{font-size:56px;margin-bottom:1rem;}
+.form-success-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;color:var(--white);margin-bottom:0.5rem;}
+.form-success-text{font-family:'Barlow',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;}
+.form-success-browse{font-family:'Barlow',sans-serif;font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:1.5rem;}
+.form-success-btn{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;padding:0.75rem 2rem;background:var(--gold);color:var(--dark);border:none;border-radius:8px;cursor:pointer;transition:all var(--trans);text-transform:uppercase;letter-spacing:0.06em;text-decoration:none;}
+.form-success-btn:hover{background:var(--gold-l);}
 
 /* ── CADDIE LANE ── */
 #caddies-lane{background:var(--cream);padding:5rem 0 4rem;}
@@ -324,6 +338,10 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
   .hero-split{grid-template-columns:1fr;}
   .hero-card:first-child{border-bottom:1px solid rgba(255,255,255,0.08);}
   .trade-paths{grid-template-columns:1fr;}
+  .wiz-nav{flex-direction:column-reverse;}
+  .wiz-next,.wiz-submit,.wiz-back{width:100%;}
+  .wiz-nav .wiz-back{text-align:center;}
+  .wizard-panel{padding:0 0.25rem;}
   .caddie-grid{grid-template-columns:1fr;}
   .nl-inner{flex-direction:column;gap:1.5rem;}
   .nl-form{max-width:100%;}
@@ -471,28 +489,33 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
   <div class="container">
     <div class="trade-kicker section-kicker">Trade HQ</div>
     <div class="trade-title section-title">Sell. Trade. Win.</div>
+    <div class="trade-slogan">Your clubs called. They want a new bag.</div>
+    <div class="trade-slogan-sub"><em>Real golfers. Real offers. No lowballs. No hassle.</em></div>
     <p class="trade-promise">
       Every club. Every deal. Reviewed by a real caddie.<br>
-      Real golfers. Real offers. That's the Flagstick promise.
+      That's the Flagstick promise.
     </p>
 
     <!-- Path selector -->
     <div class="trade-paths" id="trade-paths">
       <div class="path-card" onclick="switchPath('sell')">
-        <div class="path-icon">🏌️</div>
+        <div class="path-icon"><svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></div>
         <div class="path-title">I want to Sell</div>
         <div class="path-desc">Drop your club in the bag. We'll review it and get you an offer within 24 hours.</div>
+        <div class="path-benefit">We review every submission within 24 hours</div>
       </div>
       <div class="path-card" onclick="switchPath('trade')">
-        <div class="path-icon">🔄</div>
+        <div class="path-icon"><svg viewBox="0 0 24 24"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg></div>
         <div class="path-title">I want to Trade</div>
         <div class="path-desc">Have something to swap? Tell us what you've got and what you're looking for.</div>
+        <div class="path-benefit">Tell us what you have and what you want</div>
       </div>
     </div>
 
     <!-- SELL FORM -->
     <div class="trade-form-wrap" id="sell-form-wrap">
       <div class="wizard-steps" id="sell-steps">
+        <div class="wiz-progress-track"><div class="wiz-progress-fill" id="sell-progress"></div></div>
         <div class="wiz-step active" id="sell-s1"><div class="wiz-dot">1</div><span>What You Have</span></div>
         <div class="wiz-line"></div>
         <div class="wiz-step" id="sell-s2"><div class="wiz-dot">2</div><span>Tell Us More</span></div>
@@ -504,6 +527,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
 
         <!-- Step 1 -->
         <div class="wizard-panel active" id="sell-p1">
+          <div class="wiz-panel-heading">Tell us about your club</div>
           <div class="tf-group">
             <label class="tf-label">Club Type</label>
             <select class="tf-ctrl" name="club_type" id="s1-type">
@@ -532,7 +556,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
           <div class="tf-group">
             <label class="tf-label">Photos</label>
             <div class="file-input-wrap">
-              <input type="file" name="photos" id="sell-photos" multiple accept="image/*" onchange="showFileName('sell-file-name',this)">
+              <input type="file" name="photos" id="sell-photos" multiple accept="image/*" onchange="handlePhotoFiles('sell-photos','sell-file-name')">
               <div class="file-input-face">📸 <span>Click to attach photos</span></div>
             </div>
             <div id="sell-file-name"></div>
@@ -543,24 +567,26 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
           </div>
           <div class="wiz-nav">
             <button type="button" class="wiz-back" onclick="switchPath(null)">← Back</button>
-            <button type="button" class="wiz-next" onclick="wizardNext('sell',1)">Next →</button>
+            <button type="button" class="wiz-next" onclick="wizardNext('sell',1,event)">Next →</button>
           </div>
         </div>
 
         <!-- Step 2 -->
         <div class="wizard-panel" id="sell-p2">
+          <div class="wiz-panel-heading">Any extra details?</div>
           <div class="tf-group">
             <label class="tf-label">Anything else we should know?</label>
             <textarea class="tf-ctrl" name="notes" placeholder="Condition details, included accessories, shaft specs, original headcover…" rows="5"></textarea>
           </div>
           <div class="wiz-nav">
-            <button type="button" class="wiz-back" onclick="wizardBack('sell',2)">← Back</button>
-            <button type="button" class="wiz-next" onclick="wizardNext('sell',2)">Next →</button>
+            <button type="button" class="wiz-back" onclick="wizardBack('sell',2,event)">← Back</button>
+            <button type="button" class="wiz-next" onclick="wizardNext('sell',2,event)">Next →</button>
           </div>
         </div>
 
         <!-- Step 3 -->
         <div class="wizard-panel" id="sell-p3">
+          <div class="wiz-panel-heading">How should we reach you?</div>
           <div class="tf-group">
             <label class="tf-label">Contact Preference</label>
             <div class="radio-group">
@@ -573,14 +599,17 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
             <input class="tf-ctrl" type="text" name="contact" id="s3-contact" placeholder="your@email.com or 214-555-0000" required>
           </div>
           <div class="wiz-nav">
-            <button type="button" class="wiz-back" onclick="wizardBack('sell',3)">← Back</button>
+            <button type="button" class="wiz-back" onclick="wizardBack('sell',3,event)">← Back</button>
             <button type="submit" class="wiz-submit">Drop It in the Bag →</button>
           </div>
         </div>
 
         <div class="form-success" id="sell-success">
-          <div class="form-success-icon">✓</div>
-          <div class="form-success-text">Submission received! We'll be in touch within 24 hours.</div>
+          <div class="form-success-icon">🏁</div>
+          <div class="form-success-title">You're in the bag.</div>
+          <div class="form-success-text">We'll be in touch within 24 hours with a real offer.</div>
+          <div class="form-success-browse">While you wait — browse what's in the Pro Shop.</div>
+          <a class="form-success-btn" href="#pro-shop" onclick="smoothScroll('pro-shop')">Browse the Pro Shop →</a>
         </div>
       </form>
     </div>
@@ -588,6 +617,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
     <!-- TRADE FORM -->
     <div class="trade-form-wrap" id="trade-form-wrap">
       <div class="wizard-steps" id="trade-steps">
+        <div class="wiz-progress-track"><div class="wiz-progress-fill" id="trade-progress"></div></div>
         <div class="wiz-step active" id="trade-s1"><div class="wiz-dot">1</div><span>What You Have</span></div>
         <div class="wiz-line"></div>
         <div class="wiz-step" id="trade-s2"><div class="wiz-dot">2</div><span>What You Want</span></div>
@@ -599,6 +629,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
 
         <!-- Step 1 -->
         <div class="wizard-panel active" id="trade-p1">
+          <div class="wiz-panel-heading">Tell us what you've got</div>
           <div class="tf-group">
             <label class="tf-label">Club Type</label>
             <select class="tf-ctrl" name="club_type">
@@ -627,7 +658,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
           <div class="tf-group">
             <label class="tf-label">Photos</label>
             <div class="file-input-wrap">
-              <input type="file" name="photos" id="trade-photos" multiple accept="image/*" onchange="showFileName('trade-file-name',this)">
+              <input type="file" name="photos" id="trade-photos" multiple accept="image/*" onchange="handlePhotoFiles('trade-photos','trade-file-name')">
               <div class="file-input-face">📸 <span>Click to attach photos</span></div>
             </div>
             <div id="trade-file-name"></div>
@@ -638,12 +669,13 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
           </div>
           <div class="wiz-nav">
             <button type="button" class="wiz-back" onclick="switchPath(null)">← Back</button>
-            <button type="button" class="wiz-next" onclick="wizardNext('trade',1)">Next →</button>
+            <button type="button" class="wiz-next" onclick="wizardNext('trade',1,event)">Next →</button>
           </div>
         </div>
 
         <!-- Step 2 -->
         <div class="wizard-panel" id="trade-p2">
+          <div class="wiz-panel-heading">What are you looking for?</div>
           <div class="tf-group">
             <label class="tf-label">Dream Club *</label>
             <input class="tf-ctrl" type="text" name="dream_club" id="t2-dream" placeholder="e.g. Scotty Cameron Phantom X 7" required>
@@ -661,13 +693,14 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
             <input class="tf-ctrl" type="text" name="ideal_specs" placeholder="e.g. 34 inch, pistol grip, original headcover">
           </div>
           <div class="wiz-nav">
-            <button type="button" class="wiz-back" onclick="wizardBack('trade',2)">← Back</button>
-            <button type="button" class="wiz-next" onclick="wizardNext('trade',2)">Next →</button>
+            <button type="button" class="wiz-back" onclick="wizardBack('trade',2,event)">← Back</button>
+            <button type="button" class="wiz-next" onclick="wizardNext('trade',2,event)">Next →</button>
           </div>
         </div>
 
         <!-- Step 3 -->
         <div class="wizard-panel" id="trade-p3">
+          <div class="wiz-panel-heading">How should we reach you?</div>
           <div class="tf-group">
             <label class="tf-label">Contact Preference</label>
             <div class="radio-group">
@@ -680,14 +713,17 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
             <input class="tf-ctrl" type="text" name="contact" id="t3-contact" placeholder="your@email.com or 214-555-0000" required>
           </div>
           <div class="wiz-nav">
-            <button type="button" class="wiz-back" onclick="wizardBack('trade',3)">← Back</button>
+            <button type="button" class="wiz-back" onclick="wizardBack('trade',3,event)">← Back</button>
             <button type="submit" class="wiz-submit">Propose the Trade →</button>
           </div>
         </div>
 
         <div class="form-success" id="trade-success">
-          <div class="form-success-icon">🤝</div>
-          <div class="form-success-text">Trade inquiry received! We'll be in touch within 24 hours.</div>
+          <div class="form-success-icon">🏁</div>
+          <div class="form-success-title">You're in the bag.</div>
+          <div class="form-success-text">We'll be in touch within 24 hours with a real offer.</div>
+          <div class="form-success-browse">While you wait — browse what's in the Pro Shop.</div>
+          <a class="form-success-btn" href="#pro-shop" onclick="smoothScroll('pro-shop')">Browse the Pro Shop →</a>
         </div>
       </form>
     </div>
@@ -700,8 +736,8 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
   <div class="container">
     <div class="caddie-header">
       <div class="section-kicker">Caddie Lane</div>
-      <div class="caddie-title-main">Can't find it?</div>
-      <div class="caddie-title-sub">Your caddie will.</div>
+      <div class="caddie-title-main">You shank it, we find it.</div>
+      <div class="caddie-title-sub"><em>Open 6 days a week. Closed Mondays — even caddies need a day off.</em></div>
       <p class="caddie-intro">Tell us what you're looking for. We search bag rooms, pro shops, and private collections to track it down. You get first look.</p>
     </div>
 
@@ -1287,11 +1323,19 @@ function switchPath(path) {
     paths.style.display = 'none';
     sellWrap.classList.add('active');
     tradeWrap.classList.remove('active');
+    updateProgress('sell', 1);
+    document.getElementById('trade-hq').scrollIntoView({behavior:'smooth',block:'start'});
   } else {
     paths.style.display = 'none';
     tradeWrap.classList.add('active');
     sellWrap.classList.remove('active');
+    updateProgress('trade', 1);
+    document.getElementById('trade-hq').scrollIntoView({behavior:'smooth',block:'start'});
   }
+}
+function updateProgress(form, step) {
+  const fill = document.getElementById(form + '-progress');
+  if (fill) fill.style.width = ((step - 1) / 2 * 100) + '%';
 }
 function wizardReset(form) {
   for (let i = 1; i <= 3; i++) {
@@ -1306,19 +1350,62 @@ function wizardReset(form) {
   if (s1) s1.classList.add('active');
   const success = document.getElementById(form + '-success');
   if (success) success.style.display = 'none';
+  updateProgress(form, 1);
 }
-function wizardNext(form, step) {
+function validateContact(val) {
+  if (!val) return false;
+  if (val.includes('@')) return val.includes('.');
+  const digits = val.replace(/\D/g, '');
+  return digits.length >= 10;
+}
+function clearErrors(panel) {
+  panel.querySelectorAll('.tf-error').forEach(el => el.classList.remove('tf-error'));
+  panel.querySelectorAll('.tf-error-msg').forEach(el => { el.style.display = 'none'; });
+}
+function showFieldError(ctrl, msg) {
+  ctrl.classList.add('tf-error');
+  let errEl = ctrl.parentElement.querySelector('.tf-error-msg');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.className = 'tf-error-msg';
+    ctrl.parentElement.appendChild(errEl);
+  }
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+function wizardNext(form, step, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const panel = document.getElementById(form + '-p' + step);
   const nextPanel = document.getElementById(form + '-p' + (step+1));
-  const stepEl = document.getElementById(form + '-s' + step);
-  const nextStep = document.getElementById(form + '-s' + (step+1));
   if (!nextPanel) return;
+  clearErrors(panel);
+  const nextStep = step + 1;
+  if (form === 'sell' && step === 1) {
+    const type = panel.querySelector('[name="club_type"]');
+    const model = panel.querySelector('[name="brand_model"]');
+    if (type && !type.value) { showFieldError(type, 'Please select a club type'); return; }
+    if (model && !model.value.trim()) { showFieldError(model, 'Please enter brand & model'); return; }
+  }
+  if (form === 'trade' && step === 1) {
+    const type = panel.querySelector('[name="club_type"]');
+    const model = panel.querySelector('[name="brand_model"]');
+    if (type && !type.value) { showFieldError(type, 'Please select a club type'); return; }
+    if (model && !model.value.trim()) { showFieldError(model, 'Please enter brand & model'); return; }
+  }
+  if (form === 'trade' && step === 2) {
+    const dream = document.getElementById('t2-dream');
+    if (dream && !dream.value.trim()) { showFieldError(dream, 'Please enter your dream club'); return; }
+  }
   panel.classList.remove('active');
   nextPanel.classList.add('active');
+  const stepEl = document.getElementById(form + '-s' + step);
+  const nextStepEl = document.getElementById(form + '-s' + (step+1));
   if (stepEl) { stepEl.classList.remove('active'); stepEl.classList.add('done'); }
-  if (nextStep) nextStep.classList.add('active');
+  if (nextStepEl) nextStepEl.classList.add('active');
+  updateProgress(form, step + 1);
 }
-function wizardBack(form, step) {
+function wizardBack(form, step, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const panel = document.getElementById(form + '-p' + step);
   const prevPanel = document.getElementById(form + '-p' + (step-1));
   const stepEl = document.getElementById(form + '-s' + step);
@@ -1328,6 +1415,19 @@ function wizardBack(form, step) {
   prevPanel.classList.add('active');
   if (stepEl) stepEl.classList.remove('active');
   if (prevStep) { prevStep.classList.remove('done'); prevStep.classList.add('active'); }
+  updateProgress(form, step - 1);
+}
+
+// ── Photo handling ──
+function handlePhotoFiles(inputId, previewId) {
+  const input = document.getElementById(inputId);
+  const el = document.getElementById(previewId);
+  if (!input || !el) return;
+  if (input.files && input.files.length > 0) {
+    const names = Array.from(input.files).map(f => f.name);
+    el.textContent = names.join(', ');
+    el.style.display = 'block';
+  }
 }
 
 // ── Trade form submissions ──
@@ -1335,30 +1435,60 @@ async function submitSell(e) {
   e.preventDefault();
   const contact = document.getElementById('s3-contact').value.trim();
   if (!contact) { showToast('Please enter your email or phone.'); return false; }
+  if (!validateContact(contact)) { showToast('Please enter a valid email (with @) or phone (10+ digits).'); return false; }
   const form = document.getElementById('sell-form');
+  const btn = form.querySelector('.wiz-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
     const data = new FormData(form);
+    const photoInput = document.getElementById('sell-photos');
+    if (photoInput && photoInput.files && photoInput.files.length > 0) {
+      data.delete('photos');
+      data.append('photo_note', Array.from(photoInput.files).map(f => f.name).join(', ') + ' — please reply to this email to receive photos');
+    }
     const res = await fetch(form.action, {method:'POST', body:data, headers:{'Accept':'application/json'}});
     if (res.ok) {
       document.getElementById('sell-p3').classList.remove('active');
+      document.getElementById('sell-steps').style.display = 'none';
       document.getElementById('sell-success').style.display = 'block';
-    } else { showToast('Something went wrong. Please try again.'); }
-  } catch(err) { showToast('Something went wrong. Please try again.'); }
+      updateProgress('sell', 3);
+    } else {
+      showToast('Something went wrong. Please email us directly at flagstickfind@gmail.com');
+    }
+  } catch(err) {
+    showToast('Something went wrong. Please email us directly at flagstickfind@gmail.com');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = 'Drop It in the Bag →'; }
   return false;
 }
 async function submitTrade(e) {
   e.preventDefault();
   const contact = document.getElementById('t3-contact').value.trim();
   if (!contact) { showToast('Please enter your email or phone.'); return false; }
+  if (!validateContact(contact)) { showToast('Please enter a valid email (with @) or phone (10+ digits).'); return false; }
   const form = document.getElementById('trade-form');
+  const btn = form.querySelector('.wiz-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
   try {
     const data = new FormData(form);
+    const photoInput = document.getElementById('trade-photos');
+    if (photoInput && photoInput.files && photoInput.files.length > 0) {
+      data.delete('photos');
+      data.append('photo_note', Array.from(photoInput.files).map(f => f.name).join(', ') + ' — please reply to this email to receive photos');
+    }
     const res = await fetch(form.action, {method:'POST', body:data, headers:{'Accept':'application/json'}});
     if (res.ok) {
       document.getElementById('trade-p3').classList.remove('active');
+      document.getElementById('trade-steps').style.display = 'none';
       document.getElementById('trade-success').style.display = 'block';
-    } else { showToast('Something went wrong. Please try again.'); }
-  } catch(err) { showToast('Something went wrong. Please try again.'); }
+      updateProgress('trade', 3);
+    } else {
+      showToast('Something went wrong. Please email us directly at flagstickfind@gmail.com');
+    }
+  } catch(err) {
+    showToast('Something went wrong. Please email us directly at flagstickfind@gmail.com');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = 'Propose the Trade →'; }
   return false;
 }
 
