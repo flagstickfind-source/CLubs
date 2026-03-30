@@ -185,7 +185,7 @@ tr:hover{background:var(--pale);}
 <!-- ADMIN SHELL -->
 <div id="admin-shell">
   <nav class="admin-nav">
-    <a class="admin-logo" href="/" target="_blank">FLAGSTICK <span>FINDS</span></a>
+    <a class="admin-logo" href="./" target="_blank">FLAGSTICK <span>FINDS</span></a>
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="switchPanel('dashboard',this)">Dashboard</button>
       <button class="admin-tab" onclick="switchPanel('listings',this)">Listings</button>
@@ -390,7 +390,7 @@ tr:hover{background:var(--pale);}
 <script>
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
-const BUCKET='Flagstick Finds - Images';
+const BUCKET='club-photos';
 const SITE_URL='https://flagstickfinds.com';
 const{createClient}=supabase;
 const sb=createClient(SUPA_URL,SUPA_KEY);
@@ -466,8 +466,8 @@ async function loadDashboard(){
   const{data:wishlist}=await sb.from('wishlist').select('*');
   const active=(listings||[]).filter(c=>!c.sold);
   const totalRev=(sold||[]).reduce((a,s)=>a+(s.sold_price||0),0);
-  const invValue=active.reduce((a,c)=>a+(c.price||0),0);
-  const noPhotos=active.filter(c=>!c.photos||c.photos.length===0).length;
+  const invValue=(listings||[]).reduce((a,c)=>a+(c.price||0),0);
+  const noPhotos=(listings||[]).filter(c=>!c.photos||c.photos.length===0).length;
 
   document.getElementById('d-active').textContent=active.length;
   document.getElementById('d-sold').textContent=(sold||[]).length;
@@ -495,7 +495,7 @@ async function loadListings(){
 
 function filterListings(){
   const q=document.getElementById('listings-search').value.toLowerCase().trim();
-  const filtered=q?allListings.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.type||'').toLowerCase().includes(q)):allListings;
+  const filtered=q?allListings.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.brand||'').toLowerCase().includes(q)||(c.type||'').toLowerCase().includes(q)):allListings;
   renderListings(filtered);
 }
 
@@ -610,13 +610,13 @@ async function handlePhotoUpload(input){
   prog.style.display='block';
   const total=input.files.length;
   let uploaded=0;
+  const editId=document.getElementById('edit-id').value||'new-'+Date.now();
   for(let i=0;i<total;i++){
     const file=input.files[i];
     prog.textContent=`Optimizing & uploading ${i+1}/${total}: ${file.name}...`;
     const blob=await resizeImage(file);
-    const ext='jpg';
-    const storagePath=`admin-uploads/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
-    const{error}=await sb.storage.from(BUCKET).upload(storagePath,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});
+    const storagePath=`${editId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
+    const{error}=await sb.storage.from(BUCKET).upload(storagePath,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
     if(error){
       console.error('Upload error:',error);
       toast('Upload failed: '+error.message);
@@ -687,14 +687,24 @@ async function confirmMarkSold(){
   if(!soldPrice){toast('Please enter a sold price.');return;}
   const{data:listing,error:fetchErr}=await sb.from('listings').select('*').eq('id',id).single();
   if(fetchErr||!listing){toast('Failed to fetch listing.');return;}
-  const{error:insErr}=await sb.from('sold').insert({
+  const soldRow={
     name:listing.name,type:listing.type,sold_price:soldPrice,
     photo:(listing.photos&&listing.photos[0])||null,
     sold_at:new Date().toISOString()
-  });
+  };
+  const{error:insErr}=await sb.from('sold').insert(soldRow);
   if(insErr){toast('Failed to add to sold: '+insErr.message);return;}
-  const{error:updErr}=await sb.from('listings').update({sold:true}).eq('id',id);
-  if(updErr){toast('Failed to mark as sold: '+updErr.message);return;}
+  // Also try sold_listings table
+  await sb.from('sold_listings').insert({
+    name:listing.name,type:listing.type,sold_price:soldPrice,
+    photo_url:(listing.photos&&listing.photos[0])||null,
+    sold_at:new Date().toISOString()
+  }).then(()=>{}).catch(()=>{});
+  const{error:delErr}=await sb.from('listings').delete().eq('id',id);
+  if(delErr){
+    const{error:updErr}=await sb.from('listings').update({sold:true}).eq('id',id);
+    if(updErr){toast('Failed to mark as sold: '+updErr.message);return;}
+  }
   closeSoldModal();
   toast('Marked as sold!');
   await loadListings();

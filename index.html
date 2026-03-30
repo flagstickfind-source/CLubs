@@ -868,7 +868,7 @@ textarea.tf-ctrl{resize:vertical;min-height:80px;}
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; Flagstick Finds. All rights reserved.</div>
-      <a href="/admin.html" style="font-size:11px;color:rgba(255,255,255,0.15);text-decoration:none;">Admin</a>
+      <a href="./admin.html" style="font-size:11px;color:rgba(255,255,255,0.15);text-decoration:none;">Admin</a>
     </div>
   </div>
 </footer>
@@ -930,60 +930,61 @@ const { createClient } = supabase;
 const sb = createClient(SUPA_URL, SUPA_KEY);
 
 // ── Fallback static clubs ──
+const SUPA_STORAGE = 'https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/club-photos';
 const FALLBACK = [
   {id:'scotty-phantom-x7',name:'Scotty Cameron Phantom X 7',type:'Putter',condition:'Great',price:25000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,sold:false,
-   photos:['Phantom%20X%207.jpg','phantom%20x%20face.jpg','Phatnom%20grip.jpg'],
+   photos:[SUPA_STORAGE+'/scotty-phantom-x7/phantom_x_7.jpg',SUPA_STORAGE+'/scotty-phantom-x7/phantom_x_face.jpg',SUPA_STORAGE+'/scotty-phantom-x7/phatnom_grip.jpg'],
    description:'High-MOI Phantom X 7 mallet. Multi-material construction, soft face insert, exceptional roll.'},
   {id:'scotty-newport',name:'Scotty Cameron Newport',type:'Putter',condition:'Great',price:35000,obo:false,luxury:true,badge_new:false,badge_featured:false,badge_verified:true,badge_limited:false,sold:false,
-   photos:['Newport%20face.jpg','newport%20back.jpg'],
+   photos:[SUPA_STORAGE+'/scotty-newport/newport_face.jpg',SUPA_STORAGE+'/scotty-newport/newport_back.jpg'],
    description:'Iconic Newport blade — tour-proven feel, timeless look. One of the most sought-after putters on tour.'},
   {id:'scotty-golo',name:'Scotty Cameron GoLo',type:'Putter',condition:'Great',price:30000,obo:false,luxury:true,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['GoLo%20Face.jpg','GoLo%20back.jpg','GoLo%20grip.jpg','GoLo%201.5.jpg'],
+   photos:[SUPA_STORAGE+'/scotty-golo/golo_face.jpg',SUPA_STORAGE+'/scotty-golo/golo_back.jpg',SUPA_STORAGE+'/scotty-golo/golo_grip.jpg',SUPA_STORAGE+'/scotty-golo/golo_1.5.jpg'],
    description:'GoLo mallet with red badge and weighted ports. Exceptional roll and alignment.'},
   {id:'scotty-california',name:'Scotty Cameron California',type:'Putter',condition:'Good/Gamer',price:22000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['calfornia.jpg','california%20%2C...jpg','California%20face.jpg','California%20Grip.jpg'],
+   photos:[SUPA_STORAGE+'/scotty-california/calfornia.jpg',SUPA_STORAGE+'/scotty-california/california__...jpg',SUPA_STORAGE+'/scotty-california/california_face.jpg',SUPA_STORAGE+'/scotty-california/california_grip.jpg'],
    description:'California series putter. Clean lines, great feel. Ready to game.'},
   {id:'scotty-select',name:'Scotty Cameron Select',type:'Putter',condition:'Great',price:28000,obo:false,luxury:true,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Select%20Face.JPG','Select%20top.JPG','Select%20grip.JPG','select%20flashback.jpg'],
+   photos:[SUPA_STORAGE+'/scotty-select/select_face.jpg',SUPA_STORAGE+'/scotty-select/select_top.jpg',SUPA_STORAGE+'/scotty-select/select_grip.jpg',SUPA_STORAGE+'/scotty-select/select_flashback.jpg'],
    description:'Select series — one of the cleanest examples you\'ll find. Minimal face wear, perfect weight.'},
   {id:'spider-gtx',name:'TaylorMade Spider GTX',type:'Putter',condition:'Like New',price:18000,obo:false,luxury:false,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Spider%20face.jpg','Spider%20top.jpg','SPider%20grip.jpg','spider%20faceee.jpg'],
+   photos:[SUPA_STORAGE+'/spider-gtx/spider_face.jpg',SUPA_STORAGE+'/spider-gtx/spider_top.jpg',SUPA_STORAGE+'/spider-gtx/spider_grip.jpg',SUPA_STORAGE+'/spider-gtx/spider_faceee.jpg'],
    description:'Spider GTX in near-perfect shape. True Path alignment, soft feel insert.'},
   {id:'odyssey-ai',name:'Odyssey Ai-One Putter',type:'Putter',condition:'Like New',price:16500,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Oddesey%20Ai%20.jpg','Oddessey%20ai.jpg','Oddeseey%20Ai%20top.jpg'],
+   photos:[SUPA_STORAGE+'/odyssey-ai/oddesey_ai_.jpg',SUPA_STORAGE+'/odyssey-ai/oddessey_ai.jpg',SUPA_STORAGE+'/odyssey-ai/oddeseey_ai_top.jpg'],
    description:'AI-milled face technology for superior consistency. Barely used.'},
   {id:'miura-tc201',name:'Miura TC-201 Irons',type:'Iron',condition:'Great',price:115000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,sold:false,
-   photos:['newMuiraTC201%27s%20face.JPG','newMuiraTC201%27s%20full.jpg','newMuiraTC201%27s%20top.JPG','newMuiraTC201%27s%20good%20angle.jpg'],
+   photos:[SUPA_STORAGE+'/miura-tc201/newmuiratc201_s_face.jpg',SUPA_STORAGE+'/miura-tc201/newmuiratc201_s_full.jpg',SUPA_STORAGE+'/miura-tc201/newmuiratc201_s_top.jpg',SUPA_STORAGE+'/miura-tc201/newmuiratc201_s_good_angle.jpg'],
    description:'The pinnacle of forged iron craftsmanship. Tour-quality feel. Surgical workability.'},
   {id:'miura-cb57',name:'Miura CB57 Irons',type:'Iron',condition:'Great',price:110000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Muira%20CB57%20Irons.jpg','Muira%20CB%2057%20FACE.jpg','Muira%20cb%2057%20face%202.jpg','Muira%20cb57%20grips.jpg','Muira%20cb%2057%20shaft.jpg'],
+   photos:[SUPA_STORAGE+'/miura-cb57/muira_cb57_irons.jpg',SUPA_STORAGE+'/miura-cb57/muira_cb_57_face.jpg',SUPA_STORAGE+'/miura-cb57/muira_cb_57_face_2.jpg',SUPA_STORAGE+'/miura-cb57/muira_cb57_grips.jpg',SUPA_STORAGE+'/miura-cb57/muira_cb_57_shaft.jpg'],
    description:'Cavity-back forged CB57. The perfect blend of Miura feel and playable forgiveness.'},
   {id:'miura-tourney',name:'Miura Tournament Irons',type:'Iron',condition:'Good/Gamer',price:25000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Miuita%20tourney%20COVER%20PHOTO.jpg','miura%20tourney.jpg','Muira%2056%20degree%20(TOURNEY).jpg','dd%20Muira%20tourney.jpg'],
+   photos:[SUPA_STORAGE+'/miura-tourney/miuita_tourney_cover_photo.jpg',SUPA_STORAGE+'/miura-tourney/miura_tourney.jpg',SUPA_STORAGE+'/miura-tourney/muira_56_degree__tourney_.jpg',SUPA_STORAGE+'/miura-tourney/dd_muira_tourney.jpg'],
    description:'Miura Tournament set — 5, 8, 9, PW, SW + 56° wedge. Muscle-back precision for the serious player.'},
   {id:'mizuno-mp20',name:'Mizuno MP-20 Irons',type:'Iron',condition:'Great',price:75000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,sold:false,
-   photos:['Mizuno%20face.jpg','Mizuno%20Cover%204-pw.jpg','Mizuno%20Grips.jpg','Mixuno%20MP-20%20Sun.jpg'],
+   photos:[SUPA_STORAGE+'/mizuno-mp20/mizuno_face.jpg',SUPA_STORAGE+'/mizuno-mp20/mizuno_cover_4-pw.jpg',SUPA_STORAGE+'/mizuno-mp20/mizuno_grips.jpg',SUPA_STORAGE+'/mizuno-mp20/mixuno_mp-20_sun.jpg'],
    description:'Legendary Mizuno feel in a modern forged package. 4-PW. Nothing rolls off the face quite like these.'},
   {id:'ping-i59',name:'Ping i59 Irons',type:'Iron',condition:'Great',price:65000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:true,badge_limited:false,sold:false,
-   photos:['Pingi59.jpg','Pingi59%202.jpg','Pingi59%20grips.jpg','Ping%20i59%20Sun.jpg'],
+   photos:[SUPA_STORAGE+'/ping-i59/pingi59.jpg',SUPA_STORAGE+'/ping-i59/pingi59_2.jpg',SUPA_STORAGE+'/ping-i59/pingi59_grips.jpg',SUPA_STORAGE+'/ping-i59/ping_i59_sun.jpg'],
    description:'Ping i59 — forged face, hydropearl finish, tour-preferred playability. 4-PW.'},
   {id:'p7mb-driving-iron',name:'TaylorMade P7MB Driving Iron',type:'TeeBox',condition:'Great',price:18000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:true,sold:false,
-   photos:['Driving%20Iron%20-%20MB7%203%20%26%204%20iron.jpg','M7%20face.jpg','M7%20Grips.jpg','M7.jpg'],
+   photos:[SUPA_STORAGE+'/p7mb-driving-iron/driving_iron_-_mb7_3___4_iron.jpg',SUPA_STORAGE+'/p7mb-driving-iron/m7_face.jpg',SUPA_STORAGE+'/p7mb-driving-iron/m7_grips.jpg',SUPA_STORAGE+'/p7mb-driving-iron/m7.jpg'],
    description:'P7MB 3 & 4 driving iron. Pure muscle-back precision off the tee. Low spin, pure flight.'},
   {id:'callaway-rogue-hybrid',name:'Callaway Rogue 3&4 Hybrid',type:'TeeBox',condition:'Great',price:16000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Rogue%203%264%20hybrid%20face.jpg','Rogue%203%264%20hybrid%20full.jpg','Rogue%203%264%20hybrid%20top.jpg','Rogue%203%264%20hybrid%20jumbo%20grip.jpg'],
+   photos:[SUPA_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_face.jpg',SUPA_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_full.jpg',SUPA_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_top.jpg',SUPA_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_jumbo_grip.jpg'],
    description:'Callaway Rogue 3 & 4 hybrid set. Jumbo grip. Versatile, easy to launch from any lie.'},
   {id:'ping-g425',name:'Ping G425 Max Driver',type:'TeeBox',condition:'Great',price:21000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Ping425%20face.jpg','Ping425%20back.jpg','Ping425%20gripshaft.jpg'],
+   photos:[SUPA_STORAGE+'/ping-g425/ping425_face.jpg',SUPA_STORAGE+'/ping-g425/ping425_back.jpg',SUPA_STORAGE+'/ping-g425/ping425_gripshaft.jpg'],
    description:'G425 Max — highest MOI driver Ping has ever made. Moveable tungsten weight. Straight, long, forgiving.'},
   {id:'qi10-5wood',name:'Callaway Qi10 5-Wood',type:'TeeBox',condition:'Like New',price:19500,obo:false,luxury:false,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Qi10%205%20wood.jpg','qi10%205wood%20face.jpg'],
+   photos:[SUPA_STORAGE+'/qi10-5wood/qi10_5_wood.jpg',SUPA_STORAGE+'/qi10-5wood/qi10_5wood_face.jpg'],
    description:'Qi10 fairway wood. AI-designed face, low CG, maximum distance off the fairway.'},
   {id:'simmax-5wood',name:'TaylorMade SIM Max 5-Wood',type:'TeeBox',condition:'Great',price:14500,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Sim%20Max%205%20wood%20face.jpg','Sim%20Max%205%20wood%20%20full.jpg','Sim%20Max%205%20wood%20topandface.jpg','Sim%20Max%205%20wood%20shaft.jpg'],
+   photos:[SUPA_STORAGE+'/simmax-5wood/sim_max_5_wood_face.jpg',SUPA_STORAGE+'/simmax-5wood/sim_max_5_wood__full.jpg',SUPA_STORAGE+'/simmax-5wood/sim_max_5_wood_topandface.jpg',SUPA_STORAGE+'/simmax-5wood/sim_max_5_wood_shaft.jpg'],
    description:'SIM Max 5-wood. V Steel sole, Twist Face technology. Reliable, high-launching fairway.'},
   {id:'titleist-918-d2',name:'Titleist 918 D2 Driver',type:'TeeBox',condition:'Good/Gamer',price:12500,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,sold:false,
-   photos:['Titlist%20918%20D2%20Driver%2010.5%20degree%20full.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20topandface.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20top.jpg','Titlist%20918%20D2%20Driver%2010.5%20degree%20%20shaft.jpg'],
+   photos:[SUPA_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree_full.jpg',SUPA_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree_topandface.jpg',SUPA_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree__top.jpg',SUPA_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree__shaft.jpg'],
    description:'Titleist 918 D2 10.5°. SureFit CG weighting system. Reliable, proven driver with classic Titleist feel.'},
 ];
 
@@ -1046,8 +1047,13 @@ async function loadInventory() {
 
 async function loadSold() {
   try {
-    const { data, error } = await sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
+    let { data, error } = await sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
     if (error || !data || data.length === 0) {
+      const res = await sb.from('sold_listings').select('*').order('sold_at', {ascending: false}).limit(8);
+      if (!res.error && res.data && res.data.length > 0) {
+        renderSoldGrid(res.data.map(r=>({name:r.name,type:r.type,sold_price:r.sold_price,photo:r.photo_url,sold_at:r.sold_at})));
+        return;
+      }
       renderSoldFallback();
     } else {
       renderSoldGrid(data);
@@ -1058,10 +1064,10 @@ async function loadSold() {
 }
 function renderSoldFallback() {
   const items = [
-    {name:'Scotty Cameron Newport 2',type:'Putter',sold_price:42000,photo:'Newport%20face.jpg',sold_at:new Date(Date.now()-2*86400000).toISOString()},
-    {name:'Miura CB57 Irons',type:'Iron',sold_price:95000,photo:'Muira%20CB57%20Irons.jpg',sold_at:new Date(Date.now()-5*86400000).toISOString()},
-    {name:'Ping G425 Max Driver',type:'Driver',sold_price:21000,photo:'Ping425%20face.jpg',sold_at:new Date(Date.now()-7*86400000).toISOString()},
-    {name:'Mizuno MP-20 Irons',type:'Iron',sold_price:68000,photo:'Mizuno%20Cover%204-pw.jpg',sold_at:new Date(Date.now()-14*86400000).toISOString()},
+    {name:'Scotty Cameron Newport 2',type:'Putter',sold_price:42000,photo:SUPA_STORAGE+'/scotty-newport/newport_face.jpg',sold_at:new Date(Date.now()-2*86400000).toISOString()},
+    {name:'Miura CB57 Irons',type:'Iron',sold_price:95000,photo:SUPA_STORAGE+'/miura-cb57/muira_cb57_irons.jpg',sold_at:new Date(Date.now()-5*86400000).toISOString()},
+    {name:'Ping G425 Max Driver',type:'Driver',sold_price:21000,photo:SUPA_STORAGE+'/ping-g425/ping425_face.jpg',sold_at:new Date(Date.now()-7*86400000).toISOString()},
+    {name:'Mizuno MP-20 Irons',type:'Iron',sold_price:68000,photo:SUPA_STORAGE+'/mizuno-mp20/mizuno_cover_4-pw.jpg',sold_at:new Date(Date.now()-14*86400000).toISOString()},
   ];
   renderSoldGrid(items);
 }
