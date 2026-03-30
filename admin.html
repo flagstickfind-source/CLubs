@@ -694,17 +694,9 @@ async function confirmMarkSold(){
   };
   const{error:insErr}=await sb.from('sold').insert(soldRow);
   if(insErr){toast('Failed to add to sold: '+insErr.message);return;}
-  // Also try sold_listings table
-  await sb.from('sold_listings').insert({
-    name:listing.name,type:listing.type,sold_price:soldPrice,
-    photo_url:(listing.photos&&listing.photos[0])||null,
-    sold_at:new Date().toISOString()
-  }).then(()=>{}).catch(()=>{});
-  const{error:delErr}=await sb.from('listings').delete().eq('id',id);
-  if(delErr){
-    const{error:updErr}=await sb.from('listings').update({sold:true}).eq('id',id);
-    if(updErr){toast('Failed to mark as sold: '+updErr.message);return;}
-  }
+  // Mark listing as sold first (most reliable), then try to delete
+  await sb.from('listings').update({sold:true}).eq('id',id);
+  await sb.from('listings').delete().eq('id',id);
   closeSoldModal();
   toast('Marked as sold!');
   await loadListings();
