@@ -1039,7 +1039,7 @@ async function loadInventory() {
     if (error || !data || data.length === 0) {
       allClubs = FALLBACK;
     } else {
-      const good = data.filter(c => c.photos && c.photos.length > 0);
+      const good = data.filter(c => c.photos && c.photos.length > 0 && c.name && c.name.length > 2);
       if (good.length === 0) {
         allClubs = FALLBACK;
       } else {
