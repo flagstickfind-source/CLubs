@@ -181,7 +181,7 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 .lb-counter{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:12px;}
 
 /* ── TRADE HQ ── */
-#trade-hq{background:var(--dark);padding:5rem 0 4rem;}
+#trade-hq{background:var(--dark);padding:5rem 0 4rem;overflow-x:hidden;}
 .trade-kicker{color:var(--gold);}
 .trade-title{color:var(--white);}
 .trade-slogan{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,3vw,28px);color:var(--gold);margin-top:0.75rem;font-weight:400;}
@@ -252,10 +252,10 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
 .form-success-btn:hover{background:var(--gold-l);}
 
 /* ── CADDIE LANE ── */
-#caddies-lane{background:var(--cream);padding:5rem 0 4rem;}
+#caddies-lane{background:var(--cream);padding:5rem 0 4rem;overflow-x:hidden;}
 .caddie-header .section-kicker{color:var(--green);}
 .caddie-title-main{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(36px,5vw,56px);color:var(--black);line-height:1.1;}
-.caddie-title-sub{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(36px,5vw,56px);color:var(--green);line-height:1.1;margin-top:0.1rem;}
+.caddie-title-sub{font-family:'Barlow',sans-serif;font-weight:300;font-size:15px;color:var(--gray);line-height:1.6;margin-top:0.5rem;max-width:540px;}
 .caddie-intro{font-family:'Barlow',sans-serif;font-size:14px;color:var(--gray);line-height:1.8;margin-top:0.75rem;max-width:540px;}
 .caddie-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
 .caddie-tier{background:var(--white);border:1px solid var(--gbray);border-radius:var(--radius);padding:2rem;}
@@ -263,10 +263,10 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
 .caddie-tier-sub{font-family:'Barlow',sans-serif;font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:1.25rem;}
 .cf-group{margin-bottom:1rem;}
 .cf-label{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;}
-.cf-ctrl{width:100%;padding:0.6rem 0.75rem;border:1px solid var(--gbray);border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);background:var(--white);}
+.cf-ctrl{width:100%;padding:0.7rem 0.85rem;border:1px solid var(--gbray);border-radius:6px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);background:var(--white);min-height:44px;}
 .cf-ctrl:focus{border-color:var(--green);}
 .cf-radio-group{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:4px;}
-.cf-radio-pill{display:flex;align-items:center;gap:5px;padding:0.4rem 0.75rem;border-radius:20px;border:1.5px solid var(--gbray);color:var(--gray);font-family:'Barlow',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all var(--trans);}
+.cf-radio-pill{display:flex;align-items:center;gap:5px;padding:0.55rem 0.85rem;border-radius:20px;border:1.5px solid var(--gbray);color:var(--gray);font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all var(--trans);min-height:44px;}
 .cf-radio-pill:hover{border-color:var(--green);color:var(--green);}
 .cf-radio-pill input{display:none;}
 .cf-radio-pill.checked{border-color:var(--green);color:var(--green);background:var(--pale);}
@@ -605,8 +605,8 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
         </div>
 
         <div class="form-success" id="sell-success">
-          <div class="form-success-icon">🏁</div>
-          <div class="form-success-title">You're in the bag.</div>
+          <div class="form-success-icon"><svg width="56" height="56" viewBox="0 0 56 56" fill="none"><rect x="4" y="8" width="4" height="40" rx="2" fill="#c9a84c"/><path d="M8 8L32 16V28L8 20Z" fill="#c9a84c"/></svg></div>
+          <div class="form-success-title">Bag dropped. Caddie's on it.</div>
           <div class="form-success-text">We'll be in touch within 24 hours with a real offer.</div>
           <div class="form-success-browse">While you wait — browse what's in the Pro Shop.</div>
           <a class="form-success-btn" href="#pro-shop" onclick="smoothScroll('pro-shop')">Browse the Pro Shop →</a>
@@ -685,7 +685,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
             <div class="radio-group">
               <label class="radio-pill" onclick="pill(this,'t-pref')"><input type="radio" name="trade_pref" value="Straight swap"> Straight Swap</label>
               <label class="radio-pill" onclick="pill(this,'t-pref')"><input type="radio" name="trade_pref" value="Trade + cash I add"> Trade + Cash I Add</label>
-              <label class="radio-pill" onclick="pill(this,'t-pref')"><input type="radio" name="trade_pref" value="Trade + cash they add"> Trade + Cash They Add</label>
+              <label class="radio-pill" onclick="pill(this,'t-pref')"><input type="radio" name="trade_pref" value="Trade + cash I receive"> Trade + Cash I Receive</label>
             </div>
           </div>
           <div class="tf-group">
@@ -719,11 +719,11 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
         </div>
 
         <div class="form-success" id="trade-success">
-          <div class="form-success-icon">🏁</div>
-          <div class="form-success-title">You're in the bag.</div>
-          <div class="form-success-text">We'll be in touch within 24 hours with a real offer.</div>
-          <div class="form-success-browse">While you wait — browse what's in the Pro Shop.</div>
-          <a class="form-success-btn" href="#pro-shop" onclick="smoothScroll('pro-shop')">Browse the Pro Shop →</a>
+          <div class="form-success-icon"><svg width="56" height="56" viewBox="0 0 56 56" fill="none"><path d="M16 36V12M16 12L8 20M16 12L24 20M40 20V44M40 44L48 36M40 44L32 36" stroke="#c9a84c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="form-success-title">Trade's in motion.</div>
+          <div class="form-success-text">Deal's on the table. Give us 24 hours.</div>
+          <div class="form-success-browse"></div>
+          <button type="button" class="form-success-btn" onclick="switchPath(null);switchPath('trade')">Make Another Trade →</button>
         </div>
       </form>
     </div>
@@ -744,8 +744,8 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
     <div class="caddie-grid">
       <!-- TIER 1: Wishlist -->
       <div class="caddie-tier">
-        <div class="caddie-tier-title">Save it to your wishlist</div>
-        <div class="caddie-tier-sub">Not ready to commit? Tell us what you want and we'll notify you when it drops.</div>
+        <div class="caddie-tier-title">You Call It. We Find It. You Get First Look.</div>
+        <div class="caddie-tier-sub">A good caddie never comes back empty handed.</div>
         <form id="wishlist-form" action="https://formspree.io/f/xkopwqzl" method="POST" onsubmit="return submitWishlist(event)">
           <input type="hidden" name="_subject" value="Wishlist Entry — Caddie Lane">
           <div class="cf-group">
@@ -753,14 +753,41 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
             <input class="cf-ctrl" type="text" name="dream_club" id="wl-club" placeholder="e.g. Scotty Cameron Phantom X 7" required>
           </div>
           <div class="cf-group">
+            <label class="cf-label">Price Range</label>
+            <input class="cf-ctrl" type="text" name="price_range" placeholder="e.g. $200–$400">
+          </div>
+          <div class="cf-group">
+            <label class="cf-label">Condition Preference</label>
+            <div class="cf-radio-group">
+              <label class="cf-radio-pill" onclick="cpill(this,'wl-cond')"><input type="radio" name="condition_pref" value="Like New"> Like New</label>
+              <label class="cf-radio-pill" onclick="cpill(this,'wl-cond')"><input type="radio" name="condition_pref" value="Great"> Great</label>
+              <label class="cf-radio-pill" onclick="cpill(this,'wl-cond')"><input type="radio" name="condition_pref" value="Good/Gamer"> Good/Gamer</label>
+            </div>
+          </div>
+          <div class="cf-group">
+            <label class="cf-label">Contact Preference</label>
+            <div class="cf-radio-group">
+              <label class="cf-radio-pill" onclick="cpill(this,'wl-contact')"><input type="radio" name="contact_pref" value="Email"> Email</label>
+              <label class="cf-radio-pill" onclick="cpill(this,'wl-contact')"><input type="radio" name="contact_pref" value="Text"> Text</label>
+            </div>
+          </div>
+          <div class="cf-group">
             <label class="cf-label">Email or Phone *</label>
             <input class="cf-ctrl" type="text" name="contact" id="wl-contact" placeholder="your@email.com or 214-555-0000" required>
+          </div>
+          <div class="cf-group" style="display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;">
+            <label class="cf-toggle-wrap" style="position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0;">
+              <input type="checkbox" name="deals_optin" value="yes" checked id="wl-deals" style="opacity:0;width:0;height:0;">
+              <span class="cf-toggle-track" style="position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:26px;transition:0.3s;" onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;this.style.background=this.previousElementSibling.checked?'var(--green)':'#ccc';this.querySelector('span').style.transform=this.previousElementSibling.checked?'translateX(22px)':'translateX(0)'"><span style="position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s;transform:translateX(22px);"></span></span>
+            </label>
+            <span style="font-family:'Barlow',sans-serif;font-size:12px;color:var(--gray);">May we reach out if we find a deal or close match?</span>
           </div>
           <button type="submit" class="cf-btn">Add to Wishlist</button>
         </form>
         <div class="caddie-success" id="wishlist-success">
-          <div class="caddie-success-icon">✓</div>
-          <div class="caddie-success-text">You're on the list! We'll reach out the moment we find a match.</div>
+          <div class="caddie-success-icon"><svg width="36" height="36" viewBox="0 0 56 56" fill="none"><rect x="4" y="8" width="4" height="40" rx="2" fill="var(--green)"/><path d="M8 8L32 16V28L8 20Z" fill="var(--green)"/></svg></div>
+          <div class="caddie-success-text">Added to the Caddie Pipeline. 🏌️</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);margin-top:0.5rem;">Your caddie is already on the move. You get first look — no exceptions.</div>
         </div>
       </div>
 
@@ -807,7 +834,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
             <div class="cf-radio-group">
               <label class="cf-radio-pill" onclick="cpill(this,'c-offer')"><input type="radio" name="offer_type" value="Cash only"> Cash only</label>
               <label class="cf-radio-pill" onclick="cpill(this,'c-offer')"><input type="radio" name="offer_type" value="Trade + cash I add"> Trade + cash I add</label>
-              <label class="cf-radio-pill" onclick="cpill(this,'c-offer')"><input type="radio" name="offer_type" value="Trade + cash they add"> Trade + cash they add</label>
+              <label class="cf-radio-pill" onclick="cpill(this,'c-offer')"><input type="radio" name="offer_type" value="Trade + cash I receive"> Trade + cash I receive</label>
               <label class="cf-radio-pill" onclick="cpill(this,'c-offer')"><input type="radio" name="offer_type" value="Full trade"> Full trade</label>
             </div>
           </div>
@@ -829,7 +856,8 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
         </form>
         <div class="caddie-success" id="caddie-success">
           <div class="caddie-success-icon">🏌️</div>
-          <div class="caddie-success-text">Your caddie is on the case! You get first look.</div>
+          <div class="caddie-success-text" style="font-weight:700;font-size:16px;">Your caddie just clocked in.</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);margin-top:0.5rem;">Serious requests move to the front of the line. We'll reach out as soon as we find a match.</div>
         </div>
       </div>
     </div>
@@ -1502,24 +1530,26 @@ function cpill(el, grp) {
   el.classList.add('checked');
 }
 async function submitWishlist(e) {
-  e.preventDefault();
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const club = document.getElementById('wl-club').value.trim();
   const contact = document.getElementById('wl-contact').value.trim();
   if (!club || !contact) { showToast('Please fill in both fields.'); return false; }
+  if (!validateContact(contact)) { showToast('Please enter a valid email (with @) or phone (10+ digits).'); return false; }
   try {
     await sb.from('wishlist').insert({dream_club: club, contact: contact});
   } catch(err) {}
   const form = document.getElementById('wishlist-form');
   try {
     const data = new FormData(form);
-    await fetch(form.action, {method:'POST', body:data, headers:{'Accept':'application/json'}});
-  } catch(err) {}
+    const res = await fetch(form.action, {method:'POST', body:data, headers:{'Accept':'application/json'}});
+    if (!res.ok) { showToast('Something went wrong. Please email us at flagstickfind@gmail.com'); return false; }
+  } catch(err) { showToast('Something went wrong. Please email us at flagstickfind@gmail.com'); return false; }
   document.getElementById('wishlist-form').style.display = 'none';
   document.getElementById('wishlist-success').style.display = 'block';
   return false;
 }
 async function submitCaddie(e) {
-  e.preventDefault();
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const form = document.getElementById('caddie-form');
   try {
     const data = new FormData(form);
@@ -1527,8 +1557,8 @@ async function submitCaddie(e) {
     if (res.ok) {
       form.style.display = 'none';
       document.getElementById('caddie-success').style.display = 'block';
-    } else { showToast('Something went wrong. Please try again.'); }
-  } catch(err) { showToast('Something went wrong. Please try again.'); }
+    } else { showToast('Something went wrong. Please email us at flagstickfind@gmail.com'); }
+  } catch(err) { showToast('Something went wrong. Please email us at flagstickfind@gmail.com'); }
   return false;
 }
 
