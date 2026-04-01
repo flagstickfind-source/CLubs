@@ -6,417 +6,476 @@
 <title>Flagstick Finds — Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --green:#1a4731;--dark:#122d20;--mid:#245c3e;--pale:#eef5f1;--gborder:#c3ddd0;
   --cream:#f0ebe0;--white:#ffffff;--black:#0d0d0d;
   --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#8a6a00;
   --gray:#7a7265;--gbray:#e0d9ce;
-  --red:#c0392b;--red-bg:#fee;
+  --red:#c0392b;--red-bg:#fdeaea;
   --radius:10px;--trans:0.2s ease;
+  --sidebar:220px;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;}
 body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);font-size:14px;line-height:1.6;}
 
-/* LOGIN */
-#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);}
-.login-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.login-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--dark);text-align:center;margin-bottom:0.25rem;}
-.login-logo span{color:var(--gold);}
-.login-sub{text-align:center;font-size:12px;color:var(--gray);margin-bottom:2rem;letter-spacing:0.06em;text-transform:uppercase;}
+/* ── LOGIN ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);}
+.login-card{background:var(--white);border-radius:14px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
+.login-logo{text-align:center;margin-bottom:0.25rem;}
+.login-logo-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--dark);}
+.login-logo-main span{color:var(--gold);}
+.login-sub{text-align:center;font-size:11px;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem;}
 .login-group{margin-bottom:1rem;}
 .login-label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;}
-.login-input{width:100%;padding:0.7rem 0.85rem;border:1px solid var(--gbray);border-radius:8px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
+.login-input{width:100%;padding:0.75rem 0.9rem;border:1px solid var(--gbray);border-radius:8px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
 .login-input:focus{border-color:var(--green);}
-.login-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--trans);margin-top:0.5rem;}
+.login-btn{width:100%;padding:0.85rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--trans);margin-top:0.5rem;}
 .login-btn:hover{background:var(--mid);}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;}
 .login-error{color:var(--red);font-size:12px;margin-top:0.75rem;text-align:center;display:none;}
 .login-info{color:var(--gray);font-size:11px;margin-top:1rem;text-align:center;}
-
-/* OTP */
-#otp-screen{min-height:100vh;display:none;align-items:center;justify-content:center;background:var(--dark);}
-.otp-box{background:var(--white);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;}
-.otp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--dark);margin-bottom:0.5rem;}
-.otp-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem;}
-.otp-input{width:100%;padding:0.8rem;border:1px solid var(--gbray);border-radius:8px;font-size:18px;font-family:'Barlow',sans-serif;text-align:center;letter-spacing:0.3em;outline:none;}
+.otp-wrap{display:none;}
+.otp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--dark);text-align:center;margin-bottom:0.35rem;}
+.otp-sub{font-size:13px;color:var(--gray);text-align:center;margin-bottom:1.25rem;}
+.otp-input{width:100%;padding:0.85rem;border:1px solid var(--gbray);border-radius:8px;font-size:20px;font-family:'Barlow',sans-serif;text-align:center;letter-spacing:0.35em;outline:none;}
 .otp-input:focus{border-color:var(--green);}
-.otp-btn{width:100%;padding:0.8rem;background:var(--green);color:var(--white);border:none;border-radius:8px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:1rem;}
-.otp-error{color:var(--red);font-size:12px;margin-top:0.75rem;display:none;}
 
-/* ADMIN SHELL */
-#admin-shell{display:none;}
-.admin-nav{background:var(--dark);height:56px;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:sticky;top:0;z-index:50;}
-.admin-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--white);text-decoration:none;}
-.admin-logo span{color:var(--gold);}
-.admin-tabs{display:flex;gap:0.25rem;flex:1;justify-content:center;}
-.admin-tab{font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);padding:0.4rem 1rem;border-radius:6px;cursor:pointer;transition:all var(--trans);border:none;background:none;letter-spacing:0.02em;}
-.admin-tab:hover{color:rgba(255,255,255,0.8);}
-.admin-tab.active{color:var(--white);background:rgba(255,255,255,0.1);}
-.admin-logout{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.15);padding:0.35rem 0.85rem;border-radius:6px;cursor:pointer;transition:all var(--trans);}
-.admin-logout:hover{color:var(--white);border-color:rgba(255,255,255,0.4);}
+/* ── SIDEBAR ── */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);background:var(--dark);display:flex;flex-direction:column;z-index:50;transform:translateX(0);transition:transform 0.25s ease;}
+.sidebar-logo{padding:1.5rem 1.25rem 1rem;}
+.sidebar-logo-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--white);letter-spacing:0.03em;}
+.sidebar-logo-main span{color:var(--gold);}
+.sidebar-logo-sub{font-size:10px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px;font-weight:600;}
+.sidebar-nav{flex:1;padding:1rem 0;}
+.sidebar-link{display:flex;align-items:center;gap:0.65rem;padding:0.7rem 1.25rem;font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer;transition:all var(--trans);border:none;background:none;width:100%;text-align:left;font-family:'Barlow',sans-serif;border-left:3px solid transparent;}
+.sidebar-link:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.04);}
+.sidebar-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(201,168,76,0.06);}
+.sidebar-link svg{width:18px;height:18px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.sidebar-foot{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.06);}
+.sidebar-email{font-size:10px;color:rgba(255,255,255,0.25);word-break:break-all;}
+.sidebar-logout{display:flex;align-items:center;gap:0.5rem;font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;margin-top:0.5rem;background:none;border:none;font-family:'Barlow',sans-serif;padding:0;transition:color var(--trans);}
+.sidebar-logout:hover{color:var(--white);}
 
-/* PANELS */
-.panel{display:none;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
-.panel.active{display:block;}
-.panel-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;color:var(--black);margin-bottom:0.5rem;}
-.panel-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem;}
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar);min-height:100vh;background:var(--cream);}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--gbray);background:var(--white);position:sticky;top:0;z-index:30;}
+.topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--dark);text-transform:uppercase;}
+.topbar-btn{display:inline-flex;align-items:center;gap:0.4rem;font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.25rem;background:var(--green);color:var(--white);border:none;border-radius:8px;cursor:pointer;transition:background var(--trans);}
+.topbar-btn:hover{background:var(--mid);}
+.content{padding:1.5rem 2rem 3rem;}
 
-/* DASHBOARD */
-.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
-.dash-card{background:var(--white);border:1px solid var(--gbray);border-radius:var(--radius);padding:1.25rem;text-align:center;}
-.dash-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--green);line-height:1;}
-.dash-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);margin-top:4px;}
+/* ── STATS BAR ── */
+.stats-bar{display:flex;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.stat-item{font-size:13px;color:var(--gray);}
+.stat-item strong{font-weight:700;color:var(--dark);margin-right:3px;}
 
-/* TABLE */
-.tbl-wrap{overflow-x:auto;border:1px solid var(--gbray);border-radius:var(--radius);background:var(--white);}
-table{width:100%;border-collapse:collapse;}
-th{background:var(--pale);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);padding:0.7rem 0.75rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--gbray);}
-td{padding:0.65rem 0.75rem;border-bottom:1px solid var(--gbray);font-size:13px;vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:hover{background:var(--pale);}
-.tbl-thumb{width:40px;height:40px;border-radius:6px;object-fit:contain;background:var(--pale);}
-.tbl-name{font-weight:600;color:var(--black);}
-.tbl-price{font-weight:700;color:var(--green);}
-.tbl-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.04em;display:inline-block;}
-.tbl-badge-sold{background:var(--red-bg);color:var(--red);}
-.tbl-badge-active{background:#efd;color:var(--green);}
-.tbl-badge-draft{background:#fff3cd;color:#856404;}
-.tbl-actions{display:flex;gap:0.35rem;flex-wrap:wrap;}
-.btn-sm{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;transition:all var(--trans);border:none;white-space:nowrap;}
-.btn-edit{background:var(--pale);color:var(--green);border:1px solid var(--gborder);}
-.btn-edit:hover{background:var(--green);color:var(--white);}
-.btn-sold{background:#fff8e1;color:var(--gold-d);border:1px solid var(--gold-l);}
-.btn-sold:hover{background:var(--gold);color:#1a1a1a;}
-.btn-del{background:var(--red-bg);color:var(--red);border:1px solid #fcc;}
-.btn-del:hover{background:var(--red);color:#fff;}
-.btn-fb{background:#1877f2;color:#fff;border:1px solid #1877f2;}
-.btn-fb:hover{background:#0d6ce8;}
-.btn-share{background:var(--cream);color:var(--black);border:1px solid var(--gbray);}
-.btn-share:hover{background:var(--gbray);}
-.btn-add{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.25rem;background:var(--green);color:var(--white);border:none;border-radius:8px;cursor:pointer;transition:background var(--trans);margin-bottom:1.5rem;}
-.btn-add:hover{background:var(--mid);}
-.top-bar{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;}
-.search-input{flex:1;min-width:200px;padding:0.55rem 0.85rem;border:1px solid var(--gbray);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;}
+/* ── SEARCH ── */
+.search-bar{margin-bottom:1.5rem;}
+.search-input{width:100%;max-width:400px;padding:0.6rem 0.9rem 0.6rem 2.4rem;border:1px solid var(--gbray);border-radius:8px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a7265' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E") 0.75rem center no-repeat;transition:border var(--trans);}
 .search-input:focus{border-color:var(--green);}
 
-/* MODAL */
-.adm-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
-.adm-modal-overlay.open{display:flex;}
-.adm-modal{background:var(--white);border-radius:12px;width:100%;max-width:640px;box-shadow:0 20px 60px rgba(0,0,0,0.2);margin-top:2rem;margin-bottom:2rem;}
-.adm-modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--gbray);}
-.adm-modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;}
-.adm-modal-close{width:30px;height:30px;border:none;background:none;cursor:pointer;font-size:20px;color:var(--gray);display:flex;align-items:center;justify-content:center;}
-.adm-modal-body{padding:1.5rem;max-height:70vh;overflow-y:auto;}
-.adm-modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--gbray);display:flex;gap:0.75rem;justify-content:flex-end;}
-.fg{margin-bottom:1rem;}
+/* ── CARD GRID ── */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.card{background:var(--white);border:1px solid var(--gbray);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow var(--trans);}
+.card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+.card.luxury{border:1.5px solid var(--gold);}
+.card-img{height:200px;background:var(--pale);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.card-img img{width:100%;height:100%;object-fit:contain;}
+.card-img-placeholder{color:var(--gbray);font-size:48px;}
+.card-sold-overlay{position:absolute;inset:0;background:rgba(160,160,160,0.6);display:flex;align-items:center;justify-content:center;}
+.card-sold-text{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:0.12em;text-transform:uppercase;background:rgba(0,0,0,0.4);padding:0.3rem 1rem;border-radius:4px;}
+.card-body{padding:0.85rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.3rem;}
+.card-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;font-weight:400;color:var(--black);line-height:1.3;}
+.card-type{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:var(--pale);color:var(--green);align-self:flex-start;}
+.card-price{font-size:15px;font-weight:700;color:var(--green);margin-top:0.15rem;}
+.card.luxury .card-price{color:var(--gold-d);}
+.card-condition{font-size:11px;color:var(--gray);}
+.card-badges{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.2rem;}
+.card-badge{font-size:8px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;}
+.badge-new{background:var(--green);color:#fff;}
+.badge-featured{background:var(--gold);color:#3a2800;}
+.badge-verified{background:var(--pale);color:var(--green);border:1px solid var(--gborder);}
+.badge-limited{background:var(--black);color:#fff;}
+.card-actions{display:flex;gap:0.4rem;padding:0.65rem 1rem;border-top:1px solid var(--gbray);}
+.card-actions button{flex:1;font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.4rem 0.5rem;border-radius:5px;cursor:pointer;transition:all var(--trans);border:none;}
+.btn-edit{background:var(--pale);color:var(--green);border:1px solid var(--gborder);}
+.btn-edit:hover{background:var(--green);color:var(--white);}
+.btn-sold-action{background:#fff8e1;color:var(--gold-d);border:1px solid var(--gold-l);}
+.btn-sold-action:hover{background:var(--gold);color:#1a1a1a;}
+.btn-del{background:var(--red-bg);color:var(--red);border:1px solid #f5c6c6;}
+.btn-del:hover{background:var(--red);color:#fff;}
+.empty-state{text-align:center;padding:4rem 1rem;color:var(--gray);font-size:14px;grid-column:1/-1;}
+
+/* ── ADD/EDIT PAGE ── */
+.page{display:none;}
+.page.active{display:block;}
+.back-link{display:inline-flex;align-items:center;gap:0.35rem;font-size:13px;font-weight:500;color:var(--gray);cursor:pointer;margin-bottom:1rem;background:none;border:none;font-family:'Barlow',sans-serif;padding:0;transition:color var(--trans);}
+.back-link:hover{color:var(--dark);}
+.page-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:var(--dark);margin-bottom:1.5rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 2rem;}
+.form-full{grid-column:1/-1;}
+.fg{margin-bottom:0;}
 .fg label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;}
-.fg input,.fg select,.fg textarea{width:100%;padding:0.6rem 0.75rem;border:1px solid var(--gbray);border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);}
+.fg input,.fg select,.fg textarea{width:100%;padding:0.65rem 0.8rem;border:1px solid var(--gbray);border-radius:6px;font-size:13px;font-family:'Barlow',sans-serif;outline:none;transition:border var(--trans);background:var(--white);}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--green);}
-.fg textarea{resize:vertical;min-height:70px;}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.fg-check{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;}
-.fg-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);}
-.fg-check label{font-size:12px;color:var(--black);text-transform:none;letter-spacing:0;}
+.fg textarea{resize:vertical;min-height:100px;}
+.fg-hint{font-size:10px;color:var(--gray);margin-top:3px;}
 
-/* PHOTOS */
-.photo-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;min-height:40px;}
-.photo-item{position:relative;width:72px;height:72px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);cursor:grab;transition:transform 0.15s;}
-.photo-item.dragging{opacity:0.4;transform:scale(0.9);}
-.photo-item.drag-over{border-color:var(--green);border-width:2px;}
-.photo-item img{width:100%;height:100%;object-fit:contain;}
-.photo-item .photo-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-.photo-item .photo-badge{position:absolute;bottom:2px;left:2px;font-size:8px;background:var(--green);color:#fff;padding:1px 4px;border-radius:2px;}
-.upload-area{border:2px dashed var(--gbray);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--trans);position:relative;}
-.upload-area:hover{border-color:var(--green);background:var(--pale);}
-.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.upload-area-text{font-size:12px;color:var(--gray);}
-.upload-progress{font-size:11px;color:var(--gold-d);margin-top:0.5rem;display:none;}
-.upload-hint{font-size:10px;color:var(--gray);margin-top:4px;}
+/* Toggle */
+.toggle-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
+.toggle-track{position:relative;width:44px;height:24px;background:var(--gbray);border-radius:24px;cursor:pointer;transition:background 0.25s;flex-shrink:0;}
+.toggle-track.on{background:var(--green);}
+.toggle-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;background:var(--white);border-radius:50%;transition:transform 0.25s;box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+.toggle-track.on .toggle-knob{transform:translateX(20px);}
+.toggle-label{font-size:13px;color:var(--black);font-weight:500;}
 
-/* FB BLURB MODAL */
-.fb-blurb-box{background:#f8f8f8;border:1px solid var(--gbray);border-radius:8px;padding:1rem;font-size:13px;line-height:1.7;white-space:pre-wrap;max-height:300px;overflow-y:auto;font-family:'Barlow',sans-serif;}
-.fb-blurb-box::selection{background:var(--gold-l);}
+/* Badges */
+.badge-group{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.25rem;}
+.badge-check{display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:12px;color:var(--gray);font-weight:500;transition:color var(--trans);}
+.badge-check input{display:none;}
+.badge-check .badge-preview{font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;}
+.badge-check.checked{color:var(--black);}
 
-/* TOAST */
-.adm-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--black);color:#fff;padding:0.75rem 1.25rem;border-radius:8px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s ease;pointer-events:none;max-width:360px;line-height:1.5;}
-.adm-toast.show{transform:translateY(0);opacity:1;}
+/* Photos */
+.photo-section{margin-top:1.5rem;}
+.photo-section-title{font-size:13px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.75rem;}
+.drop-zone{border:2px dashed var(--gbray);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:all var(--trans);position:relative;background:var(--white);}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--green);background:var(--pale);}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.drop-zone-text{font-size:13px;color:var(--gray);pointer-events:none;}
+.drop-zone-text strong{color:var(--dark);}
+.upload-status{font-size:11px;color:var(--gold-d);margin-top:0.5rem;display:none;}
+.upload-error{font-size:11px;color:var(--red);margin-top:0.5rem;display:none;}
+.photo-thumbs{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.75rem;min-height:10px;}
+.photo-thumb{position:relative;width:80px;height:80px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);cursor:grab;transition:transform 0.15s,opacity 0.15s;}
+.photo-thumb.dragging{opacity:0.3;transform:scale(0.9);}
+.photo-thumb.drag-over{border:2px solid var(--green);}
+.photo-thumb img{width:100%;height:100%;object-fit:contain;background:var(--pale);}
+.photo-thumb-remove{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.photo-thumb-cover{position:absolute;bottom:2px;left:2px;font-size:7px;font-weight:700;background:var(--green);color:#fff;padding:1px 4px;border-radius:2px;text-transform:uppercase;letter-spacing:0.04em;}
 
-/* RESPONSIVE */
+/* Save */
+.save-bar{margin-top:2rem;}
+.save-btn{width:100%;padding:0.9rem;background:var(--gold);color:var(--dark);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all var(--trans);text-transform:uppercase;letter-spacing:0.06em;}
+.save-btn:hover{background:var(--gold-l);box-shadow:0 4px 16px rgba(201,168,76,0.25);}
+.save-btn:disabled{opacity:0.6;cursor:not-allowed;}
+
+/* ── SOLD VIEW ── */
+.sold-card .card-actions button{flex:1;}
+
+/* ── WISHLIST VIEW ── */
+.wl-table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--gbray);border-radius:var(--radius);overflow:hidden;}
+.wl-table th{background:var(--pale);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);padding:0.7rem 0.75rem;text-align:left;border-bottom:1px solid var(--gbray);}
+.wl-table td{padding:0.6rem 0.75rem;border-bottom:1px solid var(--gbray);font-size:13px;vertical-align:middle;}
+.wl-table tr:last-child td{border-bottom:none;}
+.wl-table tr:hover{background:var(--pale);}
+.wl-del{font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;padding:0.3rem 0.6rem;border-radius:5px;cursor:pointer;background:var(--red-bg);color:var(--red);border:1px solid #f5c6c6;transition:all var(--trans);}
+.wl-del:hover{background:var(--red);color:#fff;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--white);border-radius:12px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.2);overflow:hidden;}
+.modal-head{padding:1.25rem 1.5rem;border-bottom:1px solid var(--gbray);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;color:var(--dark);}
+.modal-close{width:28px;height:28px;border:none;background:none;cursor:pointer;font-size:18px;color:var(--gray);display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:1.5rem;}
+.modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--gbray);display:flex;gap:0.75rem;justify-content:flex-end;}
+.modal-btn-cancel{font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;padding:0.6rem 1.1rem;background:none;color:var(--gray);border:1px solid var(--gbray);border-radius:6px;cursor:pointer;}
+.modal-btn-confirm{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.3rem;background:var(--gold);color:var(--dark);border:none;border-radius:6px;cursor:pointer;transition:background var(--trans);}
+.modal-btn-confirm:hover{background:var(--gold-l);}
+.modal-btn-danger{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;padding:0.6rem 1.3rem;background:var(--red);color:#fff;border:none;border-radius:6px;cursor:pointer;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;padding:0.75rem 1.25rem;border-radius:8px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s ease;pointer-events:none;max-width:360px;line-height:1.5;font-family:'Barlow',sans-serif;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--dark);color:#fff;}
+.toast.error{background:var(--red);color:#fff;}
+
+/* ── MOBILE HAMBURGER ── */
+.mobile-toggle{display:none;position:fixed;top:0.85rem;left:0.85rem;z-index:60;width:40px;height:40px;border-radius:8px;background:var(--dark);border:none;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.mobile-toggle span{display:block;width:20px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .card-grid{grid-template-columns:repeat(2,1fr);}
+}
 @media(max-width:768px){
-  .fg-row{grid-template-columns:1fr;}
-  .admin-tabs{gap:0;flex-wrap:wrap;}
-  .admin-tab{font-size:11px;padding:0.35rem 0.6rem;}
-  .dash-grid{grid-template-columns:1fr 1fr;}
-  .top-bar{flex-direction:column;align-items:stretch;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .mobile-toggle{display:flex;}
+  .main{margin-left:0;}
+  .topbar{padding:1rem 1rem 1rem 3.5rem;}
+  .content{padding:1rem;}
+  .card-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .stats-bar{flex-direction:column;gap:0.4rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">FLAGSTICK <span>FINDS</span></div>
-    <div class="login-sub">Admin Panel</div>
-    <div class="login-group">
-      <label class="login-label">Email</label>
-      <input class="login-input" type="email" id="login-email" placeholder="admin@flagstickfinds.com">
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><div class="login-logo-main">FLAGSTICK <span>FINDS</span></div></div>
+    <div class="login-sub">Admin Portal</div>
+    <div id="login-form-wrap">
+      <div class="login-group">
+        <label class="login-label">Email</label>
+        <input class="login-input" type="email" id="login-email" placeholder="flagstickfind@gmail.com" autocomplete="email">
+      </div>
+      <button class="login-btn" id="login-btn" onclick="sendOtp()">Send Magic Link</button>
     </div>
-    <button class="login-btn" id="login-btn" onclick="sendOtp()">Sign In with Magic Link</button>
+    <div class="otp-wrap" id="otp-wrap">
+      <div class="otp-title">Check Your Email</div>
+      <div class="otp-sub" id="otp-sub">Enter the 6-digit code we sent.</div>
+      <input class="otp-input" type="text" id="otp-input" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+      <button class="login-btn" style="margin-top:1rem;" onclick="verifyOtp()">Verify Code</button>
+    </div>
     <div class="login-error" id="login-error"></div>
     <div class="login-info">A one-time code will be sent to your email.</div>
   </div>
 </div>
 
-<!-- OTP -->
-<div id="otp-screen">
-  <div class="otp-box">
-    <div class="otp-title">Check Your Email</div>
-    <div class="otp-sub" id="otp-sub">We sent a 6-digit code to your email.</div>
-    <input class="otp-input" type="text" id="otp-input" maxlength="6" placeholder="000000" autocomplete="one-time-code">
-    <button class="otp-btn" onclick="verifyOtp()">Verify Code</button>
-    <div class="otp-error" id="otp-error"></div>
+<!-- MOBILE HAMBURGER -->
+<button class="mobile-toggle" id="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-main">FLAGSTICK <span>FINDS</span></div>
+    <div class="sidebar-logo-sub">Admin</div>
   </div>
-</div>
-
-<!-- ADMIN SHELL -->
-<div id="admin-shell">
-  <nav class="admin-nav">
-    <a class="admin-logo" href="./" target="_blank">FLAGSTICK <span>FINDS</span></a>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchPanel('dashboard',this)">Dashboard</button>
-      <button class="admin-tab" onclick="switchPanel('listings',this)">Listings</button>
-      <button class="admin-tab" onclick="switchPanel('sold',this)">Sold</button>
-      <button class="admin-tab" onclick="switchPanel('wishlist',this)">Wishlist</button>
-    </div>
-    <button class="admin-logout" onclick="logout()">Sign Out</button>
-  </nav>
-
-  <!-- DASHBOARD -->
-  <div class="panel active" id="panel-dashboard">
-    <div class="panel-title">Dashboard</div>
-    <div class="panel-sub">Overview of your inventory and sales.</div>
-    <div class="dash-grid">
-      <div class="dash-card"><div class="dash-num" id="d-active">—</div><div class="dash-label">Active Listings</div></div>
-      <div class="dash-card"><div class="dash-num" id="d-sold">—</div><div class="dash-label">Total Sold</div></div>
-      <div class="dash-card"><div class="dash-num" id="d-revenue">—</div><div class="dash-label">Total Revenue</div></div>
-      <div class="dash-card"><div class="dash-num" id="d-wishlist">—</div><div class="dash-label">Wishlist Requests</div></div>
-      <div class="dash-card"><div class="dash-num" id="d-inventory">—</div><div class="dash-label">Inventory Value</div></div>
-      <div class="dash-card"><div class="dash-num" id="d-nophotos">—</div><div class="dash-label">Missing Photos</div></div>
-    </div>
-    <div class="panel-title" style="font-size:20px;margin-top:1rem;">Recent Activity</div>
-    <div class="tbl-wrap" style="margin-top:1rem;">
-      <table>
-        <thead><tr><th>Club</th><th>Event</th><th>Date</th></tr></thead>
-        <tbody id="activity-tbody"><tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
-      </table>
-    </div>
+  <div class="sidebar-nav">
+    <button class="sidebar-link active" data-page="listings" onclick="navTo('listings',this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Listings
+    </button>
+    <button class="sidebar-link" data-page="add" onclick="navTo('add',this);openAddForm()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+      Add New Listing
+    </button>
+    <button class="sidebar-link" data-page="sold" onclick="navTo('sold',this)">
+      <svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+      Sold
+    </button>
+    <button class="sidebar-link" data-page="wishlist" onclick="navTo('wishlist',this)">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      Wishlist
+    </button>
   </div>
+  <div class="sidebar-foot">
+    <div class="sidebar-email">flagstickfind@gmail.com</div>
+    <button class="sidebar-logout" onclick="logout()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</nav>
 
-  <!-- LISTINGS -->
-  <div class="panel" id="panel-listings">
-    <div class="panel-title">Manage Listings</div>
-    <div class="panel-sub">Add, edit, and manage your club inventory.</div>
-    <div class="top-bar">
-      <button class="btn-add" style="margin:0;" onclick="openAddModal()">+ Add New Listing</button>
-      <input class="search-input" type="text" id="listings-search" placeholder="Search clubs..." oninput="filterListings()">
+<!-- MAIN CONTENT -->
+<div class="main" id="main-shell" style="display:none;">
+
+  <!-- LISTINGS PAGE -->
+  <div class="page active" id="page-listings">
+    <div class="topbar">
+      <div class="topbar-title">Listings</div>
+      <button class="topbar-btn" onclick="navTo('add',document.querySelector('[data-page=add]'));openAddForm()">+ Add Listing</button>
     </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody id="listings-tbody"><tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
-      </table>
+    <div class="content">
+      <div class="stats-bar" id="stats-bar"></div>
+      <div class="search-bar">
+        <input class="search-input" type="text" id="search-input" placeholder="Search by name, type, or condition..." oninput="renderListings()">
+      </div>
+      <div class="card-grid" id="listings-grid"></div>
     </div>
   </div>
 
-  <!-- SOLD -->
-  <div class="panel" id="panel-sold">
-    <div class="panel-title">Sold Items</div>
-    <div class="panel-sub">Clubs that have been marked as sold.</div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Photo</th><th>Name</th><th>Type</th><th>Sold Price</th><th>Date</th></tr></thead>
-        <tbody id="sold-tbody"><tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
-      </table>
+  <!-- ADD/EDIT PAGE -->
+  <div class="page" id="page-add">
+    <div class="topbar">
+      <div class="topbar-title" id="form-page-title">Add New Listing</div>
     </div>
-  </div>
-
-  <!-- WISHLIST -->
-  <div class="panel" id="panel-wishlist">
-    <div class="panel-title">Wishlist Submissions</div>
-    <div class="panel-sub">Caddie Lane wishlist entries from customers.</div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Dream Club</th><th>Contact</th><th>Date</th></tr></thead>
-        <tbody id="wishlist-tbody"><tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">Loading...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- LISTING MODAL -->
-<div class="adm-modal-overlay" id="listing-modal">
-  <div class="adm-modal">
-    <div class="adm-modal-head">
-      <div class="adm-modal-title" id="modal-title">Add Listing</div>
-      <button class="adm-modal-close" onclick="closeListingModal()">×</button>
-    </div>
-    <div class="adm-modal-body">
+    <div class="content">
+      <button class="back-link" onclick="navTo('listings',document.querySelector('[data-page=listings]'))">← Back to Listings</button>
+      <div class="page-title" id="form-heading">Add New Listing</div>
       <input type="hidden" id="edit-id">
-      <div class="fg">
-        <label>Club Name *</label>
-        <input type="text" id="f-name" placeholder="e.g. Scotty Cameron Phantom X 7">
-      </div>
-      <div class="fg">
-        <label>Brand</label>
-        <input type="text" id="f-brand" placeholder="e.g. Scotty Cameron, Miura, Ping">
-      </div>
-      <div class="fg-row">
-        <div class="fg">
-          <label>Type *</label>
-          <select id="f-type">
-            <option value="">Select...</option>
-            <option value="Putter">Putter</option>
-            <option value="Iron">Iron</option>
-            <option value="TeeBox">Tee Box</option>
-            <option value="Wedge">Wedge</option>
-            <option value="Driver">Driver</option>
-            <option value="Hybrid">Hybrid</option>
-            <option value="Wood">Fairway Wood</option>
-          </select>
+      <div class="form-grid">
+        <div class="fg"><label>Name *</label><input type="text" id="f-name" placeholder="e.g. Scotty Cameron Phantom X 7"></div>
+        <div class="fg"><label>Type *</label>
+          <select id="f-type"><option value="">Select...</option><option>Putter</option><option>Iron</option><option>Iron Set</option><option>Driver</option><option>Fairway Wood</option><option>Hybrid</option><option>Wedge</option><option>Other</option></select>
         </div>
-        <div class="fg">
-          <label>Condition</label>
-          <select id="f-condition">
-            <option value="">Select...</option>
-            <option value="Like New">Like New</option>
-            <option value="Great">Great</option>
-            <option value="Good/Gamer">Good/Gamer</option>
-            <option value="Fair">Fair</option>
-          </select>
+        <div class="fg"><label>Brand</label><input type="text" id="f-brand" placeholder="e.g. Scotty Cameron"></div>
+        <div class="fg"><label>Model</label><input type="text" id="f-model" placeholder="e.g. Phantom X 7"></div>
+        <div class="fg"><label>Condition</label>
+          <select id="f-condition"><option value="">Select...</option><option>Like New</option><option>Great</option><option>Good/Gamer</option><option>Fair</option></select>
         </div>
-      </div>
-      <div class="fg-row">
+        <div class="fg"><label>Price ($) *</label><input type="number" id="f-price" placeholder="e.g. 250" step="0.01"><div class="fg-hint">Enter in dollars. Stored as cents.</div></div>
         <div class="fg">
-          <label>Price (cents) *</label>
-          <input type="number" id="f-price" placeholder="e.g. 25000 = $250">
+          <label>Toggles</label>
+          <div class="toggle-row">
+            <div class="toggle-track" id="tog-obo" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+            <div class="toggle-label">OBO (Or Best Offer)</div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-track" id="tog-luxury" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+            <div class="toggle-label">Luxury Card (gold styling on site)</div>
+          </div>
         </div>
         <div class="fg">
-          <label>Sort Order</label>
-          <input type="number" id="f-sort" placeholder="0" value="0">
+          <label>Description</label>
+          <textarea id="f-desc" rows="5" placeholder="Short description of the club..."></textarea>
+        </div>
+        <div class="fg form-full">
+          <label>Badges</label>
+          <div class="badge-group">
+            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-new"><span class="badge-preview badge-new">New Arrival</span></label>
+            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-featured"><span class="badge-preview badge-featured">Featured</span></label>
+            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-verified"><span class="badge-preview badge-verified">Caddie Verified ✓</span></label>
+            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-limited"><span class="badge-preview badge-limited">Limited</span></label>
+          </div>
         </div>
       </div>
-      <div class="fg">
-        <label>Description</label>
-        <textarea id="f-desc" placeholder="Short description of the club..."></textarea>
-      </div>
-      <div class="fg-row">
-        <div class="fg-check"><input type="checkbox" id="f-obo"><label for="f-obo">OBO (Or Best Offer)</label></div>
-        <div class="fg-check"><input type="checkbox" id="f-luxury"><label for="f-luxury">Luxury Card</label></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg-check"><input type="checkbox" id="f-badge-new"><label for="f-badge-new">New Arrival</label></div>
-        <div class="fg-check"><input type="checkbox" id="f-badge-featured"><label for="f-badge-featured">Featured</label></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg-check"><input type="checkbox" id="f-badge-verified"><label for="f-badge-verified">Caddie Verified</label></div>
-        <div class="fg-check"><input type="checkbox" id="f-badge-limited"><label for="f-badge-limited">Limited</label></div>
-      </div>
-      <div class="fg">
-        <label>Photos <span style="font-weight:400;text-transform:none;">(drag to reorder, first photo = cover)</span></label>
-        <div class="photo-list" id="photo-list"></div>
-        <div class="upload-area" id="upload-area">
-          <input type="file" id="photo-upload" multiple accept="image/*" onchange="handlePhotoUpload(this)">
-          <div class="upload-area-text">📸 Click or drag photos here &middot; Auto-optimized before upload</div>
+      <div class="photo-section form-full">
+        <div class="photo-section-title">Photos</div>
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="photo-upload" multiple accept="image/jpeg,image/png,image/webp" onchange="handleUpload(this.files)">
+          <div class="drop-zone-text"><strong>Drop photos here</strong> or click to upload<br><span style="font-size:11px;color:var(--gray);">JPG, PNG, WebP · Auto-optimized</span></div>
         </div>
-        <div class="upload-progress" id="upload-progress"></div>
-        <div class="upload-hint">Images are resized to 1600px max and compressed before uploading.</div>
+        <div class="upload-status" id="upload-status"></div>
+        <div class="upload-error" id="upload-error"></div>
+        <div class="photo-thumbs" id="photo-thumbs"></div>
       </div>
-    </div>
-    <div class="adm-modal-foot">
-      <button class="btn-sm btn-edit" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="closeListingModal()">Cancel</button>
-      <button class="btn-add" style="margin:0;" id="modal-save-btn" onclick="saveListing()">Save Listing</button>
+      <div class="save-bar">
+        <button class="save-btn" id="save-btn" onclick="saveListing()">Save Listing</button>
+      </div>
     </div>
   </div>
+
+  <!-- SOLD PAGE -->
+  <div class="page" id="page-sold">
+    <div class="topbar"><div class="topbar-title">Sold</div></div>
+    <div class="content">
+      <div class="card-grid" id="sold-grid"></div>
+    </div>
+  </div>
+
+  <!-- WISHLIST PAGE -->
+  <div class="page" id="page-wishlist">
+    <div class="topbar"><div class="topbar-title">Wishlist</div></div>
+    <div class="content">
+      <div style="overflow-x:auto;">
+        <table class="wl-table">
+          <thead><tr><th>Dream Club</th><th>Price Range</th><th>Contact</th><th>Reach Out?</th><th>Date</th><th></th></tr></thead>
+          <tbody id="wl-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- SOLD PRICE MODAL -->
-<div class="adm-modal-overlay" id="sold-modal">
-  <div class="adm-modal" style="max-width:400px;">
-    <div class="adm-modal-head">
-      <div class="adm-modal-title">Mark as Sold</div>
-      <button class="adm-modal-close" onclick="closeSoldModal()">×</button>
-    </div>
-    <div class="adm-modal-body">
+<div class="modal-overlay" id="sold-modal">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">Mark as Sold</div><button class="modal-close" onclick="closeSoldModal()">×</button></div>
+    <div class="modal-body">
       <input type="hidden" id="sold-listing-id">
-      <div class="fg"><label>Club</label><input type="text" id="sold-club-name" readonly style="background:#f9f9f9;"></div>
-      <div class="fg"><label>Sold Price (cents) *</label><input type="number" id="sold-price" placeholder="e.g. 22000 = $220"></div>
+      <div class="fg"><label>Club</label><input type="text" id="sold-club-name" readonly style="background:var(--pale);"></div>
+      <div class="fg" style="margin-top:1rem;"><label>Sold Price ($) *</label><input type="number" id="sold-price-input" placeholder="e.g. 220" step="0.01"></div>
     </div>
-    <div class="adm-modal-foot">
-      <button class="btn-sm btn-edit" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="closeSoldModal()">Cancel</button>
-      <button class="btn-sm btn-sold" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="confirmMarkSold()">Confirm Sold</button>
+    <div class="modal-foot">
+      <button class="modal-btn-cancel" onclick="closeSoldModal()">Cancel</button>
+      <button class="modal-btn-confirm" onclick="confirmMarkSold()">Confirm Sold</button>
     </div>
   </div>
 </div>
 
-<!-- FB BLURB MODAL -->
-<div class="adm-modal-overlay" id="fb-modal">
-  <div class="adm-modal" style="max-width:500px;">
-    <div class="adm-modal-head">
-      <div class="adm-modal-title">Facebook Marketplace Post</div>
-      <button class="adm-modal-close" onclick="closeFbModal()">×</button>
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">Confirm Delete</div><button class="modal-close" onclick="closeDeleteModal()">×</button></div>
+    <div class="modal-body"><p id="delete-msg" style="font-size:14px;color:var(--black);"></p></div>
+    <div class="modal-foot">
+      <button class="modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="modal-btn-danger" id="delete-confirm-btn">Delete</button>
     </div>
-    <div class="adm-modal-body">
-      <p style="font-size:12px;color:var(--gray);margin-bottom:1rem;">Copy this text for your FB Marketplace listing. Photos are in the gallery below.</p>
-      <div class="fb-blurb-box" id="fb-blurb"></div>
-      <div style="margin-top:1rem;">
-        <label style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;">Quick Photo Links</label>
-        <div id="fb-photos" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;"></div>
+  </div>
+</div>
+
+<!-- EDIT SOLD MODAL -->
+<div class="modal-overlay" id="edit-sold-modal">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-head"><div class="modal-title">Edit Sold Record</div><button class="modal-close" onclick="closeEditSoldModal()">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="es-id">
+      <div class="fg"><label>Name</label><input type="text" id="es-name"></div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Type</label>
+        <select id="es-type"><option value="">Select...</option><option>Putter</option><option>Iron</option><option>Iron Set</option><option>Driver</option><option>Fairway Wood</option><option>Hybrid</option><option>Wedge</option><option>Other</option></select>
+      </div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Sold Price ($)</label><input type="number" id="es-price" step="0.01"></div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Sold Date</label><input type="date" id="es-date"></div>
+      <div class="fg" style="margin-top:0.75rem;">
+        <label>Photo</label>
+        <div class="drop-zone" style="padding:1rem;">
+          <input type="file" id="es-photo-upload" accept="image/jpeg,image/png,image/webp" onchange="handleSoldPhotoUpload(this.files)">
+          <div class="drop-zone-text" style="font-size:12px;">Click to upload photo</div>
+        </div>
+        <div id="es-photo-preview" style="margin-top:0.5rem;"></div>
       </div>
     </div>
-    <div class="adm-modal-foot">
-      <button class="btn-sm btn-share" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="copyFbBlurb()">Copy Text</button>
-      <button class="btn-sm btn-fb" style="font-size:13px;padding:0.6rem 1.2rem;" onclick="openFbMarketplace()">Open FB Marketplace</button>
+    <div class="modal-foot">
+      <button class="modal-btn-cancel" onclick="closeEditSoldModal()">Cancel</button>
+      <button class="modal-btn-confirm" onclick="saveEditSold()">Save Changes</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div class="adm-toast" id="adm-toast"></div>
+<div class="toast" id="toast"></div>
 
 <script>
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
-const BUCKET='club-photos';
-const SITE_URL='https://flagstickfinds.com';
+const BUCKET='Flagstick Finds - Images';
 const{createClient}=supabase;
 const sb=createClient(SUPA_URL,SUPA_KEY);
 
 let allListings=[];
 let currentPhotos=[];
-let loginEmail='';
 let dragIdx=null;
+let loginEmail='';
+let editSoldPhotos=[];
 
-function toast(msg){const t=document.getElementById('adm-toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
-function fmtPrice(c){return c?'$'+(c/100).toLocaleString('en-US',{minimumFractionDigits:0}):'—';}
-function fmtDate(d){if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
-function daysAgo(d){if(!d)return'—';return Math.round((Date.now()-new Date(d))/86400000)+' days';}
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+function fmtPrice(c){return c!=null?'$'+(c/100).toLocaleString('en-US',{minimumFractionDigits:0}):'—';}
+function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 
-// AUTH
+// ── AUTH ──
 async function sendOtp(){
   const email=document.getElementById('login-email').value.trim();
   if(!email){showLoginErr('Please enter your email.');return;}
-  if(email!=='flagstickfind@gmail.com'){showLoginErr('Access denied. Admin only.');return;}
+  if(email!=='flagstickfind@gmail.com'){showLoginErr('Access denied. This portal is private.');return;}
   loginEmail=email;
-  document.getElementById('login-btn').textContent='Sending...';
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.textContent='Sending...';
   const{error}=await sb.auth.signInWithOtp({email});
-  document.getElementById('login-btn').textContent='Sign In with Magic Link';
+  btn.disabled=false;btn.textContent='Send Magic Link';
   if(error){showLoginErr(error.message);return;}
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('otp-screen').style.display='flex';
+  document.getElementById('login-form-wrap').style.display='none';
+  document.getElementById('otp-wrap').style.display='block';
   document.getElementById('otp-sub').textContent='We sent a 6-digit code to '+email;
   document.getElementById('otp-input').focus();
 }
@@ -424,12 +483,11 @@ function showLoginErr(msg){const el=document.getElementById('login-error');el.te
 
 async function verifyOtp(){
   const token=document.getElementById('otp-input').value.trim();
-  if(!token||token.length<6){showOtpErr('Please enter the 6-digit code.');return;}
+  if(!token||token.length<6){showLoginErr('Please enter the 6-digit code.');return;}
   const{error}=await sb.auth.verifyOtp({email:loginEmail,token,type:'email'});
-  if(error){showOtpErr(error.message);return;}
+  if(error){showLoginErr(error.message);return;}
   showAdmin();
 }
-function showOtpErr(msg){const el=document.getElementById('otp-error');el.textContent=msg;el.style.display='block';}
 
 async function checkSession(){
   const{data:{session}}=await sb.auth.getSession();
@@ -438,338 +496,416 @@ async function checkSession(){
 
 function showAdmin(){
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('otp-screen').style.display='none';
-  document.getElementById('admin-shell').style.display='block';
+  document.getElementById('main-shell').style.display='block';
+  document.getElementById('mobile-toggle').style.display='';
   loadAll();
 }
 
 async function logout(){await sb.auth.signOut();location.reload();}
 
-// PANELS
-function switchPanel(name,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  btn.classList.add('active');
+// ── NAVIGATION ──
+function navTo(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  if(page==='listings')loadListings();
+  if(page==='sold')loadSold();
+  if(page==='wishlist')loadWishlist();
 }
 
 async function loadAll(){
   await loadListings();
-  loadSoldItems();
-  loadWishlist();
-  loadDashboard();
 }
 
-// DASHBOARD
-async function loadDashboard(){
-  const{data:listings}=await sb.from('listings').select('*');
-  const{data:sold}=await sb.from('sold').select('*');
-  const{data:wishlist}=await sb.from('wishlist').select('*');
-  const active=(listings||[]).filter(c=>!c.sold);
-  const totalRev=(sold||[]).reduce((a,s)=>a+(s.sold_price||0),0);
-  const invValue=(listings||[]).reduce((a,c)=>a+(c.price||0),0);
-  const noPhotos=(listings||[]).filter(c=>!c.photos||c.photos.length===0).length;
-
-  document.getElementById('d-active').textContent=active.length;
-  document.getElementById('d-sold').textContent=(sold||[]).length;
-  document.getElementById('d-revenue').textContent=fmtPrice(totalRev);
-  document.getElementById('d-wishlist').textContent=(wishlist||[]).length;
-  document.getElementById('d-inventory').textContent=fmtPrice(invValue);
-  document.getElementById('d-nophotos').textContent=noPhotos;
-
-  const activity=[];
-  (sold||[]).slice(0,5).forEach(s=>activity.push({name:s.name,event:'Sold for '+fmtPrice(s.sold_price),date:s.sold_at}));
-  (listings||[]).filter(c=>!c.sold).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5).forEach(c=>activity.push({name:c.name,event:'Listed',date:c.created_at}));
-  activity.sort((a,b)=>new Date(b.date)-new Date(a.date));
-
-  const tbody=document.getElementById('activity-tbody');
-  if(!activity.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No activity yet.</td></tr>';return;}
-  tbody.innerHTML=activity.slice(0,10).map(a=>`<tr><td class="tbl-name">${a.name}</td><td>${a.event}</td><td>${fmtDate(a.date)}</td></tr>`).join('');
-}
-
-// LISTINGS
+// ── LISTINGS ──
 async function loadListings(){
   const{data,error}=await sb.from('listings').select('*').order('sort_order').order('created_at',{ascending:false});
+  if(error){toast('Failed to load listings: '+error.message,'error');return;}
   allListings=data||[];
-  renderListings(allListings);
+  renderStats();
+  renderListings();
 }
 
-function filterListings(){
-  const q=document.getElementById('listings-search').value.toLowerCase().trim();
-  const filtered=q?allListings.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.brand||'').toLowerCase().includes(q)||(c.type||'').toLowerCase().includes(q)):allListings;
-  renderListings(filtered);
+function renderStats(){
+  const active=allListings.filter(c=>!c.sold);
+  const sold=allListings.filter(c=>c.sold);
+  const inv=active.reduce((a,c)=>a+(c.price||0),0);
+  document.getElementById('stats-bar').innerHTML=
+    `<div class="stat-item"><strong>${active.length}</strong> Active</div>`+
+    `<div class="stat-item"><strong>${sold.length}</strong> Sold</div>`+
+    `<div class="stat-item"><strong>${fmtPrice(inv)}</strong> Inventory Value</div>`;
 }
 
-function renderListings(list){
-  const tbody=document.getElementById('listings-tbody');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No listings found.</td></tr>';return;}
-  tbody.innerHTML=list.map(c=>{
-    const photo=(c.photos&&c.photos[0])?`<img class="tbl-thumb" src="${c.photos[0]}" alt="" loading="lazy">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--pale);">🏌️</div>';
-    const statusBadge=c.sold?'<span class="tbl-badge tbl-badge-sold">Sold</span>':'<span class="tbl-badge tbl-badge-active">Active</span>';
-    const esc=n=>(n||'').replace(/'/g,"\\'");
-    return `<tr>
-      <td>${photo}</td>
-      <td class="tbl-name">${c.name||''}</td>
-      <td>${c.type||''}</td>
-      <td class="tbl-price">${fmtPrice(c.price)}</td>
-      <td>${statusBadge}</td>
-      <td class="tbl-actions">
-        <button class="btn-sm btn-edit" onclick="editListing('${c.id}')">Edit</button>
-        <button class="btn-sm btn-fb" onclick="openFbBlurb('${c.id}')">FB</button>
-        <button class="btn-sm btn-share" onclick="copyShareLink('${c.id}','${esc(c.name)}')">Link</button>
-        ${c.sold?'':`<button class="btn-sm btn-sold" onclick="openSoldModal('${c.id}','${esc(c.name)}')">Sold</button>`}
-        <button class="btn-sm btn-del" onclick="deleteListing('${c.id}','${esc(c.name)}')">Del</button>
-      </td>
-    </tr>`;
+function renderListings(){
+  const q=(document.getElementById('search-input').value||'').toLowerCase().trim();
+  let list=allListings;
+  if(q){
+    list=list.filter(c=>
+      (c.name||'').toLowerCase().includes(q)||
+      (c.type||'').toLowerCase().includes(q)||
+      (c.condition||'').toLowerCase().includes(q)||
+      (c.brand||'').toLowerCase().includes(q)
+    );
+  }
+  const grid=document.getElementById('listings-grid');
+  if(!list.length){grid.innerHTML='<div class="empty-state">No listings found.</div>';return;}
+  grid.innerHTML=list.map(c=>{
+    const photo=(c.photos&&c.photos[0])?`<img src="${c.photos[0]}" alt="${esc(c.name)}" loading="lazy">`:'<div class="card-img-placeholder">🏌️</div>';
+    const soldOverlay=c.sold?'<div class="card-sold-overlay"><div class="card-sold-text">Sold</div></div>':'';
+    const luxClass=c.luxury?' luxury':'';
+    const obo=c.obo?' OBO':'';
+    let badges='';
+    if(c.badge_new)badges+='<span class="card-badge badge-new">New</span>';
+    if(c.badge_featured)badges+='<span class="card-badge badge-featured">Featured</span>';
+    if(c.badge_verified)badges+='<span class="card-badge badge-verified">Verified ✓</span>';
+    if(c.badge_limited)badges+='<span class="card-badge badge-limited">Limited</span>';
+    return `<div class="card${luxClass}">
+      <div class="card-img">${photo}${soldOverlay}</div>
+      <div class="card-body">
+        <div class="card-name">${c.name||''}</div>
+        <div class="card-type">${c.type||''}</div>
+        <div class="card-price">${fmtPrice(c.price)}${obo}</div>
+        <div class="card-condition">${c.condition||''}</div>
+        ${badges?'<div class="card-badges">'+badges+'</div>':''}
+      </div>
+      <div class="card-actions">
+        <button class="btn-edit" onclick="startEdit('${c.id}')">Edit</button>
+        ${c.sold?'':`<button class="btn-sold-action" onclick="openSoldModal('${c.id}','${esc(c.name)}')">Sold</button>`}
+        <button class="btn-del" onclick="openDeleteModal('listing','${c.id}','${esc(c.name)}')">Del</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ADD / EDIT
-function openAddModal(){
+// ── ADD / EDIT ──
+function openAddForm(){
   document.getElementById('edit-id').value='';
-  document.getElementById('modal-title').textContent='Add Listing';
-  ['f-name','f-brand','f-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('form-page-title').textContent='Add New Listing';
+  document.getElementById('form-heading').textContent='Add New Listing';
+  ['f-name','f-brand','f-model','f-desc'].forEach(id=>document.getElementById(id).value='');
   ['f-type','f-condition'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-price').value='';
-  document.getElementById('f-sort').value='0';
-  ['f-obo','f-luxury','f-badge-new','f-badge-featured','f-badge-verified','f-badge-limited'].forEach(id=>document.getElementById(id).checked=false);
+  document.getElementById('tog-obo').classList.remove('on');
+  document.getElementById('tog-luxury').classList.remove('on');
+  ['b-new','b-featured','b-verified','b-limited'].forEach(id=>{document.getElementById(id).checked=false;document.getElementById(id).closest('.badge-check').classList.remove('checked');});
   currentPhotos=[];
-  renderPhotos();
-  document.getElementById('listing-modal').classList.add('open');
+  renderPhotoThumbs();
+  clearUploadStatus();
 }
 
-async function editListing(id){
+async function startEdit(id){
   const{data,error}=await sb.from('listings').select('*').eq('id',id).single();
-  if(error||!data){toast('Failed to load listing.');return;}
+  if(error||!data){toast('Failed to load listing.','error');return;}
+  navTo('add',document.querySelector('[data-page=add]'));
   document.getElementById('edit-id').value=id;
-  document.getElementById('modal-title').textContent='Edit Listing';
+  document.getElementById('form-page-title').textContent='Edit: '+data.name;
+  document.getElementById('form-heading').textContent='Edit: '+data.name;
   document.getElementById('f-name').value=data.name||'';
-  document.getElementById('f-brand').value=data.brand||'';
   document.getElementById('f-type').value=data.type||'';
+  document.getElementById('f-brand').value=data.brand||'';
+  document.getElementById('f-model').value=data.model||'';
   document.getElementById('f-condition').value=data.condition||'';
-  document.getElementById('f-price').value=data.price||'';
-  document.getElementById('f-sort').value=data.sort_order||0;
-  document.getElementById('f-desc').value=data.description||'';
-  document.getElementById('f-obo').checked=!!data.obo;
-  document.getElementById('f-luxury').checked=!!data.luxury;
-  document.getElementById('f-badge-new').checked=!!data.badge_new;
-  document.getElementById('f-badge-featured').checked=!!data.badge_featured;
-  document.getElementById('f-badge-verified').checked=!!data.badge_verified;
-  document.getElementById('f-badge-limited').checked=!!data.badge_limited;
+  document.getElementById('f-price').value=data.price?(data.price/100):'';
+  document.getElementById('tog-obo').classList.toggle('on',!!data.obo);
+  document.getElementById('tog-luxury').classList.toggle('on',!!data.luxury);
+  document.getElementById('b-new').checked=!!data.badge_new;toggleBadgeVisual('b-new');
+  document.getElementById('b-featured').checked=!!data.badge_featured;toggleBadgeVisual('b-featured');
+  document.getElementById('b-verified').checked=!!data.badge_verified;toggleBadgeVisual('b-verified');
+  document.getElementById('b-limited').checked=!!data.badge_limited;toggleBadgeVisual('b-limited');
   currentPhotos=(data.photos||[]).slice();
-  renderPhotos();
-  document.getElementById('listing-modal').classList.add('open');
+  renderPhotoThumbs();
+  clearUploadStatus();
 }
 
-function closeListingModal(){document.getElementById('listing-modal').classList.remove('open');}
-
-// PHOTOS with drag-and-drop reorder
-function renderPhotos(){
-  const list=document.getElementById('photo-list');
-  list.innerHTML=currentPhotos.map((url,i)=>`<div class="photo-item" draggable="true" data-idx="${i}" ondragstart="photoDragStart(event,${i})" ondragover="photoDragOver(event)" ondragenter="photoDragEnter(event)" ondragleave="photoDragLeave(event)" ondrop="photoDrop(event,${i})" ondragend="photoDragEnd(event)">
-    <img src="${url}" alt="">
-    <button class="photo-remove" onclick="removePhoto(${i})">×</button>
-    ${i===0?'<div class="photo-badge">Cover</div>':''}
-  </div>`).join('');
+function toggleSwitch(el){el.classList.toggle('on');}
+function toggleBadge(label){
+  const cb=label.querySelector('input');
+  setTimeout(()=>label.classList.toggle('checked',cb.checked),0);
 }
-function removePhoto(i){currentPhotos.splice(i,1);renderPhotos();}
-function photoDragStart(e,i){dragIdx=i;e.currentTarget.classList.add('dragging');}
-function photoDragOver(e){e.preventDefault();}
-function photoDragEnter(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
-function photoDragLeave(e){e.currentTarget.classList.remove('drag-over');}
-function photoDrop(e,targetIdx){
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(dragIdx===null||dragIdx===targetIdx)return;
-  const item=currentPhotos.splice(dragIdx,1)[0];
-  currentPhotos.splice(targetIdx,0,item);
-  renderPhotos();
-}
-function photoDragEnd(e){e.currentTarget.classList.remove('dragging');dragIdx=null;}
-
-async function resizeImage(file,maxW=1600,quality=0.82){
-  return new Promise((resolve)=>{
-    const img=new Image();
-    img.onload=()=>{
-      let w=img.width,h=img.height;
-      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
-      const canvas=document.createElement('canvas');
-      canvas.width=w;canvas.height=h;
-      const ctx=canvas.getContext('2d');
-      ctx.drawImage(img,0,0,w,h);
-      canvas.toBlob(resolve,'image/jpeg',quality);
-    };
-    img.src=URL.createObjectURL(file);
-  });
-}
-
-async function handlePhotoUpload(input){
-  if(!input.files||!input.files.length)return;
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){toast('Session expired. Please sign in again.');return;}
-  const prog=document.getElementById('upload-progress');
-  prog.style.display='block';
-  const total=input.files.length;
-  let uploaded=0;
-  const editId=document.getElementById('edit-id').value||'new-'+Date.now();
-  for(let i=0;i<total;i++){
-    const file=input.files[i];
-    prog.textContent=`Optimizing & uploading ${i+1}/${total}: ${file.name}...`;
-    const blob=await resizeImage(file);
-    const storagePath=`${editId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
-    const{error}=await sb.storage.from(BUCKET).upload(storagePath,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
-    if(error){
-      console.error('Upload error:',error);
-      toast('Upload failed: '+error.message);
-      continue;
-    }
-    const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(storagePath);
-    currentPhotos.push(publicUrl);
-    uploaded++;
-  }
-  prog.style.display='none';
-  input.value='';
-  renderPhotos();
-  if(uploaded>0) toast(uploaded+' photo'+(uploaded>1?'s':'')+' uploaded!');
+function toggleBadgeVisual(id){
+  const cb=document.getElementById(id);
+  cb.closest('.badge-check').classList.toggle('checked',cb.checked);
 }
 
 async function saveListing(){
   const name=document.getElementById('f-name').value.trim();
   const type=document.getElementById('f-type').value;
-  const price=parseInt(document.getElementById('f-price').value)||0;
-  if(!name||!type||!price){toast('Name, type, and price are required.');return;}
+  const priceVal=parseFloat(document.getElementById('f-price').value);
+  if(!name){toast('Name is required.','error');return;}
+  if(!type){toast('Type is required.','error');return;}
+  if(!priceVal||priceVal<=0){toast('Price is required.','error');return;}
+  const price=Math.round(priceVal*100);
   const row={
     name,type,price,
     brand:document.getElementById('f-brand').value.trim()||null,
+    model:document.getElementById('f-model').value.trim()||null,
     condition:document.getElementById('f-condition').value||null,
     description:document.getElementById('f-desc').value.trim()||null,
-    sort_order:parseInt(document.getElementById('f-sort').value)||0,
-    obo:document.getElementById('f-obo').checked,
-    luxury:document.getElementById('f-luxury').checked,
-    badge_new:document.getElementById('f-badge-new').checked,
-    badge_featured:document.getElementById('f-badge-featured').checked,
-    badge_verified:document.getElementById('f-badge-verified').checked,
-    badge_limited:document.getElementById('f-badge-limited').checked,
+    obo:document.getElementById('tog-obo').classList.contains('on'),
+    luxury:document.getElementById('tog-luxury').classList.contains('on'),
+    badge_new:document.getElementById('b-new').checked,
+    badge_featured:document.getElementById('b-featured').checked,
+    badge_verified:document.getElementById('b-verified').checked,
+    badge_limited:document.getElementById('b-limited').checked,
     photos:currentPhotos,
     sold:false,
+    sort_order:0,
   };
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.textContent='Saving...';
   const editId=document.getElementById('edit-id').value;
   let result;
-  if(editId){result=await sb.from('listings').update(row).eq('id',editId).select();}
-  else{result=await sb.from('listings').insert(row).select();}
-  if(result.error){toast('Save failed: '+result.error.message);console.error('Save error:',result.error);return;}
-  closeListingModal();
-  toast(editId?'Listing updated!':'Listing added!');
-  await loadListings();
-  loadDashboard();
+  if(editId){
+    delete row.sold;
+    result=await sb.from('listings').update(row).eq('id',editId).select();
+  }else{
+    result=await sb.from('listings').insert(row).select();
+  }
+  btn.disabled=false;btn.textContent='Save Listing';
+  if(result.error){toast('Save failed: '+result.error.message,'error');return;}
+  toast('✓ Listing saved!');
+  navTo('listings',document.querySelector('[data-page=listings]'));
 }
 
-async function deleteListing(id,name){
-  if(!confirm('Delete "'+name+'"? This cannot be undone.'))return;
-  const{error}=await sb.from('listings').delete().eq('id',id);
-  if(error){toast('Delete failed: '+error.message);return;}
-  toast('Listing deleted.');
-  await loadListings();
-  loadDashboard();
+// ── PHOTOS ──
+function clearUploadStatus(){
+  document.getElementById('upload-status').style.display='none';
+  document.getElementById('upload-error').style.display='none';
 }
 
-// MARK AS SOLD
+async function resizeImage(file,maxW=1600,quality=0.82){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      c.toBlob(resolve,'image/jpeg',quality);
+    };
+    img.src=URL.createObjectURL(file);
+  });
+}
+
+async function handleUpload(files){
+  if(!files||!files.length)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){toast('Session expired. Please sign in again.','error');return;}
+  const status=document.getElementById('upload-status');
+  const errEl=document.getElementById('upload-error');
+  errEl.style.display='none';
+  status.style.display='block';
+  const editId=document.getElementById('edit-id').value||'new-'+Date.now();
+  let uploaded=0;
+  for(let i=0;i<files.length;i++){
+    status.textContent=`Uploading ${i+1}/${files.length}: ${files[i].name}...`;
+    try{
+      const blob=await resizeImage(files[i]);
+      const path=`${editId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
+      const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
+      if(error){errEl.textContent='Upload failed: '+error.message;errEl.style.display='block';continue;}
+      const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+      currentPhotos.push(publicUrl);
+      uploaded++;
+    }catch(e){errEl.textContent='Upload error: '+e.message;errEl.style.display='block';}
+  }
+  status.style.display='none';
+  document.getElementById('photo-upload').value='';
+  renderPhotoThumbs();
+  if(uploaded>0)toast(`✓ ${uploaded} photo${uploaded>1?'s':''} uploaded!`);
+}
+
+function renderPhotoThumbs(){
+  const el=document.getElementById('photo-thumbs');
+  el.innerHTML=currentPhotos.map((url,i)=>
+    `<div class="photo-thumb" draggable="true" data-idx="${i}" ondragstart="pDragStart(event,${i})" ondragover="pDragOver(event)" ondragenter="pDragEnter(event)" ondragleave="pDragLeave(event)" ondrop="pDrop(event,${i})" ondragend="pDragEnd(event)">
+      <img src="${url}" alt="">
+      <button class="photo-thumb-remove" onclick="removePhoto(${i})">×</button>
+      ${i===0?'<div class="photo-thumb-cover">Cover</div>':''}
+    </div>`
+  ).join('');
+}
+function removePhoto(i){currentPhotos.splice(i,1);renderPhotoThumbs();}
+function pDragStart(e,i){dragIdx=i;e.currentTarget.classList.add('dragging');}
+function pDragOver(e){e.preventDefault();}
+function pDragEnter(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function pDragLeave(e){e.currentTarget.classList.remove('drag-over');}
+function pDrop(e,target){
+  e.preventDefault();e.currentTarget.classList.remove('drag-over');
+  if(dragIdx===null||dragIdx===target)return;
+  const item=currentPhotos.splice(dragIdx,1)[0];
+  currentPhotos.splice(target,0,item);
+  renderPhotoThumbs();
+}
+function pDragEnd(e){e.currentTarget.classList.remove('dragging');dragIdx=null;}
+
+// Drop zone drag events
+document.addEventListener('DOMContentLoaded',()=>{
+  const dz=document.getElementById('drop-zone');
+  if(!dz)return;
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');handleUpload(e.dataTransfer.files);});
+});
+
+// ── MARK AS SOLD ──
 function openSoldModal(id,name){
   document.getElementById('sold-listing-id').value=id;
   document.getElementById('sold-club-name').value=name;
-  document.getElementById('sold-price').value='';
+  document.getElementById('sold-price-input').value='';
   document.getElementById('sold-modal').classList.add('open');
 }
 function closeSoldModal(){document.getElementById('sold-modal').classList.remove('open');}
 
 async function confirmMarkSold(){
   const id=document.getElementById('sold-listing-id').value;
-  const soldPrice=parseInt(document.getElementById('sold-price').value)||0;
-  if(!soldPrice){toast('Please enter a sold price.');return;}
+  const priceVal=parseFloat(document.getElementById('sold-price-input').value);
+  if(!priceVal||priceVal<=0){toast('Please enter a sold price.','error');return;}
+  const soldPrice=Math.round(priceVal*100);
   const{data:listing,error:fetchErr}=await sb.from('listings').select('*').eq('id',id).single();
-  if(fetchErr||!listing){toast('Failed to fetch listing.');return;}
+  if(fetchErr||!listing){toast('Failed to fetch listing.','error');return;}
   const soldRow={
-    name:listing.name,type:listing.type,sold_price:soldPrice,
-    photo:(listing.photos&&listing.photos[0])||null,
+    name:listing.name,
+    type:listing.type,
+    sold_price:soldPrice,
+    photos:listing.photos||[],
     sold_at:new Date().toISOString()
   };
   const{error:insErr}=await sb.from('sold').insert(soldRow);
-  if(insErr){toast('Failed to add to sold: '+insErr.message);return;}
-  // Mark listing as sold first (most reliable), then try to delete
+  if(insErr){toast('Failed to record sale: '+insErr.message,'error');return;}
   await sb.from('listings').update({sold:true}).eq('id',id);
-  await sb.from('listings').delete().eq('id',id);
   closeSoldModal();
-  toast('Marked as sold!');
+  toast('✓ Marked as sold!');
   await loadListings();
-  loadSoldItems();
-  loadDashboard();
 }
 
-// FB BLURB
-function openFbBlurb(id){
-  const club=allListings.find(c=>c.id===id);
-  if(!club){toast('Club not found.');return;}
-  const price=fmtPrice(club.price);
-  const obo=club.obo?' (OBO)':'';
-  const condition=club.condition?` | Condition: ${club.condition}`:'';
-  const deepLink=SITE_URL+'?club='+encodeURIComponent(club.id);
-
-  const blurb=`${club.name}
-${price}${obo}${condition}
-
-${club.description||'Premium used golf club. Hand-inspected and ready to ship.'}
-
-${club.type} | Ships Nationwide from DFW
-See full gallery + more clubs: ${deepLink}
-
-#golf #golfclubs #usedgolf #dfw #flagstickfinds`;
-
-  document.getElementById('fb-blurb').textContent=blurb;
-
-  const photosEl=document.getElementById('fb-photos');
-  const photos=club.photos||[];
-  photosEl.innerHTML=photos.length?photos.map((url,i)=>`<a href="${url}" target="_blank" style="display:block;width:56px;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);"><img src="${url}" style="width:100%;height:100%;object-fit:contain;" alt="Photo ${i+1}"></a>`).join(''):'<span style="font-size:12px;color:var(--gray);">No photos uploaded yet.</span>';
-
-  document.getElementById('fb-modal').classList.add('open');
+// ── DELETE ──
+let pendingDelete={type:null,id:null};
+function openDeleteModal(type,id,name){
+  pendingDelete={type,id};
+  const warning=type==='sold'?'\n\nThis will remove it from Recently Sold on the live site.':'';
+  document.getElementById('delete-msg').textContent=`Delete "${name}"? This cannot be undone.${warning}`;
+  document.getElementById('delete-confirm-btn').onclick=confirmDelete;
+  document.getElementById('delete-modal').classList.add('open');
 }
-function closeFbModal(){document.getElementById('fb-modal').classList.remove('open');}
-function copyFbBlurb(){
-  const text=document.getElementById('fb-blurb').textContent;
-  navigator.clipboard.writeText(text).then(()=>toast('FB post text copied!'));
-}
-function openFbMarketplace(){window.open('https://www.facebook.com/marketplace/create/item','_blank');}
+function closeDeleteModal(){document.getElementById('delete-modal').classList.remove('open');}
 
-// SHARE LINK
-function copyShareLink(id,name){
-  const url=SITE_URL+'?club='+encodeURIComponent(id);
-  navigator.clipboard.writeText(url).then(()=>toast('Link copied for '+name+'!'));
+async function confirmDelete(){
+  const{type,id}=pendingDelete;
+  const table=type==='sold'?'sold':type==='wishlist'?'wishlist':'listings';
+  const{error}=await sb.from(table).delete().eq('id',id);
+  closeDeleteModal();
+  if(error){toast('Delete failed: '+error.message,'error');return;}
+  toast('✓ Deleted.');
+  if(type==='listing')await loadListings();
+  if(type==='sold')loadSold();
+  if(type==='wishlist')loadWishlist();
 }
 
-// SOLD ITEMS
-async function loadSoldItems(){
+// ── SOLD VIEW ──
+async function loadSold(){
   const{data,error}=await sb.from('sold').select('*').order('sold_at',{ascending:false});
-  const tbody=document.getElementById('sold-tbody');
-  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--gray);padding:2rem;">No sold items.</td></tr>';return;}
-  tbody.innerHTML=data.map(s=>{
-    const photo=s.photo?`<img class="tbl-thumb" src="${s.photo}" alt="" loading="lazy">`:'<div class="tbl-thumb" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🏌️</div>';
-    return `<tr><td>${photo}</td><td class="tbl-name">${s.name||''}</td><td>${s.type||''}</td><td class="tbl-price">${fmtPrice(s.sold_price)}</td><td>${fmtDate(s.sold_at)}</td></tr>`;
+  const grid=document.getElementById('sold-grid');
+  if(error||!data||!data.length){grid.innerHTML='<div class="empty-state">No sold items yet.</div>';return;}
+  grid.innerHTML=data.map(s=>{
+    const photo=(s.photos&&s.photos[0])?`<img src="${s.photos[0]}" alt="${esc(s.name)}" loading="lazy">`:(s.photo?`<img src="${s.photo}" alt="${esc(s.name)}" loading="lazy">`:'<div class="card-img-placeholder">🏌️</div>');
+    return `<div class="card sold-card">
+      <div class="card-img">${photo}</div>
+      <div class="card-body">
+        <div class="card-name">${s.name||''}</div>
+        <div class="card-type">${s.type||''}</div>
+        <div class="card-price">${fmtPrice(s.sold_price)}</div>
+        <div class="card-condition">${fmtDate(s.sold_at)}</div>
+      </div>
+      <div class="card-actions">
+        <button class="btn-edit" onclick="openEditSold('${s.id}')">Edit</button>
+        <button class="btn-del" onclick="openDeleteModal('sold','${s.id}','${esc(s.name)}')">Delete</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// WISHLIST
-async function loadWishlist(){
-  const{data,error}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
-  const tbody=document.getElementById('wishlist-tbody');
-  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';return;}
-  tbody.innerHTML=data.map(w=>`<tr><td style="font-weight:600;color:var(--green);">${w.dream_club||''}</td><td>${w.contact||''}</td><td>${fmtDate(w.created_at)}</td></tr>`).join('');
+// ── EDIT SOLD ──
+async function openEditSold(id){
+  const{data,error}=await sb.from('sold').select('*').eq('id',id).single();
+  if(error||!data){toast('Failed to load sold record.','error');return;}
+  document.getElementById('es-id').value=id;
+  document.getElementById('es-name').value=data.name||'';
+  document.getElementById('es-type').value=data.type||'';
+  document.getElementById('es-price').value=data.sold_price?(data.sold_price/100):'';
+  document.getElementById('es-date').value=data.sold_at?data.sold_at.split('T')[0]:'';
+  editSoldPhotos=(data.photos||[]).slice();
+  if(!editSoldPhotos.length&&data.photo)editSoldPhotos=[data.photo];
+  renderSoldPhotoPreview();
+  document.getElementById('edit-sold-modal').classList.add('open');
+}
+function closeEditSoldModal(){document.getElementById('edit-sold-modal').classList.remove('open');}
+
+function renderSoldPhotoPreview(){
+  const el=document.getElementById('es-photo-preview');
+  if(editSoldPhotos.length){
+    el.innerHTML=editSoldPhotos.map((u,i)=>`<div style="display:inline-block;width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--gbray);margin-right:4px;position:relative;"><img src="${u}" style="width:100%;height:100%;object-fit:contain;"><button onclick="editSoldPhotos.splice(${i},1);renderSoldPhotoPreview();" style="position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button></div>`).join('');
+  }else{el.innerHTML='';}
 }
 
-// MODAL CLICK-OUTSIDE
-['listing-modal','sold-modal','fb-modal'].forEach(id=>{
+async function handleSoldPhotoUpload(files){
+  if(!files||!files.length)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){toast('Session expired.','error');return;}
+  const blob=await resizeImage(files[0]);
+  const path=`sold/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
+  const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
+  if(error){toast('Upload failed: '+error.message,'error');return;}
+  const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+  editSoldPhotos.push(publicUrl);
+  renderSoldPhotoPreview();
+  toast('✓ Photo uploaded!');
+  document.getElementById('es-photo-upload').value='';
+}
+
+async function saveEditSold(){
+  const id=document.getElementById('es-id').value;
+  const priceVal=parseFloat(document.getElementById('es-price').value);
+  const row={
+    name:document.getElementById('es-name').value.trim(),
+    type:document.getElementById('es-type').value,
+    sold_price:priceVal?Math.round(priceVal*100):0,
+    photos:editSoldPhotos,
+    sold_at:document.getElementById('es-date').value?new Date(document.getElementById('es-date').value).toISOString():null,
+  };
+  const{error}=await sb.from('sold').update(row).eq('id',id);
+  if(error){toast('Save failed: '+error.message,'error');return;}
+  closeEditSoldModal();
+  toast('✓ Sold record updated!');
+  loadSold();
+}
+
+// ── WISHLIST ──
+async function loadWishlist(){
+  const{data,error}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
+  const tbody=document.getElementById('wl-tbody');
+  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';return;}
+  tbody.innerHTML=data.map(w=>{
+    const reachOut=w.reach_out===false?'<span style="color:var(--red);">No</span>':'<span style="color:var(--green);">Yes</span>';
+    return `<tr>
+      <td style="font-weight:600;color:var(--green);">${w.dream_club||''}</td>
+      <td>${w.price_range||'—'}</td>
+      <td>${w.contact||''}</td>
+      <td>${reachOut}</td>
+      <td>${fmtDate(w.created_at)}</td>
+      <td><button class="wl-del" onclick="openDeleteModal('wishlist','${w.id}','${esc(w.dream_club)}')">Del</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── MODAL CLICK-OUTSIDE ──
+['sold-modal','delete-modal','edit-sold-modal'].forEach(id=>{
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 });
 
-// INIT
+// ── INIT ──
 checkSession();
 </script>
 </body>
