@@ -478,9 +478,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
       <button class="filter-pill" onclick="filterShop('TeeBox',this)">Tee Box</button>
       <button class="filter-pill" onclick="filterShop('Wedge',this)">Wedges</button>
     </div>
-    <div class="shop-grid" id="shop-grid">
-      <div class="shop-loading">Loading inventory…</div>
-    </div>
+    <div class="shop-grid" id="shop-grid"></div>
   </div>
 </section>
 
@@ -875,9 +873,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
   <div class="container">
     <div class="sold-title section-title">Recently Sold</div>
     <div class="sold-sub">Clubs that found a new bag.</div>
-    <div class="sold-grid" id="sold-grid">
-      <div class="sold-empty">Loading…</div>
-    </div>
+    <div class="sold-grid" id="sold-grid"></div>
   </div>
 </section>
 
@@ -1103,14 +1099,14 @@ function setupScrollSpy() {
 }
 
 // ── Supabase load ──
-async function loadInventory() {
-  try {
-    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000));
-    const query = sb.from('listings').select('*').eq('sold', false).order('created_at', {ascending: false});
-    const { data, error } = await Promise.race([query, timeout]);
-    if (error || !data || data.length === 0) {
-      allClubs = FALLBACK.filter(c => !c.sold);
-    } else {
+function loadInventory() {
+  allClubs = FALLBACK.filter(c => !c.sold);
+  document.getElementById('total-count').textContent = allClubs.length;
+  renderShop();
+  (async function refreshInventoryFromSupabase() {
+    try {
+      const { data, error } = await sb.from('listings').select('*').eq('sold', false).order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) return;
       const fbByName = {};
       FALLBACK.forEach(c => { fbByName[c.name] = c; });
       allClubs = data.map(c => {
@@ -1120,27 +1116,20 @@ async function loadInventory() {
         }
         return c;
       });
-    }
-  } catch(e) {
-    allClubs = FALLBACK.filter(c => !c.sold);
-  }
-  document.getElementById('total-count').textContent = allClubs.length;
-  renderShop();
+      document.getElementById('total-count').textContent = allClubs.length;
+      renderShop();
+    } catch (e) {}
+  })();
 }
 
-async function loadSold() {
-  try {
-    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000));
-    const query = sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
-    const { data, error } = await Promise.race([query, timeout]);
-    if (error || !data || data.length === 0) {
-      renderSoldFallback();
-    } else {
-      renderSoldGrid(data);
-    }
-  } catch(e) {
-    renderSoldFallback();
-  }
+function loadSold() {
+  renderSoldFallback();
+  (async function refreshSoldFromSupabase() {
+    try {
+      const { data, error } = await sb.from('sold').select('*').order('sold_at', { ascending: false }).limit(8);
+      if (!error && data && data.length) renderSoldGrid(data);
+    } catch (e) {}
+  })();
 }
 function renderSoldFallback() {
   const items = [
@@ -1620,8 +1609,8 @@ function updateOGForClub(club) {
 }
 
 // ── Initialize ──
-window.addEventListener('DOMContentLoaded', async () => {
-  await loadInventory();
+window.addEventListener('DOMContentLoaded', () => {
+  loadInventory();
   loadSold();
   setupScrollSpy();
 

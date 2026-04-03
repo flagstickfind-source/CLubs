@@ -518,6 +518,35 @@ const{createClient}=supabase;
 const sbAuth=createClient(SUPA_URL,SUPA_ANON_KEY);
 const sb=createClient(SUPA_URL,SUPA_SERVICE_KEY,{auth:{autoRefreshToken:false,persistSession:false}});
 
+function encStoragePath(p){return p.split('/').map(encodeURIComponent).join('/');}
+async function uploadFileToFlagstickBucket(path,blob,contentType){
+  const url=SUPA_URL+'/storage/v1/object/'+encodeURIComponent(BUCKET)+'/'+encStoragePath(path);
+  const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':contentType||'image/jpeg','x-upsert':'true'},body:blob});
+  if(!r.ok)throw new Error((await r.text())||'Upload failed');
+  return SUPA_URL+'/storage/v1/object/public/'+encodeURIComponent(BUCKET)+'/'+encStoragePath(path);
+}
+async function restListingsPatchById(id,row){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function restListingsPost(row){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings',{method:'POST',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function restListingsDelete(id){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY}});
+  if(!r.ok)throw new Error((await r.text())||r.statusText);
+}
+async function restListingsPatchByName(name,row){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?name=eq.'+encodeURIComponent(name),{method:'PATCH',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+}
+
 let allListings=[];
 let currentPhotos=[];
 let dragIdx=null;
@@ -726,17 +755,20 @@ async function saveListing(){
   const btn=document.getElementById('save-btn');
   btn.disabled=true;btn.textContent='Saving...';
   const editId=document.getElementById('edit-id').value;
-  let result;
-  if(editId){
-    delete row.sold;
-    result=await sb.from('listings').update(row).eq('id',editId).select();
-  }else{
-    result=await sb.from('listings').insert(row).select();
+  try{
+    if(editId){
+      delete row.sold;
+      await restListingsPatchById(editId,row);
+    }else{
+      await restListingsPost(row);
+    }
+    toast('✓ Listing saved!');
+    navTo('listings',document.querySelector('[data-page=listings]'));
+  }catch(e){
+    toast('Save failed: '+e.message,'error');
+  }finally{
+    btn.disabled=false;btn.textContent='Save Listing';
   }
-  btn.disabled=false;btn.textContent='Save Listing';
-  if(result.error){toast('Save failed: '+result.error.message,'error');return;}
-  toast('✓ Listing saved!');
-  navTo('listings',document.querySelector('[data-page=listings]'));
 }
 
 // ── PHOTOS ──
@@ -771,10 +803,9 @@ async function handleUpload(files){
     status.textContent=`Uploading ${i+1}/${files.length}: ${files[i].name}...`;
     try{
       const blob=await resizeImage(files[i]);
+      if(!blob)throw new Error('Could not process image');
       const path=`${editId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
-      const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
-      if(error){errEl.textContent='Upload failed: '+error.message;errEl.style.display='block';continue;}
-      const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+      const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
       currentPhotos.push(publicUrl);
       uploaded++;
     }catch(e){errEl.textContent='Upload error: '+e.message;errEl.style.display='block';}
@@ -864,12 +895,19 @@ function closeDeleteModal(){document.getElementById('delete-modal').classList.re
 
 async function confirmDelete(){
   const{type,id}=pendingDelete;
+  closeDeleteModal();
+  if(type==='listing'){
+    try{
+      await restListingsDelete(id);
+    }catch(e){toast('Delete failed: '+e.message,'error');return;}
+    toast('✓ Deleted.');
+    await loadListings();
+    return;
+  }
   const table=type==='sold'?'sold':type==='wishlist'?'wishlist':'listings';
   const{error}=await sb.from(table).delete().eq('id',id);
-  closeDeleteModal();
   if(error){toast('Delete failed: '+error.message,'error');return;}
   toast('✓ Deleted.');
-  if(type==='listing')await loadListings();
   if(type==='sold')loadSold();
   if(type==='wishlist')loadWishlist();
 }
@@ -922,11 +960,12 @@ function renderSoldPhotoPreview(){
 async function handleSoldPhotoUpload(files){
   if(!files||!files.length)return;
   const blob=await resizeImage(files[0]);
+  if(!blob){toast('Could not process image','error');return;}
   const path=`sold/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
-  const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
-  if(error){toast('Upload failed: '+error.message,'error');return;}
-  const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
-  editSoldPhotos.push(publicUrl);
+  try{
+    const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
+    editSoldPhotos.push(publicUrl);
+  }catch(e){toast('Upload failed: '+e.message,'error');return;}
   renderSoldPhotoPreview();
   toast('✓ Photo uploaded!');
   document.getElementById('es-photo-upload').value='';
@@ -1021,8 +1060,10 @@ async function duplicateListing(id){
     sold:false,
     sort_order:c.sort_order||0,
   };
-  const{data,error}=await sb.from('listings').insert(row).select();
-  if(error){toast('Duplicate failed: '+error.message,'error');return;}
+  let data;
+  try{
+    data=await restListingsPost(row);
+  }catch(e){toast('Duplicate failed: '+e.message,'error');return;}
   toast('✓ Duplicated! Opening edit...');
   if(data&&data[0])startEdit(data[0].id);
   else await loadListings();
@@ -1061,11 +1102,12 @@ async function handleQuickAddPhotos(files){
   for(let i=0;i<files.length;i++){
     try{
       const blob=await resizeImage(files[i]);
+      if(!blob){toast('Could not process image','error');continue;}
       const path=`quick/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
-      const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
-      if(error){toast('Upload failed: '+error.message,'error');continue;}
-      const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
-      quickAddPhotos.push(publicUrl);
+      try{
+        const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
+        quickAddPhotos.push(publicUrl);
+      }catch(e){toast('Upload failed: '+e.message,'error');continue;}
     }catch(e){toast('Upload error','error');}
   }
   document.getElementById('qa-photo-upload').value='';
@@ -1093,8 +1135,9 @@ async function saveQuickAdd(){
     sold:false,
     sort_order:0,
   };
-  const{error}=await sb.from('listings').insert(row).select();
-  if(error){toast('Save failed: '+error.message,'error');return;}
+  try{
+    await restListingsPost(row);
+  }catch(e){toast('Save failed: '+e.message,'error');return;}
   closeQuickAdd();
   toast(`✓ ${name} is live in the shop!`);
   await loadListings();
@@ -1131,12 +1174,16 @@ async function syncInventoryFromFallback(){
   let synced=0;
   for(const club of FALLBACK_CLUBS){
     if(existingNames.has(club.name)){
-      const{error}=await sb.from('listings').update({photos:club.photos,description:club.description}).eq('name',club.name);
-      if(!error)synced++;
+      try{
+        await restListingsPatchByName(club.name,{photos:club.photos,description:club.description});
+        synced++;
+      }catch(e){}
     }else{
       const row={...club,sold:false,sort_order:0,badge_new:club.badge_new||false,badge_featured:club.badge_featured||false,badge_verified:club.badge_verified||false,badge_limited:club.badge_limited||false};
-      const{error}=await sb.from('listings').insert(row);
-      if(!error)synced++;
+      try{
+        await restListingsPost(row);
+        synced++;
+      }catch(e){}
     }
   }
   if(synced>0)console.log(`Synced ${synced} clubs to Supabase`);
