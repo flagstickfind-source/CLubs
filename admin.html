@@ -200,6 +200,20 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 .mobile-toggle{display:none;position:fixed;top:0.85rem;left:0.85rem;z-index:60;width:40px;height:40px;border-radius:8px;background:var(--dark);border:none;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
 .mobile-toggle span{display:block;width:20px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;}
 
+/* ── RADIO PILLS (Quick Add) ── */
+.radio-pill-admin{display:inline-flex;align-items:center;padding:0.45rem 0.85rem;border-radius:20px;border:1.5px solid var(--gbray);color:var(--gray);font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all var(--trans);}
+.radio-pill-admin:hover{border-color:var(--green);color:var(--green);}
+.radio-pill-admin.checked{border-color:var(--green);color:var(--white);background:var(--green);}
+
+/* ── CARD EXTRA BUTTONS ── */
+.card-extra{display:flex;gap:0.4rem;padding:0 1rem 0.65rem;flex-wrap:wrap;}
+.btn-fb{font-family:'Barlow',sans-serif;font-size:10px;font-weight:600;padding:0.3rem 0.5rem;border-radius:4px;cursor:pointer;background:#1877f2;color:#fff;border:none;transition:opacity var(--trans);}
+.btn-fb:hover{opacity:0.85;}
+.btn-dup{font-family:'Barlow',sans-serif;font-size:10px;font-weight:600;padding:0.3rem 0.5rem;border-radius:4px;cursor:pointer;background:var(--pale);color:var(--green);border:1px solid var(--gborder);transition:all var(--trans);}
+.btn-dup:hover{background:var(--green);color:var(--white);}
+.btn-view{font-family:'Barlow',sans-serif;font-size:10px;font-weight:500;color:var(--gray);text-decoration:none;transition:color var(--trans);}
+.btn-view:hover{color:var(--green);}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .card-grid{grid-template-columns:repeat(2,1fr);}
@@ -287,7 +301,10 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
   <div class="page active" id="page-listings">
     <div class="topbar">
       <div class="topbar-title">Listings</div>
-      <button class="topbar-btn" onclick="navTo('add',document.querySelector('[data-page=add]'));openAddForm()">+ Add Listing</button>
+      <div style="display:flex;gap:0.5rem;">
+        <button class="topbar-btn" onclick="openQuickAdd()" style="background:var(--gold);color:var(--dark);">⚡ Quick Add</button>
+        <button class="topbar-btn" onclick="navTo('add',document.querySelector('[data-page=add]'));openAddForm()">+ Add Listing</button>
+      </div>
     </div>
     <div class="content">
       <div class="stats-bar" id="stats-bar"></div>
@@ -346,7 +363,7 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
       <div class="photo-section form-full">
         <div class="photo-section-title">Photos</div>
         <div class="drop-zone" id="drop-zone">
-          <input type="file" id="photo-upload" multiple accept="image/jpeg,image/png,image/webp" onchange="handleUpload(this.files)">
+          <input type="file" id="photo-upload" multiple accept="image/*" capture="environment" onchange="handleUpload(this.files)">
           <div class="drop-zone-text"><strong>Drop photos here</strong> or click to upload<br><span style="font-size:11px;color:var(--gray);">JPG, PNG, WebP · Auto-optimized</span></div>
         </div>
         <div class="upload-status" id="upload-status"></div>
@@ -425,7 +442,7 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
       <div class="fg" style="margin-top:0.75rem;">
         <label>Photo</label>
         <div class="drop-zone" style="padding:1rem;">
-          <input type="file" id="es-photo-upload" accept="image/jpeg,image/png,image/webp" onchange="handleSoldPhotoUpload(this.files)">
+          <input type="file" id="es-photo-upload" accept="image/*" capture="environment" onchange="handleSoldPhotoUpload(this.files)">
           <div class="drop-zone-text" style="font-size:12px;">Click to upload photo</div>
         </div>
         <div id="es-photo-preview" style="margin-top:0.5rem;"></div>
@@ -434,6 +451,57 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
     <div class="modal-foot">
       <button class="modal-btn-cancel" onclick="closeEditSoldModal()">Cancel</button>
       <button class="modal-btn-confirm" onclick="saveEditSold()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK ADD MODAL -->
+<div class="modal-overlay" id="quick-add-modal">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-head"><div class="modal-title">Quick Add Listing</div><button class="modal-close" onclick="closeQuickAdd()">×</button></div>
+    <div class="modal-body" style="max-height:70vh;overflow-y:auto;">
+      <div class="fg"><label>Club Name *</label><input type="text" id="qa-name" placeholder="e.g. Scotty Cameron Phantom X 7" autofocus></div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Type *</label>
+        <select id="qa-type"><option value="">Select...</option><option>Putter</option><option>Iron Set</option><option>Driver</option><option>Fairway Wood</option><option>Hybrid</option><option>Wedge</option><option>Other</option></select>
+      </div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Brand</label><input type="text" id="qa-brand" placeholder="e.g. Scotty Cameron"></div>
+      <div class="fg" style="margin-top:0.75rem;">
+        <label>Condition</label>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:4px;" id="qa-condition-pills">
+          <label class="radio-pill-admin" onclick="qaPill(this)"><input type="radio" name="qa-cond" value="Like New" style="display:none;"> Like New</label>
+          <label class="radio-pill-admin" onclick="qaPill(this)"><input type="radio" name="qa-cond" value="Great" style="display:none;"> Great</label>
+          <label class="radio-pill-admin" onclick="qaPill(this)"><input type="radio" name="qa-cond" value="Good/Gamer" style="display:none;"> Good/Gamer</label>
+          <label class="radio-pill-admin" onclick="qaPill(this)"><input type="radio" name="qa-cond" value="Fair" style="display:none;"> Fair</label>
+        </div>
+      </div>
+      <div class="fg" style="margin-top:0.75rem;"><label>Price ($) *</label><input type="number" id="qa-price" placeholder="e.g. 250" step="0.01"></div>
+      <div class="toggle-row" style="margin-top:0.75rem;">
+        <div class="toggle-track on" id="qa-obo" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+        <div class="toggle-label">OBO (Or Best Offer)</div>
+      </div>
+      <div class="fg" style="margin-top:0.75rem;">
+        <label>Photos</label>
+        <div class="drop-zone" style="padding:1rem;">
+          <input type="file" id="qa-photo-upload" multiple accept="image/*" capture="environment" onchange="handleQuickAddPhotos(this.files)">
+          <div class="drop-zone-text" style="font-size:12px;"><strong>Click to upload photos</strong><br><span style="font-size:10px;color:var(--gray);">JPG, PNG, WebP</span></div>
+        </div>
+        <div id="qa-photo-thumbs" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;"></div>
+      </div>
+    </div>
+    <div class="modal-foot" style="border-top:1px solid var(--gbray);padding:1rem 1.5rem;">
+      <button style="width:100%;padding:0.9rem;background:var(--gold);color:var(--dark);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;" onclick="saveQuickAdd()">Add to Shop →</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE SOLD CONFIRM MODAL -->
+<div class="modal-overlay" id="delete-sold-modal">
+  <div class="modal-box">
+    <div class="modal-head"><div class="modal-title">Delete Sold Record</div><button class="modal-close" onclick="document.getElementById('delete-sold-modal').classList.remove('open')">×</button></div>
+    <div class="modal-body"><p style="font-size:14px;color:var(--black);" id="delete-sold-msg"></p><p style="font-size:12px;color:var(--red);margin-top:0.5rem;">This will remove it from Recently Sold on the live site.</p></div>
+    <div class="modal-foot">
+      <button class="modal-btn-cancel" onclick="document.getElementById('delete-sold-modal').classList.remove('open')">Cancel</button>
+      <button class="modal-btn-danger" id="delete-sold-confirm-btn">Delete</button>
     </div>
   </div>
 </div>
@@ -489,11 +557,6 @@ async function verifyOtp(){
   showAdmin();
 }
 
-async function checkSession(){
-  const{data:{session}}=await sb.auth.getSession();
-  if(session)showAdmin();
-}
-
 function showAdmin(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('main-shell').style.display='block';
@@ -516,7 +579,7 @@ function navTo(page,btn){
 }
 
 async function loadAll(){
-  await loadListings();
+  loadListings();
 }
 
 // ── LISTINGS ──
@@ -574,6 +637,11 @@ function renderListings(){
         <button class="btn-edit" onclick="startEdit('${c.id}')">Edit</button>
         ${c.sold?'':`<button class="btn-sold-action" onclick="openSoldModal('${c.id}','${esc(c.name)}')">Sold</button>`}
         <button class="btn-del" onclick="openDeleteModal('listing','${c.id}','${esc(c.name)}')">Del</button>
+      </div>
+      <div class="card-extra">
+        <button class="btn-fb" onclick="copyFBPost('${c.id}')">📋 Copy FB Post</button>
+        <button class="btn-dup" onclick="duplicateListing('${c.id}')">⧉ Duplicate</button>
+        <a class="btn-view" href="https://flagstickfinds.com/#pro-shop" target="_blank">View on Site →</a>
       </div>
     </div>`;
   }).join('');
@@ -900,12 +968,198 @@ async function loadWishlist(){
   }).join('');
 }
 
+// ── FB POST COPY ──
+function copyFBPost(id){
+  const c=allListings.find(l=>l.id===id);
+  if(!c)return;
+  const price=(c.price/100).toLocaleString('en-US',{minimumFractionDigits:0});
+  const obo=c.obo?' OBO':'';
+  const typeTag=(c.type||'').toLowerCase().replace(/\s+/g,'');
+  let hashByType='';
+  if(typeTag.includes('putter'))hashByType='#putter #putting';
+  else if(typeTag.includes('iron'))hashByType='#irons #forged #golflife';
+  else if(typeTag.includes('driver'))hashByType='#driver #teeshot #distance';
+  else if(typeTag.includes('hybrid')||typeTag.includes('wood')||typeTag.includes('teebox'))hashByType='#hybrid #fairwaywood';
+  else if(typeTag.includes('wedge'))hashByType='#wedge #shortgame';
+  const text=`${c.name} — ${c.condition||''}
+${c.description||''}
+
+✅ Condition: ${c.condition||''}
+💰 Price: $${price}${obo}
+📦 Ships nationwide or local pickup DFW
+
+More clubs available at flagstickfinds.com
+
+📩 Message to make an offer or ask questions.
+
+#golf #usedgolf #golfclubs #${typeTag} #DFW #flagstickfinds ${hashByType}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    toast('✓ FB post copied — ready to paste!');
+  }).catch(()=>{
+    toast('Failed to copy to clipboard','error');
+  });
+}
+
+// ── DUPLICATE LISTING ──
+async function duplicateListing(id){
+  const c=allListings.find(l=>l.id===id);
+  if(!c)return;
+  const row={
+    name:(c.name||'')+' (Copy)',
+    type:c.type,
+    brand:c.brand||null,
+    model:c.model||null,
+    condition:c.condition||null,
+    description:c.description||null,
+    price:c.price,
+    obo:c.obo||false,
+    luxury:c.luxury||false,
+    badge_new:c.badge_new||false,
+    badge_featured:c.badge_featured||false,
+    badge_verified:c.badge_verified||false,
+    badge_limited:c.badge_limited||false,
+    photos:c.photos||[],
+    sold:false,
+    sort_order:c.sort_order||0,
+  };
+  const{data,error}=await sb.from('listings').insert(row).select();
+  if(error){toast('Duplicate failed: '+error.message,'error');return;}
+  toast('✓ Duplicated! Opening edit...');
+  if(data&&data[0])startEdit(data[0].id);
+  else await loadListings();
+}
+
+// ── QUICK ADD ──
+let quickAddPhotos=[];
+function openQuickAdd(){
+  document.getElementById('qa-name').value='';
+  document.getElementById('qa-type').value='';
+  document.getElementById('qa-brand').value='';
+  document.getElementById('qa-price').value='';
+  document.getElementById('qa-obo').classList.add('on');
+  document.querySelectorAll('#qa-condition-pills .radio-pill-admin').forEach(p=>p.classList.remove('checked'));
+  quickAddPhotos=[];
+  renderQuickAddThumbs();
+  document.getElementById('quick-add-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('qa-name').focus(),100);
+}
+function closeQuickAdd(){document.getElementById('quick-add-modal').classList.remove('open');}
+function qaPill(el){
+  document.querySelectorAll('#qa-condition-pills .radio-pill-admin').forEach(p=>p.classList.remove('checked'));
+  el.classList.add('checked');
+}
+function renderQuickAddThumbs(){
+  const el=document.getElementById('qa-photo-thumbs');
+  el.innerHTML=quickAddPhotos.map((u,i)=>
+    `<div style="display:inline-block;width:50px;height:50px;border-radius:4px;overflow:hidden;border:1px solid var(--gbray);position:relative;">
+      <img src="${u}" style="width:100%;height:100%;object-fit:contain;">
+      <button onclick="quickAddPhotos.splice(${i},1);renderQuickAddThumbs();" style="position:absolute;top:1px;right:1px;width:14px;height:14px;background:rgba(0,0,0,0.5);color:#fff;border:none;border-radius:50%;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+    </div>`
+  ).join('');
+}
+async function handleQuickAddPhotos(files){
+  if(!files||!files.length)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){toast('Session expired.','error');return;}
+  for(let i=0;i<files.length;i++){
+    try{
+      const blob=await resizeImage(files[i]);
+      const path=`quick/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
+      const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
+      if(error){toast('Upload failed: '+error.message,'error');continue;}
+      const{data:{publicUrl}}=sb.storage.from(BUCKET).getPublicUrl(path);
+      quickAddPhotos.push(publicUrl);
+    }catch(e){toast('Upload error','error');}
+  }
+  document.getElementById('qa-photo-upload').value='';
+  renderQuickAddThumbs();
+  toast(`✓ ${files.length} photo${files.length>1?'s':''} uploaded!`);
+}
+async function saveQuickAdd(){
+  const name=document.getElementById('qa-name').value.trim();
+  const type=document.getElementById('qa-type').value;
+  const priceVal=parseFloat(document.getElementById('qa-price').value);
+  if(!name){toast('Name is required.','error');return;}
+  if(!type){toast('Type is required.','error');return;}
+  if(!priceVal||priceVal<=0){toast('Price is required.','error');return;}
+  const condEl=document.querySelector('#qa-condition-pills .radio-pill-admin.checked input');
+  const condition=condEl?condEl.value:null;
+  const row={
+    name,type,
+    brand:document.getElementById('qa-brand').value.trim()||null,
+    condition,
+    price:Math.round(priceVal*100),
+    obo:document.getElementById('qa-obo').classList.contains('on'),
+    luxury:false,
+    badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,
+    photos:quickAddPhotos,
+    sold:false,
+    sort_order:0,
+  };
+  const{error}=await sb.from('listings').insert(row).select();
+  if(error){toast('Save failed: '+error.message,'error');return;}
+  closeQuickAdd();
+  toast(`✓ ${name} is live in the shop!`);
+  await loadListings();
+}
+
+// ── SYNC INVENTORY FROM FALLBACK ──
+const SUPA_PHOTO_STORAGE='https://skauwlggqcdbrzzxvxxh.supabase.co/storage/v1/object/public/club-photos';
+const FALLBACK_CLUBS=[
+  {name:'Scotty Cameron Phantom X 7',type:'Putter',condition:'Great',price:25000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,description:'High-MOI Phantom X 7 mallet. Multi-material construction, soft face insert, exceptional roll.',photos:[SUPA_PHOTO_STORAGE+'/scotty-phantom-x7/phantom_x_7.jpg',SUPA_PHOTO_STORAGE+'/scotty-phantom-x7/phantom_x_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-phantom-x7/phatnom_grip.jpg']},
+  {name:'Scotty Cameron Newport',type:'Putter',condition:'Great',price:35000,obo:false,luxury:true,badge_new:false,badge_featured:false,badge_verified:true,badge_limited:false,description:'Iconic Newport blade — tour-proven feel, timeless look.',photos:[SUPA_PHOTO_STORAGE+'/scotty-newport/newport_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-newport/newport_back.jpg']},
+  {name:'Scotty Cameron GoLo',type:'Putter',condition:'Great',price:30000,obo:false,luxury:true,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'GoLo mallet with red badge and weighted ports. Exceptional roll and alignment.',photos:[SUPA_PHOTO_STORAGE+'/scotty-golo/golo_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-golo/golo_back.jpg',SUPA_PHOTO_STORAGE+'/scotty-golo/golo_grip.jpg',SUPA_PHOTO_STORAGE+'/scotty-golo/golo_1.5.jpg',SUPA_PHOTO_STORAGE+'/scotty-golo/golo_alt.jpg',SUPA_PHOTO_STORAGE+'/scotty-golo/goloo.jpg']},
+  {name:'Scotty Cameron California',type:'Putter',condition:'Good/Gamer',price:22000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'California series putter. Clean lines, great feel. Ready to game.',photos:[SUPA_PHOTO_STORAGE+'/scotty-california/calfornia.jpg',SUPA_PHOTO_STORAGE+'/scotty-california/california__...jpg',SUPA_PHOTO_STORAGE+'/scotty-california/california_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-california/california_grip.jpg',SUPA_PHOTO_STORAGE+'/scotty-california/california_alt.jpg']},
+  {name:'Scotty Cameron Select',type:'Putter',condition:'Great',price:28000,obo:false,luxury:true,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,description:"Select series — one of the cleanest examples you'll find. Minimal face wear, perfect weight.",photos:[SUPA_PHOTO_STORAGE+'/scotty-select/select_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-select/select_top.jpg',SUPA_PHOTO_STORAGE+'/scotty-select/select_grip.jpg',SUPA_PHOTO_STORAGE+'/scotty-select/select_flashback.jpg']},
+  {name:'TaylorMade Spider GTX',type:'Putter',condition:'Like New',price:18000,obo:false,luxury:false,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,description:'Spider GTX in near-perfect shape. True Path alignment, soft feel insert.',photos:[SUPA_PHOTO_STORAGE+'/spider-gtx/spider_face.jpg',SUPA_PHOTO_STORAGE+'/spider-gtx/spider_top.jpg',SUPA_PHOTO_STORAGE+'/spider-gtx/spider_grip.jpg',SUPA_PHOTO_STORAGE+'/spider-gtx/spider_faceee.jpg']},
+  {name:'Odyssey Ai-One Putter',type:'Putter',condition:'Like New',price:16500,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'AI-milled face technology for superior consistency. Barely used.',photos:[SUPA_PHOTO_STORAGE+'/odyssey-ai/oddesey_ai_.jpg',SUPA_PHOTO_STORAGE+'/odyssey-ai/oddessey_ai.jpg',SUPA_PHOTO_STORAGE+'/odyssey-ai/oddeseey_ai_top.jpg']},
+  {name:'Scotty Cameron Futura',type:'Putter',condition:'Great',price:27000,obo:true,luxury:true,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'Scotty Cameron Futura — bold mallet design with refined feel. Clean face, tour-trusted alignment.',photos:[SUPA_PHOTO_STORAGE+'/scotty-futura/futura_face.jpg',SUPA_PHOTO_STORAGE+'/scotty-futura/futura_fullpic.jpg',SUPA_PHOTO_STORAGE+'/scotty-futura/futura_side__main_pic_.jpg',SUPA_PHOTO_STORAGE+'/scotty-futura/futura__top.jpg']},
+  {name:'Miura TC-201 Irons',type:'Iron',condition:'Great',price:115000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,description:'The pinnacle of forged iron craftsmanship. Tour-quality feel. Surgical workability.',photos:[SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_s_face.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_s_full.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_s_top.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_s_good_angle.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_sgripnshaft.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/newmuiratc201_smadeinjapan.jpg',SUPA_PHOTO_STORAGE+'/miura-tc201/muira_japan.jpg']},
+  {name:'Miura CB57 Irons',type:'Iron',condition:'Great',price:110000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:false,badge_limited:false,description:'Cavity-back forged CB57. The perfect blend of Miura feel and playable forgiveness.',photos:[SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb57_irons.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb_57_face.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb_57_face_2.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb57_grips.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb_57_shaft.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_cb57_4.jpg',SUPA_PHOTO_STORAGE+'/miura-cb57/muira_grips.jpg']},
+  {name:'Miura Tournament Irons',type:'Iron',condition:'Good/Gamer',price:25000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'Miura Tournament set — 5, 8, 9, PW, SW + 56° wedge. Muscle-back precision for the serious player.',photos:[SUPA_PHOTO_STORAGE+'/miura-tourney/miuita_tourney_cover_photo.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/miura_tourney.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_56_degree__tourney_.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/dd_muira_tourney.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney__cover_.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney_.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney_1.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney_3.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney_6.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_tourney.jpg',SUPA_PHOTO_STORAGE+'/miura-tourney/muira_p_wedg___tourney_.jpg']},
+  {name:'Mizuno MP-20 Irons',type:'Iron',condition:'Great',price:75000,obo:false,luxury:true,badge_new:false,badge_featured:true,badge_verified:true,badge_limited:false,description:'Legendary Mizuno feel in a modern forged package. 4-PW.',photos:[SUPA_PHOTO_STORAGE+'/mizuno-mp20/mizuno_face.jpg',SUPA_PHOTO_STORAGE+'/mizuno-mp20/mizuno_cover_4-pw.jpg',SUPA_PHOTO_STORAGE+'/mizuno-mp20/mizuno_grips.jpg',SUPA_PHOTO_STORAGE+'/mizuno-mp20/mixuno_mp-20_sun.jpg']},
+  {name:'Ping i59 Irons',type:'Iron',condition:'Great',price:65000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:true,badge_limited:false,description:'Ping i59 — forged face, hydropearl finish, tour-preferred playability. 4-PW.',photos:[SUPA_PHOTO_STORAGE+'/ping-i59/pingi59.jpg',SUPA_PHOTO_STORAGE+'/ping-i59/pingi59_2.jpg',SUPA_PHOTO_STORAGE+'/ping-i59/pingi59_grips.jpg',SUPA_PHOTO_STORAGE+'/ping-i59/ping_i59_sun.jpg',SUPA_PHOTO_STORAGE+'/ping-i59/pingi59_.jpg',SUPA_PHOTO_STORAGE+'/ping-i59/pingi59_extra.jpg']},
+  {name:'TaylorMade P7MB Driving Iron',type:'TeeBox',condition:'Great',price:18000,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:true,description:'P7MB 3 & 4 driving iron. Pure muscle-back precision off the tee.',photos:[SUPA_PHOTO_STORAGE+'/p7mb-driving-iron/driving_iron_-_mb7_3___4_iron.jpg',SUPA_PHOTO_STORAGE+'/p7mb-driving-iron/m7_face.jpg',SUPA_PHOTO_STORAGE+'/p7mb-driving-iron/m7_grips.jpg',SUPA_PHOTO_STORAGE+'/p7mb-driving-iron/m7.jpg']},
+  {name:'Callaway Rogue 3&4 Hybrid',type:'TeeBox',condition:'Great',price:16000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'Callaway Rogue 3 & 4 hybrid set. Jumbo grip. Versatile.',photos:[SUPA_PHOTO_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_face.jpg',SUPA_PHOTO_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_full.jpg',SUPA_PHOTO_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_top.jpg',SUPA_PHOTO_STORAGE+'/callaway-rogue-hybrid/rogue_3_4_hybrid_jumbo_grip.jpg']},
+  {name:'Ping G425 Max Driver',type:'TeeBox',condition:'Great',price:21000,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'G425 Max — highest MOI driver Ping has ever made.',photos:[SUPA_PHOTO_STORAGE+'/ping-g425/ping425_face.jpg',SUPA_PHOTO_STORAGE+'/ping-g425/ping425_back.jpg',SUPA_PHOTO_STORAGE+'/ping-g425/ping425_gripshaft.jpg']},
+  {name:'Callaway Qi10 5-Wood',type:'TeeBox',condition:'Like New',price:19500,obo:false,luxury:false,badge_new:true,badge_featured:false,badge_verified:false,badge_limited:false,description:'Qi10 fairway wood. AI-designed face, low CG, maximum distance.',photos:[SUPA_PHOTO_STORAGE+'/qi10-5wood/qi10_5_wood.jpg',SUPA_PHOTO_STORAGE+'/qi10-5wood/qi10_5wood_face.jpg']},
+  {name:'TaylorMade SIM Max 5-Wood',type:'TeeBox',condition:'Great',price:14500,obo:false,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'SIM Max 5-wood. V Steel sole, Twist Face technology.',photos:[SUPA_PHOTO_STORAGE+'/simmax-5wood/sim_max_5_wood_face.jpg',SUPA_PHOTO_STORAGE+'/simmax-5wood/sim_max_5_wood__full.jpg',SUPA_PHOTO_STORAGE+'/simmax-5wood/sim_max_5_wood_topandface.jpg',SUPA_PHOTO_STORAGE+'/simmax-5wood/sim_max_5_wood_shaft.jpg']},
+  {name:'Titleist 918 D2 Driver',type:'TeeBox',condition:'Good/Gamer',price:12500,obo:true,luxury:false,badge_new:false,badge_featured:false,badge_verified:false,badge_limited:false,description:'Titleist 918 D2 10.5°. SureFit CG weighting system.',photos:[SUPA_PHOTO_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree_full.jpg',SUPA_PHOTO_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree_topandface.jpg',SUPA_PHOTO_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree__top.jpg',SUPA_PHOTO_STORAGE+'/titleist-918-d2/titlist_918_d2_driver_10.5_degree__shaft.jpg']},
+];
+
+async function syncInventoryFromFallback(){
+  const{data:existing,error:fetchErr}=await sb.from('listings').select('name');
+  if(fetchErr){console.log('Sync fetch error:',fetchErr.message);return;}
+  const existingNames=new Set((existing||[]).map(r=>r.name));
+  let synced=0;
+  for(const club of FALLBACK_CLUBS){
+    if(existingNames.has(club.name)){
+      const{error}=await sb.from('listings').update({photos:club.photos,description:club.description}).eq('name',club.name);
+      if(!error)synced++;
+    }else{
+      const row={...club,sold:false,sort_order:0,badge_new:club.badge_new||false,badge_featured:club.badge_featured||false,badge_verified:club.badge_verified||false,badge_limited:club.badge_limited||false};
+      const{error}=await sb.from('listings').insert(row);
+      if(!error)synced++;
+    }
+  }
+  if(synced>0)console.log(`Synced ${synced} clubs to Supabase`);
+}
+
 // ── MODAL CLICK-OUTSIDE ──
-['sold-modal','delete-modal','edit-sold-modal'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+['sold-modal','delete-modal','edit-sold-modal','quick-add-modal'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 });
 
 // ── INIT ──
+async function checkSession(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    showAdmin();
+    await syncInventoryFromFallback();
+    await loadListings();
+  }
+}
 checkSession();
 </script>
 </body>

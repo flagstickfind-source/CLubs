@@ -1101,30 +1101,25 @@ async function loadInventory() {
   try {
     const { data, error } = await sb.from('listings').select('*').eq('sold', false).order('sort_order').order('created_at', {ascending: false});
     if (error || !data || data.length === 0) {
-      allClubs = FALLBACK;
+      allClubs = FALLBACK.slice();
     } else {
-      const good = data.filter(c => c.photos && c.photos.length > 0 && c.name && c.name.length > 2);
-      if (good.length === 0) {
-        allClubs = FALLBACK;
-      } else {
-        const fbById = {};
-        FALLBACK.forEach(c => { fbById[c.id] = c; });
-        const merged = good.map(c => {
-          const fb = fbById[c.id];
-          if (fb && (!c.photos || c.photos.length === 0)) {
-            return { ...c, photos: fb.photos };
-          }
-          return c;
-        });
-        const dbIds = new Set(good.map(c => c.id));
-        FALLBACK.forEach(c => {
-          if (!dbIds.has(c.id)) merged.push(c);
-        });
-        allClubs = merged;
-      }
+      const fbById = {};
+      FALLBACK.forEach(c => { fbById[c.id] = c; });
+      const merged = data.map(c => {
+        const fb = fbById[c.id];
+        if (fb && (!c.photos || c.photos.length === 0)) {
+          return { ...c, photos: fb.photos, description: c.description || fb.description };
+        }
+        return c;
+      });
+      const dbIds = new Set(data.map(c => c.id));
+      FALLBACK.forEach(c => {
+        if (!dbIds.has(c.id)) merged.push(c);
+      });
+      allClubs = merged;
     }
   } catch(e) {
-    allClubs = FALLBACK;
+    allClubs = FALLBACK.slice();
   }
   document.getElementById('total-count').textContent = allClubs.filter(c => !c.sold).length;
   renderShop();
@@ -1132,13 +1127,8 @@ async function loadInventory() {
 
 async function loadSold() {
   try {
-    let { data, error } = await sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
+    const { data, error } = await sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
     if (error || !data || data.length === 0) {
-      const res = await sb.from('sold_listings').select('*').order('sold_at', {ascending: false}).limit(8);
-      if (!res.error && res.data && res.data.length > 0) {
-        renderSoldGrid(res.data.map(r=>({name:r.name,type:r.type,sold_price:r.sold_price,photo:r.photo_url,sold_at:r.sold_at})));
-        return;
-      }
       renderSoldFallback();
     } else {
       renderSoldGrid(data);
@@ -1162,9 +1152,10 @@ function renderSoldGrid(items) {
     const d = new Date(s.sold_at);
     const ago = Math.round((Date.now()-d)/86400000);
     const dateStr = ago === 0 ? 'Today' : ago === 1 ? 'Yesterday' : ago + ' days ago';
+    const img = (s.photos && s.photos[0]) ? s.photos[0] : (s.photo || '');
     return `<div class="sold-card">
       <div class="sold-img-wrap">
-        ${s.photo ? `<img src="${s.photo}" alt="${s.name}" loading="lazy">` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">🏌️</div>'}
+        ${img ? `<img src="${img}" alt="${s.name}" loading="lazy">` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">🏌️</div>'}
         <div class="sold-badge">Sold</div>
       </div>
       <div class="sold-body">
