@@ -1105,35 +1105,34 @@ function setupScrollSpy() {
 // ── Supabase load ──
 async function loadInventory() {
   try {
-    const { data, error } = await sb.from('listings').select('*').eq('sold', false).order('sort_order').order('created_at', {ascending: false});
+    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000));
+    const query = sb.from('listings').select('*').eq('sold', false).order('created_at', {ascending: false});
+    const { data, error } = await Promise.race([query, timeout]);
     if (error || !data || data.length === 0) {
-      allClubs = FALLBACK.slice();
+      allClubs = FALLBACK.filter(c => !c.sold);
     } else {
-      const fbById = {};
-      FALLBACK.forEach(c => { fbById[c.id] = c; });
-      const merged = data.map(c => {
-        const fb = fbById[c.id];
+      const fbByName = {};
+      FALLBACK.forEach(c => { fbByName[c.name] = c; });
+      allClubs = data.map(c => {
+        const fb = fbByName[c.name];
         if (fb && (!c.photos || c.photos.length === 0)) {
           return { ...c, photos: fb.photos, description: c.description || fb.description };
         }
         return c;
       });
-      const dbIds = new Set(data.map(c => c.id));
-      FALLBACK.forEach(c => {
-        if (!dbIds.has(c.id)) merged.push(c);
-      });
-      allClubs = merged;
     }
   } catch(e) {
-    allClubs = FALLBACK.slice();
+    allClubs = FALLBACK.filter(c => !c.sold);
   }
-  document.getElementById('total-count').textContent = allClubs.filter(c => !c.sold).length;
+  document.getElementById('total-count').textContent = allClubs.length;
   renderShop();
 }
 
 async function loadSold() {
   try {
-    const { data, error } = await sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
+    const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000));
+    const query = sb.from('sold').select('*').order('sold_at', {ascending: false}).limit(8);
+    const { data, error } = await Promise.race([query, timeout]);
     if (error || !data || data.length === 0) {
       renderSoldFallback();
     } else {
@@ -1168,7 +1167,6 @@ function renderSoldGrid(items) {
         <div class="sold-name">${s.name}</div>
         <div class="sold-meta">
           <span>${s.type || ''}</span>
-          <span class="sold-price">${s.sold_price ? fmtPrice(s.sold_price) : ''}</span>
         </div>
         <div style="font-family:'Barlow',sans-serif;font-size:10px;color:rgba(255,255,255,0.25);margin-top:3px;">${dateStr}</div>
       </div>
