@@ -512,9 +512,11 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 <script>
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
 const SUPA_SERVICE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDQxMTQ4MywiZXhwIjoyMDg5OTg3NDgzfQ.89uL1_gokMfYosOWeaKA9XBNYtoydjDAn9SuzmtM8e8';
+const SUPA_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
 const BUCKET='Flagstick Finds - Images';
 const{createClient}=supabase;
-const sb=createClient(SUPA_URL,SUPA_SERVICE_KEY);
+const sbAuth=createClient(SUPA_URL,SUPA_ANON_KEY);
+const sb=createClient(SUPA_URL,SUPA_SERVICE_KEY,{auth:{autoRefreshToken:false,persistSession:false}});
 
 let allListings=[];
 let currentPhotos=[];
@@ -539,7 +541,7 @@ async function sendOtp(){
   loginEmail=email;
   const btn=document.getElementById('login-btn');
   btn.disabled=true;btn.textContent='Sending...';
-  const{error}=await sb.auth.signInWithOtp({email});
+  const{error}=await sbAuth.auth.signInWithOtp({email});
   btn.disabled=false;btn.textContent='Send Magic Link';
   if(error){showLoginErr(error.message);return;}
   document.getElementById('login-form-wrap').style.display='none';
@@ -552,7 +554,7 @@ function showLoginErr(msg){const el=document.getElementById('login-error');el.te
 async function verifyOtp(){
   const token=document.getElementById('otp-input').value.trim();
   if(!token||token.length<6){showLoginErr('Please enter the 6-digit code.');return;}
-  const{error}=await sb.auth.verifyOtp({email:loginEmail,token,type:'email'});
+  const{error}=await sbAuth.auth.verifyOtp({email:loginEmail,token,type:'email'});
   if(error){showLoginErr(error.message);return;}
   showAdmin();
 }
@@ -564,7 +566,7 @@ function showAdmin(){
   loadAll();
 }
 
-async function logout(){await sb.auth.signOut();location.reload();}
+async function logout(){await sbAuth.auth.signOut();location.reload();}
 
 // ── NAVIGATION ──
 function navTo(page,btn){
@@ -1148,7 +1150,7 @@ async function syncInventoryFromFallback(){
 
 // ── INIT ──
 async function checkSession(){
-  const{data:{session}}=await sb.auth.getSession();
+  const{data:{session}}=await sbAuth.auth.getSession();
   if(session){
     showAdmin();
     await syncInventoryFromFallback();
