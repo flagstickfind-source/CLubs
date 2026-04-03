@@ -524,6 +524,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
       </div>
       <form id="sell-form" action="https://formspree.io/f/xkopwqbw" method="POST" enctype="multipart/form-data" onsubmit="return submitSell(event)">
         <input type="hidden" name="_subject" value="Sell My Gear — Flagstick Finds">
+        <input type="hidden" name="_replyto" id="sell-replyto">
 
         <!-- Step 1 -->
         <div class="wizard-panel active" id="sell-p1">
@@ -598,6 +599,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
             <label class="tf-label">Email or Phone</label>
             <input class="tf-ctrl" type="text" name="contact" id="s3-contact" placeholder="your@email.com or 214-555-0000" required>
           </div>
+          <div style="font-family:'Barlow',sans-serif;font-size:12px;font-style:italic;color:#c9a84c;margin-top:1rem;line-height:1.6;">📸 Have photos of your club? Reply to the confirmation email you receive with photos attached — it helps us give you a better offer.</div>
           <div class="wiz-nav">
             <button type="button" class="wiz-back" onclick="wizardBack('sell',3,event)">← Back</button>
             <button type="submit" class="wiz-submit">Drop It in the Bag →</button>
@@ -626,6 +628,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
       </div>
       <form id="trade-form" action="https://formspree.io/f/xvzvpwqe" method="POST" enctype="multipart/form-data" onsubmit="return submitTrade(event)">
         <input type="hidden" name="_subject" value="Trade Inquiry — Flagstick Finds">
+        <input type="hidden" name="_replyto" id="trade-replyto">
 
         <!-- Step 1 -->
         <div class="wizard-panel active" id="trade-p1">
@@ -712,6 +715,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
             <label class="tf-label">Email or Phone</label>
             <input class="tf-ctrl" type="text" name="contact" id="t3-contact" placeholder="your@email.com or 214-555-0000" required>
           </div>
+          <div style="font-family:'Barlow',sans-serif;font-size:12px;font-style:italic;color:#c9a84c;margin-top:1rem;line-height:1.6;">📸 Have photos of your club? Reply to the confirmation email you receive with photos attached — it helps us give you a better offer.</div>
           <div class="wiz-nav">
             <button type="button" class="wiz-back" onclick="wizardBack('trade',3,event)">← Back</button>
             <button type="submit" class="wiz-submit">Propose the Trade →</button>
@@ -748,6 +752,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
         <div class="caddie-tier-sub">A good caddie never comes back empty handed.</div>
         <form id="wishlist-form" action="https://formspree.io/f/xkopwqzl" method="POST" onsubmit="return submitWishlist(event)">
           <input type="hidden" name="_subject" value="Wishlist Entry — Caddie Lane">
+          <input type="hidden" name="_replyto" id="wishlist-replyto">
           <div class="cf-group">
             <label class="cf-label">Dream Club *</label>
             <input class="cf-ctrl" type="text" name="dream_club" id="wl-club" placeholder="e.g. Scotty Cameron Phantom X 7" required>
@@ -797,6 +802,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
         <div class="caddie-tier-sub">The more detail you give us, the better we can hunt. Serious requests move to the front of the line.</div>
         <form id="caddie-form" action="https://formspree.io/f/xkopwqzl" method="POST" onsubmit="return submitCaddie(event)">
           <input type="hidden" name="_subject" value="Full Caddie Request — Caddie Lane">
+          <input type="hidden" name="_replyto" id="caddie-replyto">
           <div class="cf-group">
             <label class="cf-label">Dream Club *</label>
             <input class="cf-ctrl" type="text" name="dream_club" required placeholder="e.g. Miura TC-201 4-PW">
@@ -847,7 +853,7 @@ textarea.tf-ctrl{resize:vertical;min-height:100px;}
           </div>
           <div class="cf-group">
             <label class="cf-label">Email or Phone *</label>
-            <input class="cf-ctrl" type="text" name="contact" required placeholder="your@email.com or 214-555-0000">
+            <input class="cf-ctrl" type="text" name="contact" id="caddie-contact" required placeholder="your@email.com or 214-555-0000">
           </div>
           <button type="submit" class="cf-btn">Hire a Caddie →</button>
           <div class="finder-fee">
@@ -1333,11 +1339,13 @@ function switchPath(path) {
   const sellWrap = document.getElementById('sell-form-wrap');
   const tradeWrap = document.getElementById('trade-form-wrap');
   if (!path) {
+    const scrollY = window.scrollY;
     paths.style.display = 'grid';
     sellWrap.classList.remove('active');
     tradeWrap.classList.remove('active');
     wizardReset('sell');
     wizardReset('trade');
+    window.scrollTo(0, scrollY);
   } else if (path === 'sell') {
     paths.style.display = 'none';
     sellWrap.classList.add('active');
@@ -1398,7 +1406,6 @@ function wizardNext(form, step, e) {
   const nextPanel = document.getElementById(form + '-p' + (step+1));
   if (!nextPanel) return;
   clearErrors(panel);
-  const nextStep = step + 1;
   if (form === 'sell' && step === 1) {
     const type = panel.querySelector('[name="club_type"]');
     const model = panel.querySelector('[name="brand_model"]');
@@ -1415,6 +1422,7 @@ function wizardNext(form, step, e) {
     const dream = document.getElementById('t2-dream');
     if (dream && !dream.value.trim()) { showFieldError(dream, 'Please enter your dream club'); return; }
   }
+  const scrollY = window.scrollY;
   panel.classList.remove('active');
   nextPanel.classList.add('active');
   const stepEl = document.getElementById(form + '-s' + step);
@@ -1422,6 +1430,7 @@ function wizardNext(form, step, e) {
   if (stepEl) { stepEl.classList.remove('active'); stepEl.classList.add('done'); }
   if (nextStepEl) nextStepEl.classList.add('active');
   updateProgress(form, step + 1);
+  window.scrollTo(0, scrollY);
 }
 function wizardBack(form, step, e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -1430,11 +1439,13 @@ function wizardBack(form, step, e) {
   const stepEl = document.getElementById(form + '-s' + step);
   const prevStep = document.getElementById(form + '-s' + (step-1));
   if (!prevPanel) return;
+  const scrollY = window.scrollY;
   panel.classList.remove('active');
   prevPanel.classList.add('active');
   if (stepEl) stepEl.classList.remove('active');
   if (prevStep) { prevStep.classList.remove('done'); prevStep.classList.add('active'); }
   updateProgress(form, step - 1);
+  window.scrollTo(0, scrollY);
 }
 
 // ── Photo handling ──
@@ -1615,6 +1626,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   await loadInventory();
   loadSold();
   setupScrollSpy();
+
+  // Sync contact fields to _replyto hidden inputs
+  [['s3-contact','sell-replyto'],['t3-contact','trade-replyto'],['wl-contact','wishlist-replyto'],['caddie-contact','caddie-replyto']].forEach(([src,dst])=>{
+    const srcEl=document.getElementById(src);
+    const dstEl=document.getElementById(dst);
+    if(srcEl&&dstEl) srcEl.addEventListener('input',()=>{dstEl.value=srcEl.value;});
+  });
+
   const params = new URLSearchParams(window.location.search);
   const clubId = params.get('club');
   if (clubId) {

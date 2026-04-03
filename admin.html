@@ -353,10 +353,10 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
         <div class="fg form-full">
           <label>Badges</label>
           <div class="badge-group">
-            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-new"><span class="badge-preview badge-new">New Arrival</span></label>
-            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-featured"><span class="badge-preview badge-featured">Featured</span></label>
-            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-verified"><span class="badge-preview badge-verified">Caddie Verified ✓</span></label>
-            <label class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-limited"><span class="badge-preview badge-limited">Limited</span></label>
+            <div class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-new"><span class="badge-preview badge-new">New Arrival</span></div>
+            <div class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-featured"><span class="badge-preview badge-featured">Featured</span></div>
+            <div class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-verified"><span class="badge-preview badge-verified">Caddie Verified ✓</span></div>
+            <div class="badge-check" onclick="toggleBadge(this)"><input type="checkbox" id="b-limited"><span class="badge-preview badge-limited">Limited</span></div>
           </div>
         </div>
       </div>
@@ -511,10 +511,10 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 
 <script>
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
-const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
+const SUPA_SERVICE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDQxMTQ4MywiZXhwIjoyMDg5OTg3NDgzfQ.89uL1_gokMfYosOWeaKA9XBNYtoydjDAn9SuzmtM8e8';
 const BUCKET='Flagstick Finds - Images';
 const{createClient}=supabase;
-const sb=createClient(SUPA_URL,SUPA_KEY);
+const sb=createClient(SUPA_URL,SUPA_SERVICE_KEY);
 
 let allListings=[];
 let currentPhotos=[];
@@ -584,20 +584,19 @@ async function loadAll(){
 
 // ── LISTINGS ──
 async function loadListings(){
-  const{data,error}=await sb.from('listings').select('*').order('sort_order').order('created_at',{ascending:false});
+  const{data,error}=await sb.from('listings').select('*').eq('sold',false).order('sort_order').order('created_at',{ascending:false});
   if(error){toast('Failed to load listings: '+error.message,'error');return;}
   allListings=data||[];
   renderStats();
   renderListings();
 }
 
-function renderStats(){
-  const active=allListings.filter(c=>!c.sold);
-  const sold=allListings.filter(c=>c.sold);
-  const inv=active.reduce((a,c)=>a+(c.price||0),0);
+async function renderStats(){
+  const inv=allListings.reduce((a,c)=>a+(c.price||0),0);
+  const{count}=await sb.from('sold').select('*',{count:'exact',head:true});
   document.getElementById('stats-bar').innerHTML=
-    `<div class="stat-item"><strong>${active.length}</strong> Active</div>`+
-    `<div class="stat-item"><strong>${sold.length}</strong> Sold</div>`+
+    `<div class="stat-item"><strong>${allListings.length}</strong> Active</div>`+
+    `<div class="stat-item"><strong>${count||0}</strong> Sold</div>`+
     `<div class="stat-item"><strong>${fmtPrice(inv)}</strong> Inventory Value</div>`;
 }
 
@@ -690,7 +689,8 @@ async function startEdit(id){
 function toggleSwitch(el){el.classList.toggle('on');}
 function toggleBadge(label){
   const cb=label.querySelector('input');
-  setTimeout(()=>label.classList.toggle('checked',cb.checked),0);
+  cb.checked=!cb.checked;
+  label.classList.toggle('checked',cb.checked);
 }
 function toggleBadgeVisual(id){
   const cb=document.getElementById(id);
@@ -759,8 +759,6 @@ async function resizeImage(file,maxW=1600,quality=0.82){
 
 async function handleUpload(files){
   if(!files||!files.length)return;
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){toast('Session expired. Please sign in again.','error');return;}
   const status=document.getElementById('upload-status');
   const errEl=document.getElementById('upload-error');
   errEl.style.display='none';
@@ -838,7 +836,9 @@ async function confirmMarkSold(){
     name:listing.name,
     type:listing.type,
     sold_price:soldPrice,
-    photos:listing.photos||[],
+    photo:(listing.photos&&listing.photos[0])||null,
+    condition:listing.condition||null,
+    listing_id:id,
     sold_at:new Date().toISOString()
   };
   const{error:insErr}=await sb.from('sold').insert(soldRow);
@@ -878,7 +878,7 @@ async function loadSold(){
   const grid=document.getElementById('sold-grid');
   if(error||!data||!data.length){grid.innerHTML='<div class="empty-state">No sold items yet.</div>';return;}
   grid.innerHTML=data.map(s=>{
-    const photo=(s.photos&&s.photos[0])?`<img src="${s.photos[0]}" alt="${esc(s.name)}" loading="lazy">`:(s.photo?`<img src="${s.photo}" alt="${esc(s.name)}" loading="lazy">`:'<div class="card-img-placeholder">🏌️</div>');
+    const photo=s.photo?`<img src="${s.photo}" alt="${esc(s.name)}" loading="lazy">`:'<div class="card-img-placeholder">🏌️</div>';
     return `<div class="card sold-card">
       <div class="card-img">${photo}</div>
       <div class="card-body">
@@ -904,8 +904,7 @@ async function openEditSold(id){
   document.getElementById('es-type').value=data.type||'';
   document.getElementById('es-price').value=data.sold_price?(data.sold_price/100):'';
   document.getElementById('es-date').value=data.sold_at?data.sold_at.split('T')[0]:'';
-  editSoldPhotos=(data.photos||[]).slice();
-  if(!editSoldPhotos.length&&data.photo)editSoldPhotos=[data.photo];
+  editSoldPhotos=data.photo?[data.photo]:[];
   renderSoldPhotoPreview();
   document.getElementById('edit-sold-modal').classList.add('open');
 }
@@ -920,8 +919,6 @@ function renderSoldPhotoPreview(){
 
 async function handleSoldPhotoUpload(files){
   if(!files||!files.length)return;
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){toast('Session expired.','error');return;}
   const blob=await resizeImage(files[0]);
   const path=`sold/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
   const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:true});
@@ -940,7 +937,7 @@ async function saveEditSold(){
     name:document.getElementById('es-name').value.trim(),
     type:document.getElementById('es-type').value,
     sold_price:priceVal?Math.round(priceVal*100):0,
-    photos:editSoldPhotos,
+    photo:editSoldPhotos[0]||null,
     sold_at:document.getElementById('es-date').value?new Date(document.getElementById('es-date').value).toISOString():null,
   };
   const{error}=await sb.from('sold').update(row).eq('id',id);
@@ -1059,8 +1056,6 @@ function renderQuickAddThumbs(){
 }
 async function handleQuickAddPhotos(files){
   if(!files||!files.length)return;
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){toast('Session expired.','error');return;}
   for(let i=0;i<files.length;i++){
     try{
       const blob=await resizeImage(files[i]);
