@@ -511,38 +511,107 @@ body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--black);
 
 <script>
 const SUPA_URL='https://skauwlggqcdbrzzxvxxh.supabase.co';
-const SUPA_SERVICE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDQxMTQ4MywiZXhwIjoyMDg5OTg3NDgzfQ.89uL1_gokMfYosOWeaKA9XBNYtoydjDAn9SuzmtM8e8';
+const SERVICE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDQxMTQ4MywiZXhwIjoyMDg5OTg3NDgzfQ.89uL1_gokMfYosOWeaKA9XBNYtoydjDAn9SuzmtM8e8';
 const SUPA_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrYXV3bGdncWNkYnJ6enh2eHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTE0ODMsImV4cCI6MjA4OTk4NzQ4M30.mZQNmxfFjMJFgqN4LloRFnTImHoy6MdysqVxxUT3vKs';
-const BUCKET='Flagstick Finds - Images';
+const STORAGE_OBJECT_BASE=SUPA_URL+'/storage/v1/object/Flagstick%20Finds%20-%20Images/Flagstick/';
+const STORAGE_PUBLIC_BASE=SUPA_URL+'/storage/v1/object/public/Flagstick%20Finds%20-%20Images/Flagstick/';
 const{createClient}=supabase;
 const sbAuth=createClient(SUPA_URL,SUPA_ANON_KEY);
-const sb=createClient(SUPA_URL,SUPA_SERVICE_KEY,{auth:{autoRefreshToken:false,persistSession:false}});
 
-function encStoragePath(p){return p.split('/').map(encodeURIComponent).join('/');}
-async function uploadFileToFlagstickBucket(path,blob,contentType){
-  const url=SUPA_URL+'/storage/v1/object/'+encodeURIComponent(BUCKET)+'/'+encStoragePath(path);
-  const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':contentType||'image/jpeg','x-upsert':'true'},body:blob});
+const svcH={Authorization:'Bearer '+SERVICE_KEY,apikey:SERVICE_KEY};
+
+async function uploadToFlagstickStorage(blob,originalFile){
+  const base=(originalFile&&originalFile.name)?originalFile.name.replace(/\s+/g,'_'):'photo.jpg';
+  const stem=base.replace(/\.[^.]+$/,'')||'photo';
+  const filename=Date.now()+'_'+stem.replace(/[^a-zA-Z0-9._-]/g,'_')+'.jpg';
+  const r=await fetch(STORAGE_OBJECT_BASE+encodeURIComponent(filename),{
+    method:'POST',
+    headers:{...svcH,'Content-Type':'image/jpeg','x-upsert':'true'},
+    body:blob
+  });
   if(!r.ok)throw new Error((await r.text())||'Upload failed');
-  return SUPA_URL+'/storage/v1/object/public/'+encodeURIComponent(BUCKET)+'/'+encStoragePath(path);
+  return STORAGE_PUBLIC_BASE+encodeURIComponent(filename);
+}
+async function fetchListingsActive(){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?sold=eq.false&order=created_at.desc',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function fetchListingById(id){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id)+'&select=*',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  const arr=t?JSON.parse(t):[];
+  return arr[0]||null;
+}
+async function fetchSoldCount(){
+  const rows=await fetchSoldRows();
+  return rows.length;
+}
+async function fetchSoldRows(){
+  const r=await fetch(SUPA_URL+'/rest/v1/sold?select=*&order=sold_at.desc',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function fetchSoldById(id){
+  const r=await fetch(SUPA_URL+'/rest/v1/sold?id=eq.'+encodeURIComponent(id)+'&select=*',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  const arr=t?JSON.parse(t):[];
+  return arr[0]||null;
+}
+async function fetchWishlistRows(){
+  const r=await fetch(SUPA_URL+'/rest/v1/wishlist?select=*&order=created_at.desc',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function fetchListingNames(){
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?select=name',{headers:svcH});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function restSoldPost(row){
+  const r=await fetch(SUPA_URL+'/rest/v1/sold',{method:'POST',headers:{...svcH,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(row)});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function restSoldPatchById(id,row){
+  const r=await fetch(SUPA_URL+'/rest/v1/sold?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{...svcH,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(row)});
+  const t=await r.text();
+  if(!r.ok)throw new Error(t||r.statusText);
+  return t?JSON.parse(t):[];
+}
+async function restSoldDelete(id){
+  const r=await fetch(SUPA_URL+'/rest/v1/sold?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:svcH});
+  if(!r.ok)throw new Error((await r.text())||r.statusText);
+}
+async function restWishlistDelete(id){
+  const r=await fetch(SUPA_URL+'/rest/v1/wishlist?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:svcH});
+  if(!r.ok)throw new Error((await r.text())||r.statusText);
 }
 async function restListingsPatchById(id,row){
-  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{...svcH,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(row)});
   const t=await r.text();
   if(!r.ok)throw new Error(t||r.statusText);
   return t?JSON.parse(t):[];
 }
 async function restListingsPost(row){
-  const r=await fetch(SUPA_URL+'/rest/v1/listings',{method:'POST',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const r=await fetch(SUPA_URL+'/rest/v1/listings',{method:'POST',headers:{...svcH,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(row)});
   const t=await r.text();
   if(!r.ok)throw new Error(t||r.statusText);
   return t?JSON.parse(t):[];
 }
 async function restListingsDelete(id){
-  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY}});
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:svcH});
   if(!r.ok)throw new Error((await r.text())||r.statusText);
 }
 async function restListingsPatchByName(name,row){
-  const r=await fetch(SUPA_URL+'/rest/v1/listings?name=eq.'+encodeURIComponent(name),{method:'PATCH',headers:{'Authorization':'Bearer '+SUPA_SERVICE_KEY,'apikey':SUPA_SERVICE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});
+  const r=await fetch(SUPA_URL+'/rest/v1/listings?name=eq.'+encodeURIComponent(name),{method:'PATCH',headers:{...svcH,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(row)});
   const t=await r.text();
   if(!r.ok)throw new Error(t||r.statusText);
 }
@@ -615,19 +684,23 @@ async function loadAll(){
 
 // ── LISTINGS ──
 async function loadListings(){
-  const{data,error}=await sb.from('listings').select('*').eq('sold',false).order('sort_order').order('created_at',{ascending:false});
-  if(error){toast('Failed to load listings: '+error.message,'error');return;}
-  allListings=data||[];
+  try{
+    allListings=await fetchListingsActive();
+  }catch(e){
+    toast('Failed to load listings: '+e.message,'error');
+    return;
+  }
   renderStats();
   renderListings();
 }
 
 async function renderStats(){
   const inv=allListings.reduce((a,c)=>a+(c.price||0),0);
-  const{count}=await sb.from('sold').select('*',{count:'exact',head:true});
+  let soldN=0;
+  try{soldN=await fetchSoldCount();}catch(e){soldN=0;}
   document.getElementById('stats-bar').innerHTML=
     `<div class="stat-item"><strong>${allListings.length}</strong> Active</div>`+
-    `<div class="stat-item"><strong>${count||0}</strong> Sold</div>`+
+    `<div class="stat-item"><strong>${soldN}</strong> Sold</div>`+
     `<div class="stat-item"><strong>${fmtPrice(inv)}</strong> Inventory Value</div>`;
 }
 
@@ -694,8 +767,11 @@ function openAddForm(){
 }
 
 async function startEdit(id){
-  const{data,error}=await sb.from('listings').select('*').eq('id',id).single();
-  if(error||!data){toast('Failed to load listing.','error');return;}
+  let data;
+  try{
+    data=await fetchListingById(id);
+  }catch(e){toast('Failed to load listing: '+e.message,'error');return;}
+  if(!data){toast('Failed to load listing.','error');return;}
   navTo('add',document.querySelector('[data-page=add]'));
   document.getElementById('edit-id').value=id;
   document.getElementById('form-page-title').textContent='Edit: '+data.name;
@@ -762,7 +838,7 @@ async function saveListing(){
     }else{
       await restListingsPost(row);
     }
-    toast('✓ Listing saved!');
+    toast('Saved successfully');
     navTo('listings',document.querySelector('[data-page=listings]'));
   }catch(e){
     toast('Save failed: '+e.message,'error');
@@ -804,8 +880,7 @@ async function handleUpload(files){
     try{
       const blob=await resizeImage(files[i]);
       if(!blob)throw new Error('Could not process image');
-      const path=`${editId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
-      const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
+      const publicUrl=await uploadToFlagstickStorage(blob,files[i]);
       currentPhotos.push(publicUrl);
       uploaded++;
     }catch(e){errEl.textContent='Upload error: '+e.message;errEl.style.display='block';}
@@ -863,8 +938,11 @@ async function confirmMarkSold(){
   const priceVal=parseFloat(document.getElementById('sold-price-input').value);
   if(!priceVal||priceVal<=0){toast('Please enter a sold price.','error');return;}
   const soldPrice=Math.round(priceVal*100);
-  const{data:listing,error:fetchErr}=await sb.from('listings').select('*').eq('id',id).single();
-  if(fetchErr||!listing){toast('Failed to fetch listing.','error');return;}
+  let listing;
+  try{
+    listing=await fetchListingById(id);
+  }catch(e){toast('Failed to fetch listing: '+e.message,'error');return;}
+  if(!listing){toast('Failed to fetch listing.','error');return;}
   const soldRow={
     name:listing.name,
     type:listing.type,
@@ -874,9 +952,10 @@ async function confirmMarkSold(){
     listing_id:id,
     sold_at:new Date().toISOString()
   };
-  const{error:insErr}=await sb.from('sold').insert(soldRow);
-  if(insErr){toast('Failed to record sale: '+insErr.message,'error');return;}
-  await sb.from('listings').update({sold:true}).eq('id',id);
+  try{
+    await restSoldPost(soldRow);
+    await restListingsPatchById(id,{sold:true});
+  }catch(e){toast('Failed to record sale: '+e.message,'error');return;}
   closeSoldModal();
   toast('✓ Marked as sold!');
   await loadListings();
@@ -900,23 +979,39 @@ async function confirmDelete(){
     try{
       await restListingsDelete(id);
     }catch(e){toast('Delete failed: '+e.message,'error');return;}
-    toast('✓ Deleted.');
+    toast('Deleted');
     await loadListings();
     return;
   }
-  const table=type==='sold'?'sold':type==='wishlist'?'wishlist':'listings';
-  const{error}=await sb.from(table).delete().eq('id',id);
-  if(error){toast('Delete failed: '+error.message,'error');return;}
-  toast('✓ Deleted.');
-  if(type==='sold')loadSold();
-  if(type==='wishlist')loadWishlist();
+  if(type==='sold'){
+    try{
+      await restSoldDelete(id);
+    }catch(e){toast('Delete failed: '+e.message,'error');return;}
+    toast('Deleted');
+    loadSold();
+    return;
+  }
+  if(type==='wishlist'){
+    try{
+      await restWishlistDelete(id);
+    }catch(e){toast('Delete failed: '+e.message,'error');return;}
+    toast('Deleted');
+    loadWishlist();
+    return;
+  }
 }
 
 // ── SOLD VIEW ──
 async function loadSold(){
-  const{data,error}=await sb.from('sold').select('*').order('sold_at',{ascending:false});
+  let data;
+  try{
+    data=await fetchSoldRows();
+  }catch(e){
+    toast('Failed to load sold: '+e.message,'error');
+    return;
+  }
   const grid=document.getElementById('sold-grid');
-  if(error||!data||!data.length){grid.innerHTML='<div class="empty-state">No sold items yet.</div>';return;}
+  if(!data||!data.length){grid.innerHTML='<div class="empty-state">No sold items yet.</div>';return;}
   grid.innerHTML=data.map(s=>{
     const photo=s.photo?`<img src="${s.photo}" alt="${esc(s.name)}" loading="lazy">`:'<div class="card-img-placeholder">🏌️</div>';
     return `<div class="card sold-card">
@@ -937,8 +1032,11 @@ async function loadSold(){
 
 // ── EDIT SOLD ──
 async function openEditSold(id){
-  const{data,error}=await sb.from('sold').select('*').eq('id',id).single();
-  if(error||!data){toast('Failed to load sold record.','error');return;}
+  let data;
+  try{
+    data=await fetchSoldById(id);
+  }catch(e){toast('Failed to load sold record: '+e.message,'error');return;}
+  if(!data){toast('Failed to load sold record.','error');return;}
   document.getElementById('es-id').value=id;
   document.getElementById('es-name').value=data.name||'';
   document.getElementById('es-type').value=data.type||'';
@@ -961,9 +1059,8 @@ async function handleSoldPhotoUpload(files){
   if(!files||!files.length)return;
   const blob=await resizeImage(files[0]);
   if(!blob){toast('Could not process image','error');return;}
-  const path=`sold/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
   try{
-    const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
+    const publicUrl=await uploadToFlagstickStorage(blob,files[0]);
     editSoldPhotos.push(publicUrl);
   }catch(e){toast('Upload failed: '+e.message,'error');return;}
   renderSoldPhotoPreview();
@@ -981,18 +1078,25 @@ async function saveEditSold(){
     photo:editSoldPhotos[0]||null,
     sold_at:document.getElementById('es-date').value?new Date(document.getElementById('es-date').value).toISOString():null,
   };
-  const{error}=await sb.from('sold').update(row).eq('id',id);
-  if(error){toast('Save failed: '+error.message,'error');return;}
+  try{
+    await restSoldPatchById(id,row);
+  }catch(e){toast('Save failed: '+e.message,'error');return;}
   closeEditSoldModal();
-  toast('✓ Sold record updated!');
+  toast('Saved successfully');
   loadSold();
 }
 
 // ── WISHLIST ──
 async function loadWishlist(){
-  const{data,error}=await sb.from('wishlist').select('*').order('created_at',{ascending:false});
+  let data;
+  try{
+    data=await fetchWishlistRows();
+  }catch(e){
+    toast('Failed to load wishlist: '+e.message,'error');
+    return;
+  }
   const tbody=document.getElementById('wl-tbody');
-  if(error||!data||!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';return;}
+  if(!data||!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray);padding:2rem;">No wishlist entries.</td></tr>';return;}
   tbody.innerHTML=data.map(w=>{
     const reachOut=w.reach_out===false?'<span style="color:var(--red);">No</span>':'<span style="color:var(--green);">Yes</span>';
     return `<tr>
@@ -1103,9 +1207,8 @@ async function handleQuickAddPhotos(files){
     try{
       const blob=await resizeImage(files[i]);
       if(!blob){toast('Could not process image','error');continue;}
-      const path=`quick/${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
       try{
-        const publicUrl=await uploadFileToFlagstickBucket(path,blob,'image/jpeg');
+        const publicUrl=await uploadToFlagstickStorage(blob,files[i]);
         quickAddPhotos.push(publicUrl);
       }catch(e){toast('Upload failed: '+e.message,'error');continue;}
     }catch(e){toast('Upload error','error');}
@@ -1168,8 +1271,10 @@ const FALLBACK_CLUBS=[
 ];
 
 async function syncInventoryFromFallback(){
-  const{data:existing,error:fetchErr}=await sb.from('listings').select('name');
-  if(fetchErr){console.log('Sync fetch error:',fetchErr.message);return;}
+  let existing;
+  try{
+    existing=await fetchListingNames();
+  }catch(e){console.log('Sync fetch error:',e.message);return;}
   const existingNames=new Set((existing||[]).map(r=>r.name));
   let synced=0;
   for(const club of FALLBACK_CLUBS){
